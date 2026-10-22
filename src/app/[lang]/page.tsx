@@ -125,7 +125,7 @@ export default async function HomePage() {
               {dict.news.title}
             </h2>
             <Link href={`/${locale}/news`} className="group flex items-center gap-1.5 text-sm font-medium text-accent">
-              {dict.home.all}
+              {dict.news.back}
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </Link>
           </div>

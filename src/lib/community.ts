@@ -95,8 +95,10 @@ export function excerpt(md: string) {
   return md
     .replace(/```[\s\S]*?```/g, " ")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g, "$1")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/[#>*_`$|-]+/g, " ")
+    .replace(/[*_`#>]+/g, "")
+    .replace(/\|/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 220);
