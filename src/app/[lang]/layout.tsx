@@ -11,6 +11,8 @@ import { getMaterials } from "@/lib/materials";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SearchProvider } from "@/components/search";
+import { Pomodoro } from "@/components/pomodoro";
+import { themeScript } from "@/components/theme-toggle";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin", "cyrillic"] });
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin", "cyrillic"] });
@@ -44,13 +46,18 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   }));
 
   return (
-    <html lang={locale} className={`${inter.variable} ${manrope.variable} antialiased`}>
+    // The theme script sets data-theme on <html> before React hydrates.
+    <html lang={locale} className={`${inter.variable} ${manrope.variable} antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="grain flex min-h-dvh flex-col">
         <SearchProvider items={searchItems} locale={locale} dict={dict.search}>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
         </SearchProvider>
+        <Pomodoro labels={dict.pomodoro} />
         {/* Vercel Web Analytics: page views, no cookies. It reads the URL, so it sits in Suspense. */}
         <Suspense fallback={null}>
           <Analytics />

@@ -143,7 +143,9 @@
       "filesHint": "PDF or HTML, up to 100 MB",
       "dropFiles": "Drop a PDF or HTML file here or click to choose",
       "badFile": "Only PDF and HTML files",
-      "fileTooBig": "File is larger than 100 MB"
+      "fileTooBig": "File is larger than 100 MB",
+      "insertCards": "+ Cards",
+      "insertQuiz": "+ Quiz"
     },
     "switch": "Sign in with another account"
   },
@@ -188,5 +190,43 @@
     "viaGithub": "Signs in with GitHub",
     "logout": "Sign out",
     "admin": "Admin"
+  },
+  "study": {
+    "minutes": "min read",
+    "recall": "Test yourself",
+    "recallHint": "Key terms and formulas are hidden. Click to reveal",
+    "revealed": "revealed",
+    "listen": "Listen",
+    "pause": "Pause",
+    "play": "Resume",
+    "stop": "Stop",
+    "speed": "Speed",
+    "formula": "formula",
+    "focus": "Focus",
+    "exitFocus": "Exit focus",
+    "print": "Cheat sheet",
+    "markdown": "Download .md",
+    "toc": "Contents",
+    "resumeAt": "You stopped at",
+    "resume": "Continue",
+    "top": "Top"
+  },
+  "pomodoro": {
+    "title": "Pomodoro",
+    "focus": "Focus",
+    "rest": "Break",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset",
+    "sound": "Sound",
+    "silence": "Silence",
+    "rain": "Rain",
+    "white": "White noise",
+    "brown": "Brown noise",
+    "done": "Time's up!"
+  },
+  "theme": {
+    "light": "Light theme",
+    "dark": "Dark theme"
   }
 }

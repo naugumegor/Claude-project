@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   experimental: {
     // Photos are downscaled in the browser before upload, so 4 MB is plenty.
     serverActions: { bodySizeLimit: "4mb" },
+    // Local builds read PGlite, which one process at a time may open; Neon (on Vercel) has no such limit.
+    ...(!process.env.DATABASE_URL && { cpus: 1 }),
   },
   turbopack: {
     rules: {

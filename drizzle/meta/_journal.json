@@ -15,6 +15,13 @@
       "when": 1792666977642,
       "tag": "0001_files_and_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792669091029,
+      "tag": "0002_demo_study_blocks",
+      "breakpoints": true
     }
   ]
 }

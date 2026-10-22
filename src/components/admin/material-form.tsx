@@ -385,13 +385,34 @@ export function MaterialForm({
                   </button>
                 ))}
               </div>
-              <button
-                type="button"
-                onClick={() => setPreview((p) => !p)}
-                className="rounded-lg px-3 py-1.5 text-sm text-accent transition-colors hover:bg-accent-soft"
-              >
-                {preview ? f.write : f.preview}
-              </button>
+              <div className="flex items-center gap-1">
+                {(
+                  [
+                    [f.insertCards, CARDS_TEMPLATE],
+                    [f.insertQuiz, QUIZ_TEMPLATE],
+                  ] as const
+                ).map(([label, template]) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => {
+                      const body = texts[textTab].body ?? "";
+                      setText(textTab, { body: `${body.trimEnd()}${body.trim() ? "\n\n" : ""}${template}\n` });
+                      setPreview(false);
+                    }}
+                    className="hidden rounded-lg px-2.5 py-1.5 text-sm text-plum transition-colors hover:bg-plum-soft sm:block"
+                  >
+                    {label}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setPreview((p) => !p)}
+                  className="rounded-lg px-3 py-1.5 text-sm text-accent transition-colors hover:bg-accent-soft"
+                >
+                  {preview ? f.write : f.preview}
+                </button>
+              </div>
             </div>
             <div className="grid gap-3 p-4">
               <Input
@@ -409,7 +430,7 @@ export function MaterialForm({
               />
               {preview ? (
                 <div className="min-h-64 rounded-xl border border-line bg-bg/50 px-5 py-2">
-                  <Markdown>{texts[textTab].body || "…"}</Markdown>
+                  <Markdown locale={textTab}>{texts[textTab].body || "…"}</Markdown>
                 </div>
               ) : (
                 <textarea
@@ -766,6 +787,10 @@ function IconButton({ label, onClick, children }: { label: string; onClick: () =
     </button>
   );
 }
+
+// Study blocks the note page turns into flip cards and a mini test (see src/lib/study.ts).
+const CARDS_TEMPLATE = "```cards\nВопрос или термин :: Ответ или определение\nФормула площади круга :: $S = \\pi r^2$\n```";
+const QUIZ_TEMPLATE = "```quiz\n? Вопрос\n- Неверный вариант\n+ Верный вариант\n- Ещё неверный\n> Пояснение (необязательно)\n```";
 
 function documentKind(file: File) {
   if (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) return "pdf" as const;

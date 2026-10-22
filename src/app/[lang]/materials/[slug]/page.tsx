@@ -10,6 +10,10 @@ import { cardLabels, formatDate, isOptimizable } from "@/lib/format";
 import { Markdown } from "@/components/markdown";
 import { MaterialCard } from "@/components/material-card";
 import { DocumentViewer } from "@/components/document-viewer";
+import { StudyToolbar } from "@/components/study/study-toolbar";
+import { ReadingProgress } from "@/components/study/reading-progress";
+import { Toc } from "@/components/study/toc";
+import { readingMinutes } from "@/lib/study";
 import { Favorite, FavoriteSkeleton } from "@/components/account/favorite";
 import { Reveal } from "@/components/reveal";
 import { typeMeta } from "@/components/type-meta";
@@ -85,9 +89,15 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
           }).replace(/</g, "\\u003c"),
         }}
       />
+      {material.body && (
+        <ReadingProgress
+          slug={material.slug}
+          labels={{ resumeAt: dict.study.resumeAt, resume: dict.study.resume }}
+        />
+      )}
       <Link
         href={`/${locale}/materials`}
-        className="group inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+        className="focus-hide group inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
       >
         <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
         {dict.materials.back}
@@ -108,8 +118,8 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
         <h1 className="mt-5 font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
           {material.title}
         </h1>
-        <p className="mt-4 text-lg leading-relaxed text-muted">{material.excerpt}</p>
-        <div className="mt-5 flex flex-wrap items-center gap-2">
+        <p className="sheet-hide mt-4 text-lg leading-relaxed text-muted">{material.excerpt}</p>
+        <div className="no-print mt-5 flex flex-wrap items-center gap-2">
           <Suspense fallback={<FavoriteSkeleton />}>
             <Favorite
               materialId={material.id}
@@ -135,7 +145,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
       </Reveal>
 
       {!material.translated && (
-        <Reveal delay={0.1} className="mt-6">
+        <Reveal delay={0.1} className="sheet-hide mt-6">
           <p className="flex items-center gap-2 rounded-xl border border-ochre/40 bg-ochre-soft px-4 py-3 text-sm">
             <Languages size={18} className="shrink-0 text-ochre" />
             {dict.materials.onlyIn} {dict.langNames[material.lang]}
@@ -144,7 +154,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
       )}
 
       {material.url && (
-        <Reveal delay={0.12} className="mt-8">
+        <Reveal delay={0.12} className="sheet-hide mt-8">
           <a
             href={material.url}
             target="_blank"
@@ -163,7 +173,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
       )}
 
       {material.files.length > 0 && (
-        <Reveal delay={0.12} className="mt-8">
+        <Reveal delay={0.12} className="no-print mt-8">
           <DocumentViewer
             files={material.files.filter((f): f is typeof f & { id: number } => f.id !== undefined)}
             labels={{
@@ -175,7 +185,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
       )}
 
       {material.images?.map((img) => (
-        <Reveal key={img.id ?? img.src} delay={0.14} className="mt-8">
+        <Reveal key={img.id ?? img.src} delay={0.14} className="sheet-hide mt-8">
           <figure className="overflow-hidden rounded-2xl border border-line bg-surface">
             <Image
               src={img.src}
@@ -196,13 +206,26 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
       ))}
 
       {material.body && (
-        <Reveal delay={0.18} className="mt-6">
-          <Markdown>{material.body}</Markdown>
-        </Reveal>
+        <>
+          <Reveal delay={0.16} className="mt-8">
+            <StudyToolbar
+              minutes={readingMinutes(material.body)}
+              locale={locale}
+              markdownHref={`/api/md/${material.slug}?locale=${locale}`}
+              labels={dict.study}
+            />
+          </Reveal>
+          <Toc title={dict.study.toc} />
+          <Reveal delay={0.18} className="mt-6">
+            <div id="note-body">
+              <Markdown locale={locale}>{material.body}</Markdown>
+            </div>
+          </Reveal>
+        </>
       )}
 
       {related.length > 0 && (
-        <section className="mt-20 border-t border-line pt-10">
+        <section className="focus-hide no-print mt-20 border-t border-line pt-10">
           <h2 className="mb-6 font-display text-2xl font-bold tracking-tight">{dict.materials.related}</h2>
           <div className="grid gap-5 sm:grid-cols-2">
             {related.map((m, i) => (
