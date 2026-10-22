@@ -126,7 +126,7 @@ export function HeaderSearchButton({ label }: { label: string }) {
       className="group flex h-10 items-center gap-2 rounded-xl border border-line bg-surface px-3 text-muted transition-[color,border-color,box-shadow] hover:border-accent hover:text-accent hover:shadow-[0_6px_18px_-8px_var(--accent)]"
     >
       <Search size={18} className="transition-transform group-hover:scale-110" />
-      <kbd className="hidden text-xs md:block">Ctrl K</kbd>
+      <kbd className="hidden whitespace-nowrap text-xs md:block">Ctrl K</kbd>
     </motion.button>
   );
 }

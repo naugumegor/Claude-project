@@ -20,11 +20,12 @@ export async function Header() {
     <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/75 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
         <Logo href={`/${locale}`} />
-        <div className="hidden min-w-0 md:block">
-          <NavLinks id="desktop" locale={locale} links={links} />
+        <div className="hidden min-w-0 xl:block">
+          {/* The logo already leads home, so the wide row skips "Главная". */}
+          <NavLinks id="desktop" locale={locale} links={links.slice(1)} />
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <div className="hidden md:block">
+          <div className="hidden xl:block">
             <ProfileSwitch id="desktop" labels={dict.profile} />
           </div>
           <HeaderSearchButton label={dict.search.placeholder} />
@@ -36,8 +37,8 @@ export async function Header() {
           </Suspense>
         </div>
       </div>
-      {/* Phones and tablets: links scroll sideways, the profile switch sits next to them. */}
-      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 pb-2 sm:px-6 md:hidden">
+      {/* Below 1280px: a second row where links scroll sideways and the profile switch sits next to them. */}
+      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 pb-2 sm:px-6 xl:hidden">
         <div className="min-w-0 flex-1">
           <NavLinks id="mobile" locale={locale} links={links} />
         </div>

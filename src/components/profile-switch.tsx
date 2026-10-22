@@ -41,7 +41,7 @@ export function ProfileSwitch({
                 <motion.span layoutId="profile-pill" transition={spring} className="absolute inset-0 rounded-lg bg-accent" />
               )}
               <Icon size={14} className="relative transition-transform duration-300 group-hover:rotate-12" />
-              <span className={`relative ${compact ? "" : "hidden 2xl:inline"}`}>{labels[p]}</span>
+              <span className={`relative ${compact ? "" : "sr-only"}`}>{labels[p]}</span>
             </button>
           );
         })}
