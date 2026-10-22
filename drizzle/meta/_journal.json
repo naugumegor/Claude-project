@@ -29,6 +29,13 @@
       "when": 1792671247881,
       "tag": "0003_sections_and_models",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792679046096,
+      "tag": "0004_docs_and_news",
+      "breakpoints": true
     }
   ]
 }

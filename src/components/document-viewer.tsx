@@ -14,15 +14,18 @@ export function DocumentViewer({
   files,
   labels,
   locale,
+  base = "/api/files/",
 }: {
   files: (MaterialFile & { id: number })[];
   labels: { openFull: string; download: string };
   locale: Locale;
+  /** Where files are served from: a material's files, or readers' documents (/api/user-files/). */
+  base?: string;
 }) {
   const [active, setActive] = useState(files[0].id);
   const [loaded, setLoaded] = useState<Record<number, boolean>>({});
   const file = files.find((f) => f.id === active) ?? files[0];
-  const src = `/api/files/${file.id}`;
+  const src = `${base}${file.id}`;
 
   return (
     <section className="overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_24px_60px_-40px_rgba(35,38,43,0.5)]">

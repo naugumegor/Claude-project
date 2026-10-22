@@ -6,7 +6,8 @@ import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { LayoutGrid, X } from "lucide-react";
 import type { LocalizedMaterial, MaterialType } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
-import { SECTIONS, subjectOrder } from "@/lib/taxonomy";
+import { getSection, SECTIONS, subjectOrder } from "@/lib/taxonomy";
+import { useProfile } from "@/lib/profile";
 import { MaterialCard, type CardLabels } from "./material-card";
 import { typeMeta } from "./type-meta";
 import { sectionMeta } from "./section-icon";
@@ -36,6 +37,11 @@ export function MaterialGrid({
   const pathname = usePathname();
   const params = useSearchParams();
   const [type, setType] = useState<Filter>("all");
+  const profile = useProfile();
+  // The profile switch narrows everything to sections meant for that field.
+  const inProfile = (m: LocalizedMaterial) =>
+    profile === "general" || getSection(m.section).profiles.includes(profile);
+  const pool = materials.filter(inProfile);
   const subject = params.get("subject");
   const tag = params.get("tag");
   // A ?subject= link (from the home page or a breadcrumb) implies its section.
@@ -52,7 +58,7 @@ export function MaterialGrid({
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
-  const visible = materials.filter(
+  const visible = pool.filter(
     (m) =>
       (type === "all" || m.type === type) &&
       (!section || m.section === section) &&
@@ -61,7 +67,7 @@ export function MaterialGrid({
   );
   const sections = SECTIONS.map((s) => ({
     ...s,
-    count: materials.filter((m) => m.section === s.slug).length,
+    count: pool.filter((m) => m.section === s.slug).length,
   })).filter((s) => s.count > 0);
   const subjects = [
     ...new Set(materials.filter((m) => m.section === section).map((m) => m.subject)),
@@ -72,7 +78,7 @@ export function MaterialGrid({
     <div>
       <LayoutGroup id="section-filter">
         <div className="-mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
-          {[{ slug: null, name: null, count: materials.length }, ...sections].map((s) => {
+          {[{ slug: null, name: null, count: pool.length }, ...sections].map((s) => {
             const active = section === s.slug;
             const meta = s.slug ? sectionMeta[s.slug] : null;
             const Icon = meta?.icon ?? LayoutGrid;

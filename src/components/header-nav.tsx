@@ -15,11 +15,11 @@ export function NavLinks({
 }: {
   id: string;
   locale: Locale;
-  links: { href: string; label: string }[];
+  links: { href: string; label: string; for?: string }[];
 }) {
   const pathname = usePathname();
   return (
-    <nav className="flex items-center gap-1">
+    <nav className="flex items-center gap-1 overflow-x-auto">
       {links.map((link) => {
         const href = `/${locale}${link.href}`;
         const active =
@@ -28,7 +28,8 @@ export function NavLinks({
           <Link
             key={link.href}
             href={href}
-            className={`relative rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+            data-for={link.for}
+            className={`relative shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
               active ? "text-ink" : "text-muted hover:text-ink"
             }`}
           >

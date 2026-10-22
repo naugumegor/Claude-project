@@ -39,7 +39,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 
 | Путь | Что там |
 |---|---|
-| `src/app/[lang]/` | страницы: главная, `materials`, `materials/[slug]`, `reference` (справочник) |
+| `src/app/[lang]/` | страницы: главная, `materials`, `materials/[slug]`, `reference` (справочник), `tools`, `glossary`, `news`, `docs/[id]` |
 | `src/lib/taxonomy.ts` | разделы (Математика, Механика, …) и какие темы в них входят |
 | `src/proxy.ts` | редирект `/` → `/ru` или `/en` по языку браузера |
 | `src/dictionaries/` | переводы интерфейса |
@@ -58,6 +58,11 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `src/lib/pyodide.ts`, `src/components/study/python-runner.tsx` | ` ```python `: запуск кода в браузере (Pyodide в Web Worker) |
 | `src/lib/fits.ts`, `src/lib/reference-data.ts` | допуски ISO 286, стали, знаки ГОСТ; подсказки `H7/p6`, `40Х` в конспектах |
 | `src/components/model-viewer.tsx`, `src/lib/embed.ts` | ` ```3d ` и вложения .glb: разнесённый вид, разрез, клик по детали; Sketchfab/Tinkercad |
+| `src/lib/head-scripts.ts`, `src/lib/profile.ts` | тема и профиль «Общий / Инженерия / Бизнес»: `data-for` на элементах прячет чужие разделы |
+| `src/lib/business-blocks.ts`, `src/components/business/` | бизнес-блоки: ` ```tool ` (NPV/IRR, юнит-экономика, безубыточность, спрос, WACC), ` ```canvas ` (SWOT, PESTEL, Портер, Lean Canvas), ` ```case `, ` ```process `, ` ```gantt `, ` ```sql ` (sql.js) |
+| `content/glossary.json`, `src/lib/glossary.ts` | двуязычный глоссарий; `[[NPV]]` или `[[текст\|ключ]]` в конспекте даёт подсказку |
+| `src/app/[lang]/account/doc-actions.ts`, `src/app/api/user-files/[id]` | «Мои документы» читателей: загрузка до 20 МБ, заявка на главную, модерация в админке |
+| `src/app/[lang]/admin/news-actions.ts`, `src/app/[lang]/admin/news` | новости: редактор в админке, `/news` и блок на главной |
 | `src/db/search.ts`, `src/app/api/search` | полнотекстовый поиск Postgres |
 | `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
 | `src/components/` | шапка, поиск, карточки, сетка с фильтрами |
@@ -72,4 +77,5 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 4. ✅ Документы (PDF, HTML) с просмотром на странице, аккаунты клиентов (почта+пароль, GitHub), избранное
 5. ✅ Учёба: время чтения и «продолжить с места», режим «Проверь себя», карточки (` ```cards `) и мини-тесты (` ```quiz `) прямо в Markdown, озвучка, помодоро с фоновым шумом, тёмная тема, фокус-режим, оглавление, шпора на А4, экспорт в .md и Anki (`src/components/study/`, `src/lib/study.ts`)
 6. ✅ Инженерное: разделы и темы, живые формулы, Python в браузере, справочник (посадки, стали, допуски формы, шероховатость, сварка), подсказки в тексте, 3D-просмотрщик
-7. Магазин: каталог, корзина, оплата, сброс пароля по почте
+7. ✅ Бизнес и менеджмент: профили, калькуляторы, стратегические шаблоны с PDF, тренажёр решений, процессы и воронки, Гант, SQL-песочница, шпаргалка Excel, глоссарий, «Мои документы», новости
+8. Магазин: каталог, корзина, оплата, сброс пароля по почте

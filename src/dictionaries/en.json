@@ -10,7 +10,10 @@
     "soon": "soon",
     "login": "Sign in",
     "account": "Account",
-    "reference": "Reference"
+    "reference": "Reference",
+    "tools": "Tools",
+    "news": "News",
+    "glossary": "Glossary"
   },
   "search": {
     "placeholder": "Find a note, link, topic…",
@@ -158,7 +161,35 @@
       "insertPython": "+ Python",
       "insert3d": "+ 3D"
     },
-    "switch": "Sign in with another account"
+    "switch": "Sign in with another account",
+    "materials": "Materials",
+    "news": "News",
+    "newNews": "Post",
+    "noNews": "No news yet.",
+    "review": "Documents to review",
+    "reviewEmpty": "Nothing submitted.",
+    "approve": "Approve",
+    "reject": "Decline",
+    "published": "Published reader documents",
+    "unpublish": "Take down",
+    "newsForm": {
+      "titleRu": "Title (RU)",
+      "titleEn": "Title (EN, optional)",
+      "bodyRu": "Text (RU, Markdown)",
+      "bodyEn": "Text (EN, optional)",
+      "cover": "Cover: image link (optional)",
+      "pinned": "Pin to top",
+      "published": "Publish",
+      "save": "Save",
+      "saved": "Saved",
+      "delete": "Delete",
+      "confirmDelete": "Delete this post?",
+      "preview": "Preview",
+      "edit": "Text",
+      "needTitle": "A Russian title is required",
+      "badCover": "The cover must be an https link",
+      "back": "Back to admin"
+    }
   },
   "auth": {
     "signIn": "Sign in",
@@ -263,5 +294,79 @@
     "weldsLead": "ГОСТ 5264-80 (manual arc welding) and ГОСТ 2.312-72 (symbols). A weld code is the joint letter plus the preparation number, e.g. «ГОСТ 5264-80-Т1-⊿6».",
     "joints": "Joint types",
     "signs": "Supplementary signs"
+  },
+  "profile": {
+    "title": "Profile",
+    "general": "General",
+    "engineering": "Engineering",
+    "business": "Business"
+  },
+  "tools": {
+    "title": "Tools",
+    "lead": "Business and project calculators, strategy templates, a Gantt builder, SQL and an Excel cheat sheet. Everything runs in your browser, and what you fill in stays with you.",
+    "calcs": "Finance calculators",
+    "calcsLead": "Move the sliders: numbers and charts update instantly. In a note, a calculator is a `tool` block.",
+    "canvas": "Strategy analysis",
+    "canvasLead": "Fill in a template; it is saved in this browser. The PDF button gives a clean sheet to print or send.",
+    "gantt": "Gantt builder",
+    "ganttLead": "Tasks start on a day, on a date or “after 1,2”. Red is the critical path: a delay there moves the whole project.",
+    "process": "Processes and funnels",
+    "processLead": "Click a step to see what happens there. Funnel steps show the conversion between them.",
+    "cases": "Decision trainer",
+    "casesLead": "A situation, a few options and the reasoning behind each. A strong decision scores 1, a risky one 0.5.",
+    "sql": "SQL sandbox",
+    "sqlLead": "A practice store database: customers, products, orders. Write any SELECT, JOIN or GROUP BY; the database is rebuilt on every run.",
+    "excel": "Excel cheat sheet",
+    "excelLead": "The functions you need most in finance and analytics: Russian and English names, syntax and an example.",
+    "fn": "Function",
+    "syntax": "Syntax",
+    "what": "What for",
+    "example": "Example",
+    "glossary": "Glossary"
+  },
+  "glossary": {
+    "title": "Glossary",
+    "lead": "Engineering and business terms in two languages. In notes they have a dotted underline: hover to see the definition.",
+    "search": "Find a term…",
+    "all": "All",
+    "eng": "Engineering",
+    "biz": "Business",
+    "empty": "Nothing found."
+  },
+  "news": {
+    "title": "News",
+    "lead": "What's new on the site and around it: updates, collections, announcements.",
+    "empty": "No news yet.",
+    "read": "Read",
+    "back": "All news",
+    "pinned": "Pinned"
+  },
+  "docs": {
+    "title": "My documents",
+    "lead": "Upload your own PDFs, HTML pages and 3D models (.glb). You can suggest any document for the home page; it appears there after review.",
+    "upload": "Upload a document",
+    "name": "Title",
+    "description": "Short description",
+    "file": "File",
+    "limit": "PDF, HTML or GLB, up to 20 MB",
+    "empty": "No documents yet.",
+    "open": "Open",
+    "delete": "Delete",
+    "confirmDelete": "Delete this document for good?",
+    "publish": "Suggest for the home page",
+    "withdraw": "Remove from the home page",
+    "status": {
+      "private": "Only me",
+      "pending": "In review",
+      "published": "On the home page",
+      "rejected": "Declined"
+    },
+    "uploading": "Uploading…",
+    "tooBig": "The file is over 20 MB",
+    "badType": "Needs a PDF, HTML or GLB file",
+    "failed": "Upload failed",
+    "community": "Readers' documents",
+    "communityLead": "Work by readers that passed review.",
+    "by": "By"
   }
 }

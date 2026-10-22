@@ -1,10 +1,14 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ExternalLink, LogOut, Pencil, Plus } from "lucide-react";
+import { desc, eq, inArray } from "drizzle-orm";
+import { ExternalLink, LogOut, Megaphone, Pencil, Pin, Plus } from "lucide-react";
 import { getDictionary, getLocale, type Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { loadMaterials } from "@/db/queries";
+import { db } from "@/db";
+import { news, userDocuments, users } from "@/db/schema";
+import { DocReview } from "@/components/admin/doc-review";
 import { localize } from "@/lib/content";
 import { formatDate } from "@/lib/format";
 import { getAdmin, getUser } from "@/lib/session";
@@ -32,7 +36,31 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
   const [admin, user] = await Promise.all([getAdmin(), getUser()]);
   if (!admin) return <LoginCard dict={dict.admin} next={`/${locale}/admin`} denied={Boolean(user)} />;
 
-  const rows = (await loadMaterials({})).map((m) => localize(m, locale));
+  const [materialRows, newsRows, docRows] = await Promise.all([
+    loadMaterials({}),
+    db.select().from(news).orderBy(desc(news.pinned), desc(news.createdAt)),
+    db
+      .select({ doc: userDocuments, author: users.name })
+      .from(userDocuments)
+      .innerJoin(users, eq(userDocuments.userId, users.id))
+      .where(inArray(userDocuments.status, ["pending", "published"]))
+      .orderBy(desc(userDocuments.createdAt)),
+  ]);
+  const rows = materialRows.map((m) => localize(m, locale));
+  const docs = docRows.map(({ doc, author }) => ({
+    id: doc.id,
+    name: doc.name,
+    description: doc.description,
+    author,
+    kind: doc.kind,
+    status: doc.status,
+  }));
+  const reviewLabels = {
+    approve: dict.admin.approve,
+    reject: dict.admin.reject,
+    unpublish: dict.admin.unpublish,
+    view: dict.admin.view,
+  };
 
   return (
     <>
@@ -42,6 +70,13 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
           <p className="text-sm text-muted">@{admin}</p>
         </div>
         <div className="flex items-center gap-2">
+          <Link
+            href={`/${locale}/admin/news`}
+            className="group inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 font-medium transition-transform hover:-translate-y-0.5 hover:border-ochre"
+          >
+            <Megaphone size={18} className="text-ochre transition-transform group-hover:-rotate-12" />
+            {dict.admin.newNews}
+          </Link>
           <Link
             href={`/${locale}/admin/editor`}
             className="group inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 font-medium text-accent-ink shadow-[0_8px_20px_-10px_var(--accent)] transition-transform hover:-translate-y-0.5"
@@ -61,10 +96,60 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
         </div>
       </div>
 
+      <h2 className="mb-3 mt-10 font-display text-xl font-bold">
+        {dict.admin.review}{" "}
+        <span className="text-base font-medium text-muted">{docs.filter((d) => d.status === "pending").length}</span>
+      </h2>
+      {docs.some((d) => d.status === "pending") ? (
+        <DocReview rows={docs.filter((d) => d.status === "pending")} locale={locale} labels={reviewLabels} />
+      ) : (
+        <p className="text-sm text-muted">{dict.admin.reviewEmpty}</p>
+      )}
+      {docs.some((d) => d.status === "published") && (
+        <>
+          <h3 className="mb-2 mt-6 text-sm font-semibold text-muted">{dict.admin.published}</h3>
+          <DocReview rows={docs.filter((d) => d.status === "published")} locale={locale} labels={reviewLabels} />
+        </>
+      )}
+
+      <h2 className="mb-3 mt-10 font-display text-xl font-bold">{dict.admin.news}</h2>
+      {newsRows.length === 0 ? (
+        <p className="text-sm text-muted">{dict.admin.noNews}</p>
+      ) : (
+        <ul className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
+          {newsRows.map((n) => (
+            <li key={n.id} className="group flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-2/60">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-ochre-soft text-ochre transition-transform group-hover:scale-110">
+                {n.pinned ? <Pin size={16} /> : <Megaphone size={16} />}
+              </span>
+              <Link href={`/${locale}/admin/news?id=${n.id}`} className="min-w-0 flex-1">
+                <span className="block truncate font-medium">{n.titleRu}</span>
+                <span className="block truncate text-xs text-muted">
+                  {formatDate((n.publishedAt ?? n.createdAt).toISOString(), locale)}
+                </span>
+              </Link>
+              <span
+                className={`hidden rounded-full px-2.5 py-0.5 text-xs font-semibold sm:inline ${
+                  n.status === "published" ? "bg-accent-soft text-accent" : "bg-ochre-soft text-ochre"
+                }`}
+              >
+                {dict.admin.status[n.status]}
+              </span>
+              {n.status === "published" && (
+                <Link href={`/${locale}/news/${n.slug}`} aria-label={dict.admin.view} className="rounded-lg p-2 text-muted transition-colors hover:text-accent">
+                  <ExternalLink size={16} />
+                </Link>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <h2 className="mb-3 mt-10 font-display text-xl font-bold">{dict.admin.materials}</h2>
       {rows.length === 0 ? (
         <p className="mt-16 text-center text-muted">{dict.admin.empty}</p>
       ) : (
-        <ul className="mt-8 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
+        <ul className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
           {rows.map((m) => {
             const meta = typeMeta[m.type];
             const Icon = meta.icon;

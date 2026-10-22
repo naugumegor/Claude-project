@@ -3,11 +3,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { desc, eq } from "drizzle-orm";
-import { Heart, LogOut, Settings2 } from "lucide-react";
+import { LogOut, Settings2 } from "lucide-react";
 import { getDictionary, getLocale, type Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { db } from "@/db";
-import { favorites, users } from "@/db/schema";
+import { favorites, userDocuments, users } from "@/db/schema";
 import { getMaterials } from "@/lib/materials";
 import { cardLabels, formatDate } from "@/lib/format";
 import { getAdmin, getUser } from "@/lib/session";
@@ -15,6 +15,8 @@ import { MaterialCard } from "@/components/material-card";
 import { Reveal } from "@/components/reveal";
 import { ProfileForms } from "@/components/account/profile-forms";
 import { GithubMark } from "@/components/account/auth-form";
+import { AccountTabs } from "@/components/account/account-tabs";
+import { MyDocuments } from "@/components/account/my-documents";
 import { signOut } from "./actions";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -22,22 +24,31 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: dict.account.title, robots: { index: false } };
 }
 
-export default async function AccountPage() {
+export default async function AccountPage({ searchParams }: PageProps<"/[lang]/account">) {
   const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
   return (
     <section className="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
       <Suspense fallback={<div className="h-64 animate-pulse rounded-3xl bg-surface-2" />}>
-        <Account dict={dict} locale={locale} />
+        <Account dict={dict} locale={locale} searchParams={searchParams} />
       </Suspense>
     </section>
   );
 }
 
-async function Account({ dict, locale }: { dict: Dictionary; locale: Locale }) {
+async function Account({
+  dict,
+  locale,
+  searchParams,
+}: {
+  dict: Dictionary;
+  locale: Locale;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const tab = String((await searchParams).tab ?? "");
   const session = await getUser();
   if (!session) redirect(`/${locale}/login?next=/${locale}/account`);
 
-  const [[user], favRows, admin] = await Promise.all([
+  const [[user], favRows, admin, docRows] = await Promise.all([
     db.select().from(users).where(eq(users.id, session.id)).limit(1),
     db
       .select({ materialId: favorites.materialId })
@@ -45,6 +56,7 @@ async function Account({ dict, locale }: { dict: Dictionary; locale: Locale }) {
       .where(eq(favorites.userId, session.id))
       .orderBy(desc(favorites.createdAt)),
     getAdmin(),
+    db.select().from(userDocuments).where(eq(userDocuments.userId, session.id)).orderBy(desc(userDocuments.createdAt)),
   ]);
 
   const logout = (
@@ -104,30 +116,56 @@ async function Account({ dict, locale }: { dict: Dictionary; locale: Locale }) {
       </Reveal>
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_20rem]">
-        <section>
-          <h2 className="mb-5 flex items-center gap-2 font-display text-2xl font-bold tracking-tight">
-            <Heart size={22} className="fill-rose text-rose" />
-            {dict.account.favorites}
-            <span className="text-base font-medium text-muted">{saved.length}</span>
-          </h2>
-          {saved.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-line px-6 py-12 text-center">
-              <p className="text-muted">{dict.account.noFavorites}</p>
-              <Link
-                href={`/${locale}/materials`}
-                className="mt-5 inline-block rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-accent-ink transition-transform hover:-translate-y-0.5"
-              >
-                {dict.account.browse}
-              </Link>
-            </div>
-          ) : (
-            <div className="grid gap-5 sm:grid-cols-2">
-              {saved.map((m, i) => (
-                <MaterialCard key={m.slug} material={m} locale={locale} labels={labels[m.slug]} index={i} />
-              ))}
-            </div>
-          )}
-        </section>
+        <AccountTabs
+          initial={tab}
+          tabs={[
+            {
+              id: "favorites",
+              label: dict.account.favorites,
+              count: saved.length,
+              content:
+                saved.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-line px-6 py-12 text-center">
+                    <p className="text-muted">{dict.account.noFavorites}</p>
+                    <Link
+                      href={`/${locale}/materials`}
+                      className="mt-5 inline-block rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-accent-ink transition-transform hover:-translate-y-0.5"
+                    >
+                      {dict.account.browse}
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    {saved.map((m, i) => (
+                      <MaterialCard key={m.slug} material={m} locale={locale} labels={labels[m.slug]} index={i} />
+                    ))}
+                  </div>
+                ),
+            },
+            {
+              id: "docs",
+              label: dict.docs.title,
+              count: docRows.length,
+              content: (
+                <MyDocuments
+                  docs={docRows.map((d) => ({
+                    id: d.id,
+                    name: d.name,
+                    description: d.description,
+                    kind: d.kind,
+                    size: d.size,
+                    status: d.status,
+                    createdAt: d.createdAt.toISOString(),
+                  }))}
+                  labels={dict.docs}
+                  locale={locale}
+                  userId={user.id}
+                  directUpload={Boolean(process.env.BLOB_READ_WRITE_TOKEN)}
+                />
+              ),
+            },
+          ]}
+        />
 
         <aside>
           <ProfileForms

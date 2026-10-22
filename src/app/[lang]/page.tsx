@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Box, FileCode, FileText, Megaphone, Pin } from "lucide-react";
 import { getDictionary, getLocale } from "@/dictionaries";
 import { getMaterials } from "@/lib/materials";
 import { cardLabels, plural, pluralWord } from "@/lib/format";
@@ -10,10 +10,17 @@ import { typeMeta } from "@/components/type-meta";
 import type { MaterialType } from "@/lib/content";
 import { SECTIONS, subjectOrder } from "@/lib/taxonomy";
 import { sectionMeta } from "@/components/section-icon";
+import { excerpt, getNews, getPublishedUserDocs } from "@/lib/community";
+import { formatDate } from "@/lib/format";
 
 export default async function HomePage() {
   const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
-  const materials = await getMaterials(locale);
+  const [materials, userDocs, news] = await Promise.all([
+    getMaterials(locale),
+    getPublishedUserDocs(6),
+    getNews(locale),
+  ]);
+  const latestNews = news.slice(0, 3);
   const recent = materials.slice(0, 3);
   const labels = cardLabels(recent, dict, locale);
 
@@ -110,6 +117,72 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {latestNews.length > 0 && (
+        <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <h2 className="flex items-center gap-2 font-display text-2xl font-bold tracking-tight">
+              <Megaphone size={22} className="text-ochre" />
+              {dict.news.title}
+            </h2>
+            <Link href={`/${locale}/news`} className="group flex items-center gap-1.5 text-sm font-medium text-accent">
+              {dict.home.all}
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {latestNews.map((n, i) => (
+              <Reveal key={n.id} delay={i * 0.05}>
+                <Link
+                  href={`/${locale}/news/${n.slug}`}
+                  className="group block h-full rounded-2xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-ochre hover:shadow-[0_14px_34px_-20px_var(--ochre)]"
+                >
+                  <span className="flex items-center gap-2 text-xs text-muted">
+                    {n.pinned && <Pin size={12} className="text-ochre" />}
+                    {formatDate(n.publishedAt, locale)}
+                  </span>
+                  <span className="mt-2 block font-display text-lg font-bold leading-snug transition-colors group-hover:text-ochre">
+                    {n.title}
+                  </span>
+                  <span className="mt-2 line-clamp-3 block text-sm text-muted">{excerpt(n.body)}</span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {userDocs.length > 0 && (
+        <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+          <h2 className="font-display text-2xl font-bold tracking-tight">{dict.docs.community}</h2>
+          <p className="mb-6 mt-1 text-sm text-muted">{dict.docs.communityLead}</p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {userDocs.map((d, i) => {
+              const Icon = d.kind === "pdf" ? FileText : d.kind === "model" ? Box : FileCode;
+              const tone = d.kind === "pdf" ? "bg-rose-soft text-rose" : d.kind === "model" ? "bg-accent-soft text-accent" : "bg-plum-soft text-plum";
+              return (
+                <Reveal key={d.id} delay={i * 0.05}>
+                  <Link
+                    href={`/${locale}/docs/${d.id}`}
+                    className="group flex h-full gap-3 rounded-2xl border border-line bg-surface p-4 transition-all duration-300 hover:-translate-y-1 hover:border-accent"
+                  >
+                    <span className={`flex size-11 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:rotate-[-6deg] group-hover:scale-110 ${tone}`}>
+                      <Icon size={20} />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate font-semibold">{d.name}</span>
+                      {d.description && <span className="line-clamp-2 block text-sm text-muted">{d.description}</span>}
+                      <span className="mt-1 block text-xs text-muted">
+                        {dict.docs.by} {d.author} · {formatDate(d.publishedAt, locale)}
+                      </span>
+                    </span>
+                  </Link>
+                </Reveal>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
       <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
         <h2 className="font-display text-2xl font-bold tracking-tight">{dict.home.subjects}</h2>
         <p className="mb-6 mt-1 text-sm text-muted">{dict.home.subjectsLead}</p>
@@ -118,7 +191,7 @@ export default async function HomePage() {
             const meta = sectionMeta[section.slug];
             const Icon = meta.icon;
             return (
-              <Reveal key={section.slug} delay={Math.min(i, 5) * 0.05}>
+              <Reveal key={section.slug} delay={Math.min(i, 5) * 0.05} for={section.profiles.join(" ")}>
                 <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-[0_14px_34px_-20px_var(--accent)]">
                   <span
                     className={`absolute -right-8 -top-8 size-24 rounded-full opacity-60 transition-transform duration-500 group-hover:scale-[2.2] ${meta.soft}`}

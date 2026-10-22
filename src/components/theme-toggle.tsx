@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Moon, Sun } from "lucide-react";
-
-export const THEME_KEY = "ingenium:theme";
-
-/** Runs before paint (inlined in <head>) so a dark-theme reader never sees a light flash. */
-export const themeScript = `try{if(localStorage.getItem("${THEME_KEY}")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}`;
+import { THEME_KEY } from "@/lib/head-scripts";
 
 export function ThemeToggle({ labels }: { labels: { light: string; dark: string } }) {
   const [dark, setDark] = useState(false);

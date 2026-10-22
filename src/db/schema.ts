@@ -145,3 +145,43 @@ export const authFailures = pgTable(
   },
   (t) => [index("auth_failures_key_idx").on(t.key, t.createdAt)],
 );
+
+export const userDocStatus = pgEnum("user_doc_status", ["private", "pending", "published", "rejected"]);
+
+/**
+ * "Мои документы": files a signed-in reader uploads to their account. Private by default;
+ * the owner can suggest one for the home page, and it shows there once the admin approves.
+ */
+export const userDocuments = pgTable(
+  "user_documents",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    description: text("description").notNull().default(""),
+    url: text("url").notNull(),
+    kind: fileKind("kind").notNull(),
+    size: integer("size").notNull().default(0),
+    status: userDocStatus("status").notNull().default("private"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+  },
+  (t) => [index("user_documents_user_idx").on(t.userId), index("user_documents_status_idx").on(t.status)],
+);
+
+/** News posts, written by the admin in Markdown; drafts are visible only to the admin. */
+export const news = pgTable("news", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  titleRu: text("title_ru").notNull(),
+  titleEn: text("title_en").notNull().default(""),
+  bodyRu: text("body_ru").notNull().default(""),
+  bodyEn: text("body_en").notNull().default(""),
+  cover: text("cover"),
+  pinned: integer("pinned").notNull().default(0),
+  status: materialStatus("status").notNull().default("draft"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+});

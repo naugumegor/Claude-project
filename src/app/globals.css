@@ -269,6 +269,12 @@ html[data-focus] body {
   display: none;
 }
 
+/* Profile switch: anything tagged data-for="engineering business" shows only for those profiles. */
+html[data-profile="engineering"] [data-for]:not([data-for~="engineering"]),
+html[data-profile="business"] [data-for]:not([data-for~="business"]) {
+  display: none !important;
+}
+
 /* Sliders in ```calc blocks: a slim track with a round accent thumb that grows on hover. */
 .calc-range {
   appearance: none;

@@ -17,10 +17,20 @@ import { embedUrl, parseModelBlock } from "@/lib/embed";
 import { FitTip, SteelTip } from "./study/ref-tip";
 import { Flashcards } from "./study/flashcards";
 import { Quiz } from "./study/quiz";
+import { GlossaryTip } from "./study/ref-tip";
+import { findTerm, remarkGlossary } from "@/lib/glossary";
+import { parseCanvas, parseCases, parseGantt, parseProcess, parseSql, parseTool } from "@/lib/business-blocks";
+import { BusinessTool } from "./business/tools";
+import { StrategyCanvas } from "./business/canvas";
+import { CaseTrainer } from "./business/case-trainer";
+import { ProcessBlock } from "./business/process";
+import { SqlSandbox } from "./business/sql-sandbox";
+import { Gantt } from "./business/gantt";
 
 /**
  * Renders a note's Markdown body: tables, $math$, highlighted code, and the study blocks
- * ```cards (flip cards), ```quiz (mini test) and ```calc (live formula with sliders).
+ * ```cards (flip cards), ```quiz (mini test) and ```calc (live formula with sliders), plus the
+ * business blocks ```tool, ```canvas, ```case, ```process, ```gantt and ```sql, and [[glossary]] terms.
  * h2/h3 get ids for the table of contents.
  */
 export function Markdown({ children, locale = "ru" }: { children: string; locale?: Locale }) {
@@ -48,6 +58,16 @@ export function Markdown({ children, locale = "ru" }: { children: string; locale
         <code className={className} {...domProps(props)}>
           {children}
         </code>
+      );
+    },
+    dfn: ({ children, node, ...props }) => {
+      const key = String((node?.properties as { dataTerm?: string } | undefined)?.dataTerm ?? textOf(children));
+      const term = findTerm(key);
+      if (!term) return <span {...domProps({ node, ...props })}>{children}</span>;
+      return (
+        <GlossaryTip term={term} locale={locale}>
+          {children}
+        </GlossaryTip>
       );
     },
     pre: ({ children, ...props }) => {
@@ -105,6 +125,51 @@ export function Markdown({ children, locale = "ru" }: { children: string; locale
         }
         if (model) return <ModelViewer src={model.src} title={model.title} locale={locale} />;
       }
+      if (lang === "tool") {
+        const tool = parseTool(raw);
+        if (tool) return <BusinessTool name={tool.name} params={tool.params} locale={locale} />;
+      }
+      if (lang === "canvas") {
+        const canvas = parseCanvas(raw);
+        if (canvas) return <StrategyCanvas source={canvas} locale={locale} />;
+      }
+      if (lang === "case") {
+        const cases = parseCases(raw).map((c) => ({
+          id: c.id,
+          situation: <Inline>{c.situation}</Inline>,
+          options: c.options.map((o) => ({
+            verdict: o.verdict,
+            text: <Inline>{o.text}</Inline>,
+            why: o.why ? <Inline>{o.why}</Inline> : undefined,
+          })),
+        }));
+        if (cases.length) return <CaseTrainer cases={cases} locale={locale} />;
+      }
+      if (lang === "process") {
+        const process = parseProcess(raw);
+        if (process) {
+          return (
+            <ProcessBlock
+              type={process.type}
+              title={process.title ? <Inline>{process.title}</Inline> : undefined}
+              steps={process.steps.map((s) => ({
+                ...s,
+                title: <Inline>{s.title}</Inline>,
+                description: s.description ? <Inline>{s.description}</Inline> : undefined,
+              }))}
+              locale={locale}
+            />
+          );
+        }
+      }
+      if (lang === "gantt") {
+        const gantt = parseGantt(raw);
+        if (gantt.tasks.length) return <Gantt source={gantt} locale={locale} />;
+      }
+      if (lang === "sql") {
+        const sql = parseSql(raw);
+        return <SqlSandbox setup={sql.setup} query={sql.query} locale={locale} />;
+      }
       if (lang === "python" || lang === "py") {
         return (
           <PythonRunner code={raw} locale={locale}>
@@ -119,8 +184,8 @@ export function Markdown({ children, locale = "ru" }: { children: string; locale
   return (
     <div className="prose-ingenium">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeKatex, [rehypeHighlight, { detect: true, plainText: ["cards", "quiz", "calc", "3d"] }]]}
+        remarkPlugins={[remarkGfm, remarkMath, remarkGlossary]}
+        rehypePlugins={[rehypeKatex, [rehypeHighlight, { detect: true, plainText: PLAIN }]]}
         components={components}
       >
         {children}
@@ -128,6 +193,9 @@ export function Markdown({ children, locale = "ru" }: { children: string; locale
     </div>
   );
 }
+
+// Blocks we render ourselves: the highlighter must leave their text alone.
+const PLAIN = ["cards", "quiz", "calc", "3d", "tool", "canvas", "case", "process", "gantt", "sql"];
 
 /** One line of Markdown (bold, `code`, $math$) without the wrapping paragraph. */
 function Inline({ children }: { children: string }) {

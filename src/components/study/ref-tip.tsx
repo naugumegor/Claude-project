@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import { computeFit, FIT_KIND_NAMES, parseFit, COMMON_FITS, type FitKind } from "@/lib/fits";
 import type { Steel } from "@/lib/reference-data";
+import type { GlossaryTerm } from "@/lib/glossary";
 
 // Inline `H7/p6`, `Ø25 H7/p6` or `40Х` in a note: a dotted underline that opens a small card
 // with the numbers, on hover with a mouse or on tap on a phone.
@@ -48,7 +49,19 @@ const kindTone: Record<FitKind, string> = {
   interference: "bg-rose-soft text-rose",
 };
 
-function Tip({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
+const CODE_LABEL =
+  "rounded-md border-b border-dashed border-accent bg-accent-soft/60 px-1 py-0.5 font-mono text-[0.88em] text-ink transition-colors hover:bg-accent-soft";
+const TERM_LABEL = "border-b border-dotted border-plum text-inherit transition-colors hover:bg-plum-soft hover:text-plum";
+
+function Tip({
+  label,
+  children,
+  labelClass = CODE_LABEL,
+}: {
+  label: React.ReactNode;
+  children: React.ReactNode;
+  labelClass?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ left: 0, top: 0, above: false });
   const anchor = useRef<HTMLSpanElement>(null);
@@ -100,7 +113,7 @@ function Tip({ label, children }: { label: React.ReactNode; children: React.Reac
             else show();
           } else if (e.key === "Escape") setOpen(false);
         }}
-        className="ref-tip cursor-help rounded-md border-b border-dashed border-accent bg-accent-soft/60 px-1 py-0.5 font-mono text-[0.88em] text-ink transition-colors hover:bg-accent-soft"
+        className={`ref-tip cursor-help ${labelClass}`}
       >
         {label}
       </span>
@@ -234,5 +247,23 @@ function MoreLink({ href, label }: { href: string; label: string }) {
       {label}
       <ArrowUpRight size={12} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
     </Link>
+  );
+}
+
+/** A glossary term from [[term]] in a note: the definition plus the term in the other language. */
+export function GlossaryTip({ term, locale, children }: { term: GlossaryTerm; locale: Locale; children: React.ReactNode }) {
+  const other = locale === "ru" ? term.en : term.ru;
+  return (
+    <Tip label={children} labelClass={TERM_LABEL}>
+      <span className="flex flex-wrap items-baseline gap-x-2">
+        <b className="font-display text-[15px]">{locale === "ru" ? term.ru : term.en}</b>
+        <span className="text-xs text-muted">{other}</span>
+      </span>
+      <span className="mt-1.5 block">{locale === "ru" ? term.def_ru : term.def_en}</span>
+      <Link href={`/${locale}/glossary#${term.id}`} className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-plum hover:underline">
+        {locale === "ru" ? "Весь глоссарий" : "Full glossary"}
+        <ArrowUpRight size={12} />
+      </Link>
+    </Tip>
   );
 }

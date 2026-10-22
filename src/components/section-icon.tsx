@@ -1,5 +1,8 @@
 import {
+  Briefcase,
+  ChartGantt,
   Code,
+  Coins,
   Cog,
   DraftingCompass,
   Flame,
@@ -22,5 +25,8 @@ export const sectionMeta: Record<SectionSlug, { icon: LucideIcon; tone: string; 
   drafting: { icon: DraftingCompass, tone: "text-accent", soft: "bg-accent-soft" },
   programming: { icon: Code, tone: "text-plum", soft: "bg-plum-soft" },
   science: { icon: FlaskConical, tone: "text-rose", soft: "bg-rose-soft" },
+  projects: { icon: ChartGantt, tone: "text-plum", soft: "bg-plum-soft" },
+  economics: { icon: Coins, tone: "text-ochre", soft: "bg-ochre-soft" },
+  strategy: { icon: Briefcase, tone: "text-accent", soft: "bg-accent-soft" },
   other: { icon: Shapes, tone: "text-muted", soft: "bg-surface-2" },
 };

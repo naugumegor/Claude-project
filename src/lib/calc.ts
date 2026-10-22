@@ -16,7 +16,8 @@
 // the lines above and shown as a result. "plot t: a..b | expr | label" draws a curve over t;
 // "expr ; expr" draws a parametric curve (x(t) ; y(t)). Several plots share one chart.
 // Expressions: + - * / ^, parentheses, pi, e and sin cos tan asin acos atan sinh cosh tanh
-// sqrt cbrt exp ln log10 log2 abs floor ceil round sign min max pow atan2 hypot.
+// sqrt cbrt exp ln log10 log2 abs floor ceil round sign min max pow atan2 hypot,
+// and finance: npv(r, CF0, CF1, …), irr(CF0, CF1, …), pmt(r, n, pv), pv(r, n, pmt), fv(r, n, pmt).
 
 export type CalcValue = {
   name: string;
@@ -148,7 +149,35 @@ const FUNCS: Record<string, (...a: number[]) => number> = {
   hypot: Math.hypot,
   deg: (r) => (r * 180) / Math.PI,
   rad: (d) => (d * Math.PI) / 180,
+  // Finance: r is a fraction (0.12), CF0 sits at t = 0 (unlike Excel's NPV).
+  npv: (r, ...flows) => npv(r, flows),
+  irr: (...flows) => irr(flows),
+  pmt: (r, n, pv) => (r === 0 ? pv / n : (pv * r) / (1 - (1 + r) ** -n)),
+  pv: (r, n, pmt) => (r === 0 ? pmt * n : (pmt * (1 - (1 + r) ** -n)) / r),
+  fv: (r, n, pmt) => (r === 0 ? pmt * n : (pmt * ((1 + r) ** n - 1)) / r),
 };
+
+export function npv(r: number, flows: number[]) {
+  return flows.reduce((sum, cf, t) => sum + cf / (1 + r) ** t, 0);
+}
+
+/** Internal rate of return by bisection on (−99 %, 1000 %); NaN when NPV never changes sign. */
+export function irr(flows: number[]) {
+  let lo = -0.99;
+  let hi = 10;
+  let fLo = npv(lo, flows);
+  if (Math.sign(fLo) === Math.sign(npv(hi, flows))) return NaN;
+  for (let i = 0; i < 200; i++) {
+    const mid = (lo + hi) / 2;
+    const f = npv(mid, flows);
+    if (Math.abs(f) < 1e-10) return mid;
+    if (Math.sign(f) === Math.sign(fLo)) {
+      lo = mid;
+      fLo = f;
+    } else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
 const CONSTS: Scope = { pi: Math.PI, π: Math.PI, e: Math.E };
 
 type Token = { kind: "num" | "name" | "op"; text: string; value?: number };

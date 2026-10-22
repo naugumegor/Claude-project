@@ -13,11 +13,20 @@ export type SectionSlug =
   | "drafting"
   | "programming"
   | "science"
+  | "projects"
+  | "economics"
+  | "strategy"
   | "other";
+
+/** Who a section is for. The profile switch in the header hides the other side. */
+export type Profile = "engineering" | "business";
+export const PROFILES = ["general", "engineering", "business"] as const;
+export type ProfileChoice = (typeof PROFILES)[number];
 
 export type Section = {
   slug: SectionSlug;
   name: Record<Locale, string>;
+  profiles: Profile[];
   /** Default subject slugs, in display order. */
   subjects: string[];
 };
@@ -25,46 +34,73 @@ export type Section = {
 export const SECTIONS: Section[] = [
   {
     slug: "math",
+    profiles: ["engineering", "business"],
     name: { ru: "Математика", en: "Mathematics" },
     subjects: ["math", "calculus", "linear-algebra", "differential-equations", "probability"],
   },
   {
     slug: "mechanics",
+    profiles: ["engineering"],
     name: { ru: "Механика", en: "Mechanics" },
     subjects: ["statics", "dynamics", "strength"],
   },
   {
     slug: "materials",
+    profiles: ["engineering"],
     name: { ru: "Материаловедение", en: "Materials science" },
     subjects: ["materials"],
   },
   {
     slug: "thermo",
+    profiles: ["engineering"],
     name: { ru: "Тепло и потоки", en: "Heat & fluids" },
     subjects: ["thermodynamics", "fluids"],
   },
   {
     slug: "machines",
+    profiles: ["engineering"],
     name: { ru: "Машины и механизмы", en: "Machines & mechanisms" },
     subjects: ["tmm", "machine-design"],
   },
   {
     slug: "drafting",
+    profiles: ["engineering"],
     name: { ru: "Черчение и САПР", en: "Drafting & CAD" },
     subjects: ["drafting", "cad-cae"],
   },
   {
     slug: "programming",
+    profiles: ["engineering", "business"],
     name: { ru: "Программирование", en: "Programming" },
     subjects: ["engineering-python", "programming"],
   },
   {
     slug: "science",
+    profiles: ["engineering"],
     name: { ru: "Естественные науки", en: "Natural sciences" },
     subjects: ["physics", "chemistry"],
   },
   {
+    slug: "projects",
+    profiles: ["engineering", "business"],
+    name: { ru: "Проекты и аналитика", en: "Projects & analytics" },
+    subjects: ["project-management", "analytics-tools"],
+  },
+  {
+    slug: "economics",
+    profiles: ["business"],
+    name: { ru: "Экономика и финансы", en: "Economics & finance" },
+    subjects: ["finance", "economics"],
+  },
+  {
+    slug: "strategy",
+    profiles: ["business"],
+    name: { ru: "Стратегия и операции", en: "Strategy & operations" },
+    subjects: ["strategy", "operations", "cases"],
+  },
+  {
     slug: "other",
+    profiles: ["engineering", "business"],
     name: { ru: "Другое", en: "Other" },
     subjects: [],
   },
