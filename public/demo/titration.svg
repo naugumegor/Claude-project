@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3EDE2"/><stop offset="1" stop-color="#E9F1EC"/></linearGradient></defs>
+<rect width="800" height="600" fill="url(#g)"/>
+<rect x="385" y="40" width="30" height="300" rx="6" fill="#fff" stroke="#9AA5A0" stroke-width="3"/>
+<rect x="388" y="150" width="24" height="187" fill="#CFE6DD"/>
+<path d="M400 340V380" stroke="#9AA5A0" stroke-width="4"/>
+<circle cx="400" cy="400" r="6" fill="#E59AB4"/>
+<path d="M300 430h200l50 120H250z" fill="#fff" stroke="#9AA5A0" stroke-width="3"/>
+<path d="M270 500h260l20 50H250z" fill="#F2B8CB"/>
+<g fill="#6B6F76" font-family="system-ui" font-size="20"><text x="440" y="120">NaOH 0.1M</text><text x="560" y="520">HCl + phph</text></g></svg>

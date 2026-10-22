@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* Palette: warm paper background, graphite ink, calm teal accent, ochre secondary. */
+:root {
+  --bg: #f7f4ee;
+  --surface: #fffdf9;
+  --surface-2: #f1ece3;
+  --ink: #23262b;
+  --muted: #6b6f76;
+  --line: #e6e0d6;
+  --accent: #2f7d6d;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3f0ec;
+  --ochre: #c98a3d;
+  --ochre-soft: #f6ebdc;
+  --rose: #b5546b;
+  --rose-soft: #f6e4e8;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-ochre: var(--ochre);
+  --color-ochre-soft: var(--ochre-soft);
+  --color-rose: var(--rose);
+  --color-rose-soft: var(--rose-soft);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-manrope);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+/* Soft paper grain on the background so the page isn't flat. */
+.grain {
+  background-image: radial-gradient(
+      circle at 15% 10%,
+      color-mix(in oklab, var(--accent-soft) 70%, transparent) 0,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 0%,
+      color-mix(in oklab, var(--ochre-soft) 80%, transparent) 0,
+      transparent 35%
+    );
+}
+
+/* Long-form note styles. */
+.prose-ingenium {
+  line-height: 1.75;
+  font-size: 1.0625rem;
+}
+.prose-ingenium h2 {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin: 2.2rem 0 0.8rem;
+}
+.prose-ingenium h3 {
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: 1.6rem 0 0.6rem;
+}
+.prose-ingenium p {
+  margin: 0.9rem 0;
+}
+.prose-ingenium ul,
+.prose-ingenium ol {
+  margin: 0.9rem 0;
+  padding-left: 1.4rem;
+}
+.prose-ingenium ul {
+  list-style: disc;
+}
+.prose-ingenium ol {
+  list-style: decimal;
+}
+.prose-ingenium li {
+  margin: 0.3rem 0;
+}
+.prose-ingenium li::marker {
+  color: var(--accent);
+}
+.prose-ingenium strong {
+  font-weight: 650;
+}
+.prose-ingenium a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-ingenium code {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.92em;
+}
+.prose-ingenium blockquote {
+  border-left: 3px solid var(--ochre);
+  background: var(--ochre-soft);
+  border-radius: 0 10px 10px 0;
+  padding: 0.6rem 1rem;
+  margin: 1.2rem 0;
+}
+.prose-ingenium blockquote p {
+  margin: 0.2rem 0;
+}
+.prose-ingenium table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose-ingenium th,
+.prose-ingenium td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+}
+.prose-ingenium th {
+  color: var(--muted);
+  font-weight: 600;
+}
+.prose-ingenium .katex {
+  font-size: 1.05em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "title": "Ingenium",
+    "description": "Lecture notes, useful links and finds in one place."
+  },
+  "nav": {
+    "home": "Home",
+    "materials": "Materials",
+    "shop": "Shop",
+    "soon": "soon"
+  },
+  "search": {
+    "placeholder": "Find a note, link, topic…",
+    "empty": "Nothing found. Try another word.",
+    "hint": "to search",
+    "close": "Close",
+    "results": "Results"
+  },
+  "home": {
+    "eyebrow": "Personal knowledge base",
+    "title": "Everything worth remembering",
+    "lead": "Lecture notes, useful links and photos of good finds. Collected, sorted and searchable in a second.",
+    "recent": "Latest",
+    "all": "All materials",
+    "subjects": "Topics"
+  },
+  "materials": {
+    "title": "Materials",
+    "lead": "Notes, links and photos. Filter by type or search by keyword.",
+    "back": "All materials",
+    "open": "Open",
+    "visit": "Visit link",
+    "onlyIn": "Only available in:",
+    "empty": "Nothing here yet."
+  },
+  "types": {
+    "all": "All",
+    "note": "Note",
+    "link": "Link",
+    "photo": "Photo"
+  },
+  "langNames": {
+    "ru": "Русский",
+    "en": "English"
+  },
+  "footer": {
+    "made": "Made with love for knowledge.",
+    "shop": "The shop opens later."
+  },
+  "notFound": {
+    "title": "Nothing here",
+    "text": "This page doesn't exist or was removed.",
+    "home": "Go home"
+  },
+  "subjects": {
+    "math": "Mathematics",
+    "physics": "Physics",
+    "chemistry": "Chemistry",
+    "programming": "Programming"
+  },
+  "plurals": {
+    "materials": {
+      "one": "material",
+      "other": "materials"
+    },
+    "note": {
+      "one": "note",
+      "other": "notes"
+    },
+    "link": {
+      "one": "link",
+      "other": "links"
+    },
+    "photo": {
+      "one": "photo",
+      "other": "photos"
+    }
+  }
+}
