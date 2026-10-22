@@ -1,0 +1,17 @@
+[
+  { "slug": "calculus", "nameRu": "Математический анализ", "nameEn": "Calculus" },
+  { "slug": "linear-algebra", "nameRu": "Линейная алгебра", "nameEn": "Linear algebra" },
+  { "slug": "differential-equations", "nameRu": "Дифференциальные уравнения", "nameEn": "Differential equations" },
+  { "slug": "probability", "nameRu": "Теория вероятностей и статистика", "nameEn": "Probability and statistics" },
+  { "slug": "statics", "nameRu": "Статика", "nameEn": "Statics" },
+  { "slug": "dynamics", "nameRu": "Кинематика и динамика", "nameEn": "Kinematics and dynamics" },
+  { "slug": "strength", "nameRu": "Сопротивление материалов", "nameEn": "Strength of materials" },
+  { "slug": "materials", "nameRu": "Материаловедение", "nameEn": "Materials science" },
+  { "slug": "thermodynamics", "nameRu": "Техническая термодинамика", "nameEn": "Engineering thermodynamics" },
+  { "slug": "fluids", "nameRu": "Гидрогазодинамика", "nameEn": "Fluid mechanics" },
+  { "slug": "tmm", "nameRu": "Теория машин и механизмов", "nameEn": "Theory of machines and mechanisms" },
+  { "slug": "machine-design", "nameRu": "Детали машин", "nameEn": "Machine design" },
+  { "slug": "drafting", "nameRu": "Инженерная графика и ГОСТ", "nameEn": "Engineering drawing and standards" },
+  { "slug": "cad-cae", "nameRu": "САПР и инженерный анализ", "nameEn": "CAD and CAE" },
+  { "slug": "engineering-python", "nameRu": "Инженерный Python", "nameEn": "Engineering Python" }
+]
