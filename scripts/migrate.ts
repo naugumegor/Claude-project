@@ -6,6 +6,7 @@ import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
 import { mkdirSync } from "node:fs";
 import * as schema from "../src/db/schema";
 import { seedMaterials, seedSubjects } from "../src/db/seed-data";
+import { seedLibrary } from "./seed-library";
 
 async function main() {
   const url = process.env.DATABASE_URL;
@@ -26,7 +27,7 @@ async function main() {
   console.log(`Migrations applied (${url ? "Neon" : "local PGlite"}).`);
 
   const existing = await db.select({ id: schema.subjects.id }).from(schema.subjects).limit(1);
-  if (existing.length > 0) return;
+  if (existing.length > 0) return seedLibrary(db);
 
   await db.transaction(async (tx) => {
     const subjectRows = await tx.insert(schema.subjects).values(seedSubjects).returning();
@@ -76,6 +77,7 @@ async function main() {
     }
   });
   console.log(`Seeded ${seedMaterials.length} demo materials.`);
+  await seedLibrary(db);
 }
 
 main().then(
