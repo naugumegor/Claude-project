@@ -13,5 +13,12 @@
   { "slug": "machine-design", "nameRu": "Детали машин", "nameEn": "Machine design" },
   { "slug": "drafting", "nameRu": "Инженерная графика и ГОСТ", "nameEn": "Engineering drawing and standards" },
   { "slug": "cad-cae", "nameRu": "САПР и инженерный анализ", "nameEn": "CAD and CAE" },
-  { "slug": "engineering-python", "nameRu": "Инженерный Python", "nameEn": "Engineering Python" }
+  { "slug": "engineering-python", "nameRu": "Инженерный Python", "nameEn": "Engineering Python" },
+  { "slug": "finance", "nameRu": "Финансы и инвестиции", "nameEn": "Finance and investment" },
+  { "slug": "economics", "nameRu": "Экономика", "nameEn": "Economics" },
+  { "slug": "strategy", "nameRu": "Стратегия и маркетинг", "nameEn": "Strategy and marketing" },
+  { "slug": "operations", "nameRu": "Процессы и операции", "nameEn": "Processes and operations" },
+  { "slug": "project-management", "nameRu": "Управление проектами", "nameEn": "Project management" },
+  { "slug": "analytics-tools", "nameRu": "Excel и SQL для аналитика", "nameEn": "Excel and SQL for analysts" },
+  { "slug": "cases", "nameRu": "Бизнес-кейсы", "nameEn": "Business cases" }
 ]
