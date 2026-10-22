@@ -48,7 +48,11 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `scripts/migrate.ts` | применяет миграции и заливает демо-данные в пустую базу |
 | `src/lib/materials.ts` | кэшированные чтения для публичных страниц |
 | `src/app/[lang]/admin/` | админка и Server Actions (сохранение, удаление, загрузка фото, превью ссылок) |
-| `src/app/api/auth/` | вход через GitHub OAuth |
+| `src/app/api/auth/` | вход через GitHub OAuth (и клиенты, и владелец; админ = GitHub-логин владельца) |
+| `src/app/[lang]/login`, `src/app/[lang]/account` | вход/регистрация по почте и паролю, личный кабинет, избранное |
+| `src/lib/session.ts`, `src/lib/password.ts` | подписанная cookie-сессия, хэши паролей (scrypt), защита от перебора |
+| `src/app/api/upload` | выдаёт браузеру админа токен для прямой загрузки PDF/HTML в Blob (до 100 МБ) |
+| `src/app/api/files/[id]` | отдаёт документы: PDF inline, HTML в CSP-песочнице без доступа к сайту |
 | `src/db/search.ts`, `src/app/api/search` | полнотекстовый поиск Postgres |
 | `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
 | `src/components/` | шапка, поиск, карточки, сетка с фильтрами |
@@ -58,4 +62,5 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 1. ✅ Каркас, дизайн, RU/EN, анимации, деплой на Vercel
 2. ✅ База (Neon Postgres + Drizzle), фото в Vercel Blob, вход через GitHub, админка
 3. ✅ Полнотекстовый поиск (RU/EN морфология), теги, похожие материалы, подсветка кода, SEO (sitemap, robots, canonical, OG-картинки, JSON-LD)
-4. Магазин: каталог, корзина, оплата
+4. ✅ Документы (PDF, HTML) с просмотром на странице, аккаунты клиентов (почта+пароль, GitHub), избранное
+5. Магазин: каталог, корзина, оплата, сброс пароля по почте

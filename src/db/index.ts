@@ -14,7 +14,8 @@ function createDb() {
 
 type Db = ReturnType<typeof createDb>;
 
+// One client per process, shared by every bundle (pages, actions, route handlers).
+// PGlite especially must not be opened twice: each copy would see its own stale data.
 const globalForDb = globalThis as unknown as { db?: Db };
 
-export const db: Db = globalForDb.db ?? createDb();
-if (process.env.NODE_ENV !== "production") globalForDb.db = db;
+export const db: Db = (globalForDb.db ??= createDb());

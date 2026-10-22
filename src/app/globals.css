@@ -15,6 +15,8 @@
   --ochre-soft: #f6ebdc;
   --rose: #b5546b;
   --rose-soft: #f6e4e8;
+  --plum: #7a62a8;
+  --plum-soft: #ede8f5;
 }
 
 @theme inline {
@@ -31,6 +33,8 @@
   --color-ochre-soft: var(--ochre-soft);
   --color-rose: var(--rose);
   --color-rose-soft: var(--rose-soft);
+  --color-plum: var(--plum);
+  --color-plum-soft: var(--plum-soft);
   --font-sans: var(--font-inter);
   --font-display: var(--font-manrope);
 }

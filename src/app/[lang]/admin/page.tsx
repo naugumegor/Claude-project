@@ -7,7 +7,7 @@ import type { Locale } from "@/lib/i18n";
 import { loadMaterials } from "@/db/queries";
 import { localize } from "@/lib/content";
 import { formatDate } from "@/lib/format";
-import { getAdmin } from "@/lib/session";
+import { getAdmin, getUser } from "@/lib/session";
 import { typeMeta } from "@/components/type-meta";
 import { AdminSkeleton, LoginCard } from "@/components/admin/login-card";
 
@@ -29,8 +29,8 @@ export default async function AdminPage() {
 }
 
 async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale }) {
-  const admin = await getAdmin();
-  if (!admin) return <LoginCard dict={dict.admin} next={`/${locale}/admin`} />;
+  const [admin, user] = await Promise.all([getAdmin(), getUser()]);
+  if (!admin) return <LoginCard dict={dict.admin} next={`/${locale}/admin`} denied={Boolean(user)} />;
 
   const rows = (await loadMaterials({})).map((m) => localize(m, locale));
 

@@ -1,13 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { cookies } from "next/headers";
-import { ADMIN_LOGIN, createSession, devBypass, github } from "@/lib/session";
+import { ADMIN_LOGIN, createSession, devBypass, github, safeNext } from "@/lib/session";
+import { upsertGithubUser } from "@/db/users";
 
 // Starts the GitHub OAuth flow. `?next=` is where to return afterwards.
 export async function GET(request: NextRequest) {
-  const next = safeNext(request.nextUrl.searchParams.get("next"));
+  const next = safeNext(request.nextUrl.searchParams.get("next"), "/ru/account");
 
   if (devBypass) {
-    await createSession(ADMIN_LOGIN);
+    const user = await upsertGithubUser({ id: "dev", login: ADMIN_LOGIN, name: ADMIN_LOGIN });
+    await createSession({ id: user.id, name: user.name, login: ADMIN_LOGIN });
     return NextResponse.redirect(new URL(next, request.url));
   }
 
@@ -27,11 +29,5 @@ export async function GET(request: NextRequest) {
   authorize.searchParams.set("client_id", clientId);
   authorize.searchParams.set("redirect_uri", new URL("/api/auth/callback", request.url).toString());
   authorize.searchParams.set("state", state);
-  authorize.searchParams.set("allow_signup", "false");
   return NextResponse.redirect(authorize);
-}
-
-/** Only allow same-site relative paths, so the login can't be used as an open redirect. */
-function safeNext(value: string | null) {
-  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/ru/admin";
 }

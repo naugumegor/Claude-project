@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { getDictionary, getLocale, type Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { loadMaterials, loadSubjects } from "@/db/queries";
-import { getAdmin } from "@/lib/session";
+import { getAdmin, getUser } from "@/lib/session";
 import { AdminSkeleton, LoginCard } from "@/components/admin/login-card";
 import { MaterialForm } from "@/components/admin/material-form";
 
@@ -43,8 +43,15 @@ async function Editor({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const id = Number((await searchParams).id) || undefined;
-  if (!(await getAdmin())) {
-    return <LoginCard dict={dict.admin} next={`/${locale}/admin/editor${id ? `?id=${id}` : ""}`} />;
+  const [admin, user] = await Promise.all([getAdmin(), getUser()]);
+  if (!admin) {
+    return (
+      <LoginCard
+        dict={dict.admin}
+        next={`/${locale}/admin/editor${id ? `?id=${id}` : ""}`}
+        denied={Boolean(user)}
+      />
+    );
   }
 
   const [subjectRows, found] = await Promise.all([
@@ -63,6 +70,7 @@ async function Editor({
       dict={dict.admin}
       typeNames={dict.types}
       langNames={dict.langNames}
+      directUpload={Boolean(process.env.BLOB_READ_WRITE_TOKEN)}
     />
   );
 }

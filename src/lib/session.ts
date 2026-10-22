@@ -2,11 +2,19 @@ import "server-only";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 
-// The admin is a single GitHub account. Its login is kept in a signed cookie.
+// Everyone who signs in (customers and the site owner) gets the same signed cookie.
+// The owner is recognised by their GitHub login, which only GitHub can vouch for.
 
 export const ADMIN_LOGIN = (process.env.ADMIN_GITHUB_LOGIN ?? "naugumegor").toLowerCase();
 const COOKIE = "ingenium_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+
+export type SessionUser = {
+  id: number;
+  name: string;
+  /** GitHub login, when the user signed in with GitHub. */
+  login?: string;
+};
 
 function secret() {
   const value = process.env.AUTH_SECRET;
@@ -14,8 +22,8 @@ function secret() {
   return new TextEncoder().encode(value ?? "local-dev-secret-not-for-production");
 }
 
-export async function createSession(login: string) {
-  const token = await new SignJWT({ login })
+export async function createSession(user: SessionUser) {
+  const token = await new SignJWT({ uid: user.id, name: user.name, login: user.login })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE}s`)
@@ -33,20 +41,42 @@ export async function destroySession() {
   (await cookies()).delete(COOKIE);
 }
 
-/** Returns the admin's login, or null when nobody (or somebody else) is signed in. */
-export async function getAdmin(): Promise<string | null> {
+async function readSession() {
   const token = (await cookies()).get(COOKIE)?.value;
   if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secret());
-    const login = String(payload.login ?? "").toLowerCase();
-    return login === ADMIN_LOGIN ? login : null;
+    return (await jwtVerify(token, secret())).payload;
   } catch {
     return null;
   }
 }
 
-/** Use at the top of every Server Action that changes data. */
+/** The signed-in user, or null. */
+export async function getUser(): Promise<SessionUser | null> {
+  const payload = await readSession();
+  if (typeof payload?.uid !== "number") return null;
+  return {
+    id: payload.uid,
+    name: String(payload.name ?? ""),
+    login: typeof payload.login === "string" ? payload.login : undefined,
+  };
+}
+
+/** Use at the top of every Server Action that needs an account. */
+export async function requireUser(): Promise<SessionUser> {
+  const user = await getUser();
+  if (!user) throw new Error("Not signed in");
+  return user;
+}
+
+/** Returns the admin's login, or null when nobody (or somebody else) is signed in. */
+export async function getAdmin(): Promise<string | null> {
+  const payload = await readSession();
+  const login = String(payload?.login ?? "").toLowerCase();
+  return login === ADMIN_LOGIN ? login : null;
+}
+
+/** Use at the top of every Server Action that changes materials. */
 export async function requireAdmin(): Promise<string> {
   const admin = await getAdmin();
   if (!admin) throw new Error("Not authorized");
@@ -59,5 +89,12 @@ export const github = {
   clientSecret: process.env.GITHUB_CLIENT_SECRET ?? process.env.Github_Client_Secret,
 };
 
-/** Local development without a GitHub OAuth app: sign in directly. Never on Vercel. */
+/** Local development without a GitHub OAuth app: the GitHub button signs in as the owner. Never on Vercel. */
 export const devBypass = !process.env.VERCEL && !github.clientId;
+
+/** Only same-site relative paths, so `?next=` can't be used as an open redirect. */
+export function safeNext(value: string | null | undefined, fallback: string) {
+  return value && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\")
+    ? value
+    : fallback;
+}

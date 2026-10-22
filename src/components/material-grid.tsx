@@ -50,7 +50,7 @@ export function MaterialGrid({
       (!tag || m.tags.includes(tag)),
   );
   const subjects = [...new Set(materials.map((m) => m.subject))];
-  const filters: Filter[] = ["all", "note", "link", "photo"];
+  const filters: Filter[] = ["all", "note", "doc", "link", "photo"];
 
   return (
     <div>

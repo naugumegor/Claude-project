@@ -7,7 +7,9 @@
     "home": "Home",
     "materials": "Materials",
     "shop": "Shop",
-    "soon": "soon"
+    "soon": "soon",
+    "login": "Sign in",
+    "account": "Account"
   },
   "search": {
     "placeholder": "Find a note, link, topic…",
@@ -26,19 +28,26 @@
   },
   "materials": {
     "title": "Materials",
-    "lead": "Notes, links and photos. Filter by type or search by keyword.",
+    "lead": "Notes, documents, links and photos. Filter by type or search by keyword.",
     "back": "All materials",
     "open": "Open",
     "visit": "Visit link",
     "onlyIn": "Only available in:",
     "empty": "Nothing here yet.",
-    "related": "Related materials"
+    "related": "Related materials",
+    "files": "Documents",
+    "openFull": "Open full screen",
+    "download": "Download",
+    "favorite": "Save",
+    "favorited": "Saved",
+    "loginToSave": "Sign in to save"
   },
   "types": {
     "all": "All",
     "note": "Note",
     "link": "Link",
-    "photo": "Photo"
+    "photo": "Photo",
+    "doc": "Document"
   },
   "langNames": {
     "ru": "Русский",
@@ -47,7 +56,7 @@
   "footer": {
     "made": "Made with love for knowledge.",
     "shop": "The shop opens later.",
-    "admin": "Sign in"
+    "admin": "Admin"
   },
   "notFound": {
     "title": "Nothing here",
@@ -70,14 +79,18 @@
     "photo": {
       "one": "photo",
       "other": "photos"
+    },
+    "doc": {
+      "one": "document",
+      "other": "documents"
     }
   },
   "admin": {
     "title": "Admin",
     "login": "Sign in with GitHub",
     "loginLead": "Only the site owner can add and edit materials.",
-    "denied": "Sign-in failed",
-    "deniedText": "Either GitHub didn't confirm the sign-in, or this isn't the site owner's account.",
+    "denied": "No access",
+    "deniedText": "You're signed in, but not as the site owner. Only the owner can edit materials.",
     "logout": "Sign out",
     "new": "New material",
     "edit": "Editing",
@@ -125,7 +138,55 @@
       "delete": "Delete",
       "confirmDelete": "Delete this material? This can't be undone.",
       "needTitle": "A title in the original language is required",
-      "needSubject": "Pick a topic"
+      "needSubject": "Pick a topic",
+      "files": "Documents",
+      "filesHint": "PDF or HTML, up to 100 MB",
+      "dropFiles": "Drop a PDF or HTML file here or click to choose",
+      "badFile": "Only PDF and HTML files",
+      "fileTooBig": "File is larger than 100 MB"
+    },
+    "switch": "Sign in with another account"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "lead": "An account lets you save materials to favorites. Later it will hold your shop orders too.",
+    "name": "Your name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "submitIn": "Sign in",
+    "submitUp": "Create account",
+    "github": "With GitHub",
+    "or": "or",
+    "errors": {
+      "badCredentials": "Wrong email or password",
+      "emailTaken": "This email is already registered",
+      "badEmail": "Check the email",
+      "shortPassword": "Password is too short",
+      "needName": "Enter your name",
+      "tooMany": "Too many attempts. Wait 15 minutes",
+      "github": "GitHub didn't confirm the sign-in",
+      "wrongPassword": "Current password is wrong"
     }
+  },
+  "account": {
+    "title": "Your account",
+    "hello": "Hi",
+    "since": "Member since",
+    "favorites": "Favorites",
+    "noFavorites": "Nothing here yet. Tap the heart on any material and it will show up here.",
+    "browse": "Browse materials",
+    "profile": "Profile",
+    "save": "Save",
+    "saved": "Saved",
+    "passwordTitle": "Password",
+    "current": "Current password",
+    "newPassword": "New password",
+    "setPassword": "Set password",
+    "changed": "Password updated",
+    "viaGithub": "Signs in with GitHub",
+    "logout": "Sign out",
+    "admin": "Admin"
   }
 }

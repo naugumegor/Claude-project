@@ -3,15 +3,17 @@
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, ImagePlus, Loader2, Trash2, Wand2, X } from "lucide-react";
+import { upload } from "@vercel/blob/client";
+import { Check, FileCode, FileText, FileUp, ImagePlus, Loader2, Trash2, Wand2, X } from "lucide-react";
 import type { Dictionary } from "@/dictionaries";
 import { locales, type Locale } from "@/lib/i18n";
-import type { Material, MaterialImage, MaterialText, MaterialType } from "@/lib/content";
+import type { Material, MaterialFile, MaterialImage, MaterialText, MaterialType } from "@/lib/content";
 import { slugify } from "@/lib/slug";
 import {
   deleteMaterial,
   fetchLinkPreview,
   saveMaterial,
+  uploadDocumentLocal,
   uploadImage,
 } from "@/app/[lang]/admin/actions";
 import { Markdown } from "@/components/markdown";
@@ -19,6 +21,9 @@ import { typeMeta } from "@/components/type-meta";
 
 type Dict = Dictionary["admin"];
 type UploadingImage = MaterialImage & { key: string; uploading?: boolean };
+type UploadingFile = MaterialFile & { key: string; progress?: number };
+
+const MAX_DOCUMENT_BYTES = 100 * 1024 * 1024;
 
 const spring = { type: "spring", stiffness: 420, damping: 34 } as const;
 const emptyText: MaterialText = { title: "", excerpt: "", body: "" };
@@ -30,6 +35,7 @@ export function MaterialForm({
   dict,
   typeNames,
   langNames,
+  directUpload,
 }: {
   locale: Locale;
   material: Material | null;
@@ -37,6 +43,8 @@ export function MaterialForm({
   dict: Dict;
   typeNames: Record<MaterialType, string>;
   langNames: Record<Locale, string>;
+  /** Upload documents straight from the browser to Vercel Blob (production). */
+  directUpload: boolean;
 }) {
   const router = useRouter();
   const f = dict.form;
@@ -62,12 +70,17 @@ export function MaterialForm({
   const [images, setImages] = useState<UploadingImage[]>(
     (material?.images ?? []).map((img) => ({ ...img, key: String(img.id ?? img.src) })),
   );
+  const [files, setFiles] = useState<UploadingFile[]>(
+    (material?.files ?? []).map((f) => ({ ...f, key: String(f.id ?? f.url) })),
+  );
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [saving, startSaving] = useTransition();
   const fileInput = useRef<HTMLInputElement>(null);
+  const docInput = useRef<HTMLInputElement>(null);
+  const [draggingDoc, setDraggingDoc] = useState(false);
 
   const message = (code: string) => (code in f ? f[code as keyof typeof f] : code);
 
@@ -125,6 +138,48 @@ export function MaterialForm({
     }
   };
 
+  const onDocuments = async (list: FileList | File[]) => {
+    for (const file of Array.from(list)) {
+      const kind = documentKind(file);
+      if (!kind) {
+        setError(f.badFile);
+        continue;
+      }
+      if (file.size > MAX_DOCUMENT_BYTES) {
+        setError(f.fileTooBig);
+        continue;
+      }
+      const key = crypto.randomUUID();
+      const name = file.name.replace(/\.(pdf|html?)$/i, "");
+      setFiles((prev) => [...prev, { key, url: "", name, kind, size: file.size, progress: 0 }]);
+      const setProgress = (progress: number) =>
+        setFiles((prev) => prev.map((x) => (x.key === key ? { ...x, progress } : x)));
+      try {
+        let url: string;
+        if (directUpload) {
+          const blob = await upload(`documents/${slugify(name) || "document"}.${kind}`, file, {
+            access: "public",
+            handleUploadUrl: "/api/upload",
+            contentType: kind === "pdf" ? "application/pdf" : "text/html",
+            multipart: file.size > 8 * 1024 * 1024,
+            onUploadProgress: ({ percentage }) => setProgress(percentage),
+          });
+          url = blob.url;
+        } else {
+          const form = new FormData();
+          form.append("file", file);
+          const res = await uploadDocumentLocal(form);
+          if (!res.ok) throw new Error(message(res.error));
+          url = res.data.url;
+        }
+        setFiles((prev) => prev.map((x) => (x.key === key ? { ...x, url, progress: undefined } : x)));
+      } catch (e) {
+        setFiles((prev) => prev.filter((x) => x.key !== key));
+        setError(e instanceof Error ? e.message : String(e));
+      }
+    }
+  };
+
   const onSave = () => {
     setError(null);
     startSaving(async () => {
@@ -142,6 +197,9 @@ export function MaterialForm({
         images: images
           .filter((i) => !i.uploading)
           .map(({ id, src, alt, width, height }) => ({ id, src, alt, width, height })),
+        files: files
+          .filter((x) => x.progress === undefined)
+          .map(({ id, url, name, kind, size }) => ({ id, url, name, kind, size })),
       });
       if (!res.ok) return setError(message(res.error));
       setSlug(res.data.slug);
@@ -161,7 +219,7 @@ export function MaterialForm({
     });
   };
 
-  const uploading = images.some((i) => i.uploading);
+  const uploading = images.some((i) => i.uploading) || files.some((x) => x.progress !== undefined);
 
   return (
     <div className="mt-6 pb-24">
@@ -173,7 +231,7 @@ export function MaterialForm({
         {/* Type */}
         <Field label={f.type}>
           <div className="flex w-fit gap-1 rounded-2xl border border-line bg-surface p-1">
-            {(["note", "link", "photo"] as const).map((t) => {
+            {(["note", "doc", "link", "photo"] as const).map((t) => {
               const Icon = typeMeta[t].icon;
               return (
                 <button
@@ -446,6 +504,100 @@ export function MaterialForm({
           )}
         </Field>
 
+        {/* Documents */}
+        <Field label={f.files} hint={f.filesHint}>
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDraggingDoc(true);
+            }}
+            onDragLeave={() => setDraggingDoc(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDraggingDoc(false);
+              onDocuments(e.dataTransfer.files);
+            }}
+            onClick={() => docInput.current?.click()}
+            className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-7 text-center text-sm transition-all ${
+              draggingDoc
+                ? "scale-[1.01] border-plum bg-plum-soft text-plum"
+                : "border-line bg-surface text-muted hover:border-plum hover:text-plum"
+            }`}
+          >
+            <FileUp size={28} className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110" />
+            {f.dropFiles}
+            <input
+              ref={docInput}
+              type="file"
+              accept=".pdf,.html,.htm,application/pdf,text/html"
+              multiple
+              hidden
+              onChange={(e) => {
+                if (e.target.files) onDocuments(e.target.files);
+                e.target.value = "";
+              }}
+            />
+          </div>
+          {files.length > 0 && (
+            <motion.ul layout className="mt-3 grid gap-2">
+              <AnimatePresence>
+                {files.map((doc) => {
+                  const Icon = doc.kind === "pdf" ? FileText : FileCode;
+                  return (
+                    <motion.li
+                      key={doc.key}
+                      layout
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, x: -12 }}
+                      className="relative flex items-center gap-3 overflow-hidden rounded-xl border border-line bg-surface px-3 py-2"
+                    >
+                      {doc.progress !== undefined && (
+                        <motion.span
+                          className="absolute inset-y-0 left-0 bg-plum-soft"
+                          animate={{ width: `${doc.progress}%` }}
+                          transition={{ ease: "easeOut" }}
+                        />
+                      )}
+                      <span
+                        className={`relative flex size-9 shrink-0 items-center justify-center rounded-lg ${
+                          doc.kind === "pdf" ? "bg-rose-soft text-rose" : "bg-plum-soft text-plum"
+                        }`}
+                      >
+                        <Icon size={18} />
+                      </span>
+                      <input
+                        value={doc.name}
+                        onChange={(e) =>
+                          setFiles((prev) => prev.map((x) => (x.key === doc.key ? { ...x, name: e.target.value } : x)))
+                        }
+                        className="relative min-w-0 flex-1 bg-transparent text-sm font-medium outline-none"
+                      />
+                      <span className="relative shrink-0 text-xs uppercase text-muted">
+                        {doc.progress !== undefined ? (
+                          <span className="inline-flex items-center gap-1">
+                            <Loader2 size={12} className="animate-spin" /> {Math.round(doc.progress)}%
+                          </span>
+                        ) : (
+                          `${doc.kind} · ${formatBytes(doc.size)}`
+                        )}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={f.remove}
+                        onClick={() => setFiles((prev) => prev.filter((x) => x.key !== doc.key))}
+                        className="relative rounded-lg p-1.5 text-muted transition-colors hover:text-rose"
+                      >
+                        <X size={14} />
+                      </button>
+                    </motion.li>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.ul>
+          )}
+        </Field>
+
         {/* Tags */}
         <Field label={f.tags} hint={f.tagsHint}>
           <div className="flex flex-wrap items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 focus-within:border-accent focus-within:shadow-[0_0_0_4px_var(--accent-soft)]">
@@ -613,6 +765,17 @@ function IconButton({ label, onClick, children }: { label: string; onClick: () =
       {children}
     </button>
   );
+}
+
+function documentKind(file: File) {
+  if (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) return "pdf" as const;
+  if (file.type === "text/html" || /\.html?$/i.test(file.name)) return "html" as const;
+  return null;
+}
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
 /** Shrinks a photo to at most 2000px on the long side and re-encodes it as WebP. */

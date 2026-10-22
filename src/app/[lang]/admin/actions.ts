@@ -7,6 +7,7 @@ import { del, put } from "@vercel/blob";
 import { and, eq, inArray, ne, notInArray } from "drizzle-orm";
 import { db } from "@/db";
 import {
+  materialFiles,
   materialMedia,
   materialTags,
   materialTexts,
@@ -22,7 +23,7 @@ import type { MaterialInput } from "./types";
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
-const TYPES = ["note", "link", "photo"] as const;
+const TYPES = ["note", "doc", "link", "photo"] as const;
 
 export async function saveMaterial(input: MaterialInput): Promise<Result<{ id: number; slug: string }>> {
   await requireAdmin();
@@ -48,6 +49,9 @@ export async function saveMaterial(input: MaterialInput): Promise<Result<{ id: n
       body: (t.body ?? "").trim(),
     }));
   const tagNames = [...new Set(input.tags.map((t) => t.trim().toLowerCase()).filter(Boolean))];
+  const files = input.files.filter(
+    (f) => (f.kind === "pdf" || f.kind === "html") && isStoredFile(f.url) && f.name.trim(),
+  );
 
   const saved = await db.transaction(async (tx) => {
     let subjectId = input.subjectId;
@@ -121,7 +125,32 @@ export async function saveMaterial(input: MaterialInput): Promise<Result<{ id: n
     if (removed.length > 0) {
       await tx.delete(media).where(inArray(media.id, removed.map((r) => r.id)));
     }
-    return { id: m.id, slug: m.slug, removedUrls: removed.map((r) => r.url) };
+
+    // Documents: replaced as a list; files that dropped out are deleted from storage.
+    const previousFiles = await tx
+      .select({ url: materialFiles.url })
+      .from(materialFiles)
+      .where(eq(materialFiles.materialId, m.id));
+    await tx.delete(materialFiles).where(eq(materialFiles.materialId, m.id));
+    if (files.length > 0) {
+      await tx.insert(materialFiles).values(
+        files.map((f, position) => ({
+          materialId: m.id,
+          url: f.url,
+          name: f.name.trim().slice(0, 200),
+          kind: f.kind,
+          size: Math.max(0, Math.round(f.size) || 0),
+          position,
+        })),
+      );
+    }
+    const removedFiles = previousFiles.filter((p) => !files.some((f) => f.url === p.url));
+
+    return {
+      id: m.id,
+      slug: m.slug,
+      removedUrls: [...removed.map((r) => r.url), ...removedFiles.map((r) => r.url)],
+    };
   });
 
   await deleteBlobs(saved.removedUrls);
@@ -136,6 +165,10 @@ export async function deleteMaterial(id: number): Promise<Result<null>> {
     .from(materialMedia)
     .innerJoin(media, eq(materialMedia.mediaId, media.id))
     .where(eq(materialMedia.materialId, id));
+  const docs = await db
+    .select({ url: materialFiles.url })
+    .from(materialFiles)
+    .where(eq(materialFiles.materialId, id));
 
   await db.transaction(async (tx) => {
     await tx.delete(materials).where(eq(materials.id, id));
@@ -145,7 +178,7 @@ export async function deleteMaterial(id: number): Promise<Result<null>> {
     await tx.delete(tags).where(notInArray(tags.id, used));
   });
 
-  await deleteBlobs(images.map((i) => i.url));
+  await deleteBlobs([...images.map((i) => i.url), ...docs.map((d) => d.url)]);
   updateTag("materials");
   return { ok: true, data: null };
 }
@@ -172,6 +205,38 @@ export async function uploadImage(form: FormData): Promise<Result<{ url: string 
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, Buffer.from(await file.arrayBuffer()));
   return { ok: true, data: { url: `/uploads/${name}` } };
+}
+
+/**
+ * Local development only: stores a document in public/uploads. On Vercel the browser
+ * uploads documents straight to Blob through /api/upload instead.
+ */
+export async function uploadDocumentLocal(form: FormData): Promise<Result<{ url: string }>> {
+  await requireAdmin();
+  if (process.env.VERCEL) return { ok: false, error: "Use direct upload on Vercel" };
+  const file = form.get("file");
+  const kind = file instanceof File ? documentKind(file) : null;
+  if (!(file instanceof File) || !kind) return { ok: false, error: "badFile" };
+
+  const name = `documents/${crypto.randomUUID()}.${kind}`;
+  const target = path.join(process.cwd(), "public", "uploads", name);
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(target, Buffer.from(await file.arrayBuffer()));
+  return { ok: true, data: { url: `/uploads/${name}` } };
+}
+
+function documentKind(file: File) {
+  if (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) return "pdf" as const;
+  if (file.type === "text/html" || /\.html?$/i.test(file.name)) return "html" as const;
+  return null;
+}
+
+/** Only files we stored ourselves: our Blob store, or local uploads in development. */
+function isStoredFile(url: string) {
+  return (
+    /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/documents\//i.test(url) ||
+    (!process.env.VERCEL && url.startsWith("/uploads/documents/"))
+  );
 }
 
 /** Reads a page's title, description and preview image from its <meta> tags. */

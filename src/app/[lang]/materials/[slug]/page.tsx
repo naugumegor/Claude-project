@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,6 +9,8 @@ import { getMaterial, getMaterials, getSlugs } from "@/lib/materials";
 import { cardLabels, formatDate, isOptimizable } from "@/lib/format";
 import { Markdown } from "@/components/markdown";
 import { MaterialCard } from "@/components/material-card";
+import { DocumentViewer } from "@/components/document-viewer";
+import { Favorite, FavoriteSkeleton } from "@/components/account/favorite";
 import { Reveal } from "@/components/reveal";
 import { typeMeta } from "@/components/type-meta";
 import { alternates, siteUrl } from "@/lib/site";
@@ -66,7 +69,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": material.type === "note" ? "LearningResource" : "CreativeWork",
+            "@type": material.type === "note" || material.type === "doc" ? "LearningResource" : "CreativeWork",
             headline: material.title,
             name: material.title,
             description: material.excerpt,
@@ -106,7 +109,19 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
           {material.title}
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-muted">{material.excerpt}</p>
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <Suspense fallback={<FavoriteSkeleton />}>
+            <Favorite
+              materialId={material.id}
+              path={`/${locale}/materials/${material.slug}`}
+              locale={locale}
+              labels={{
+                favorite: dict.materials.favorite,
+                favorited: dict.materials.favorited,
+                loginToSave: dict.materials.loginToSave,
+              }}
+            />
+          </Suspense>
           {material.tags.map((tag) => (
             <Link
               key={tag}
@@ -144,6 +159,18 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
               <ArrowUpRight size={20} />
             </span>
           </a>
+        </Reveal>
+      )}
+
+      {material.files.length > 0 && (
+        <Reveal delay={0.12} className="mt-8">
+          <DocumentViewer
+            files={material.files.filter((f): f is typeof f & { id: number } => f.id !== undefined)}
+            labels={{
+              openFull: dict.materials.openFull,
+              download: dict.materials.download,
+            }}
+          />
         </Reveal>
       )}
 

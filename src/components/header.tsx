@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { getDictionary, getLocale } from "@/dictionaries";
+import { AccountButton, AccountButtonSkeleton } from "./account/account-button";
 import { HeaderSearchButton } from "./search";
 import { LangSwitch, NavLinks } from "./header-nav";
 import { Logo } from "./logo";
@@ -31,6 +33,10 @@ export async function Header() {
         <div className="ml-auto flex items-center gap-2">
           <HeaderSearchButton label={dict.search.placeholder} />
           <LangSwitch locale={locale} />
+          {/* Who is signed in is only known per request; the rest of the header stays static. */}
+          <Suspense fallback={<AccountButtonSkeleton />}>
+            <AccountButton locale={locale} labels={{ login: dict.nav.login, account: dict.nav.account }} />
+          </Suspense>
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4 pb-2 sm:hidden">

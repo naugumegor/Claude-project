@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 
-export type MaterialType = "note" | "link" | "photo";
+export type MaterialType = "note" | "link" | "photo" | "doc";
 export type MaterialStatus = "draft" | "published";
 
 export type MaterialText = {
@@ -17,6 +17,14 @@ export type MaterialImage = {
   height: number | null;
 };
 
+export type MaterialFile = {
+  id?: number;
+  url: string;
+  name: string;
+  kind: "pdf" | "html";
+  size: number;
+};
+
 export type Material = {
   id: number;
   slug: string;
@@ -30,6 +38,7 @@ export type Material = {
   tags: string[];
   url?: string;
   images: MaterialImage[];
+  files: MaterialFile[];
   createdAt: string; // ISO date
 };
 

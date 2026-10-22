@@ -1,5 +1,11 @@
 import type { Locale } from "@/lib/i18n";
-import type { MaterialImage, MaterialStatus, MaterialText, MaterialType } from "@/lib/content";
+import type {
+  MaterialFile,
+  MaterialImage,
+  MaterialStatus,
+  MaterialText,
+  MaterialType,
+} from "@/lib/content";
 
 /** What the editor form sends to saveMaterial. */
 export type MaterialInput = {
@@ -14,4 +20,5 @@ export type MaterialInput = {
   tags: string[];
   texts: Partial<Record<Locale, MaterialText>>;
   images: MaterialImage[];
+  files: MaterialFile[];
 };

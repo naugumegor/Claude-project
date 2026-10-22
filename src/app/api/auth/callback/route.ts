@@ -1,9 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { cookies } from "next/headers";
-import { ADMIN_LOGIN, createSession, github } from "@/lib/session";
+import { createSession, github, safeNext } from "@/lib/session";
+import { upsertGithubUser } from "@/db/users";
 
-// GitHub redirects here with ?code&state. We swap the code for the user's login
-// and only let the site owner in.
+// GitHub redirects here with ?code&state. We swap the code for the user's profile
+// and sign them in. Whether they may edit materials is decided by getAdmin().
 export async function GET(request: NextRequest) {
   const jar = await cookies();
   const saved = jar.get("oauth_state")?.value;
@@ -12,7 +13,7 @@ export async function GET(request: NextRequest) {
   const { state, next } = saved ? (JSON.parse(saved) as { state: string; next: string }) : {};
   const code = request.nextUrl.searchParams.get("code");
   if (!state || !code || request.nextUrl.searchParams.get("state") !== state) {
-    return deny(request, "state");
+    return fail(request, next);
   }
 
   const tokenRes = await fetch("https://github.com/login/oauth/access_token", {
@@ -26,18 +27,20 @@ export async function GET(request: NextRequest) {
     }),
   });
   const { access_token } = (await tokenRes.json()) as { access_token?: string };
-  if (!access_token) return deny(request, "token");
+  if (!access_token) return fail(request, next);
 
   const userRes = await fetch("https://api.github.com/user", {
     headers: { Authorization: `Bearer ${access_token}`, Accept: "application/vnd.github+json" },
   });
-  const user = (await userRes.json()) as { login?: string };
-  if (user.login?.toLowerCase() !== ADMIN_LOGIN) return deny(request, "forbidden");
+  const gh = (await userRes.json()) as { id?: number; login?: string; name?: string | null };
+  if (!gh.id || !gh.login) return fail(request, next);
 
-  await createSession(user.login);
-  return NextResponse.redirect(new URL(next ?? "/ru/admin", request.url));
+  const user = await upsertGithubUser({ id: String(gh.id), login: gh.login, name: gh.name });
+  await createSession({ id: user.id, name: user.name, login: gh.login });
+  return NextResponse.redirect(new URL(safeNext(next, "/ru/account"), request.url));
 }
 
-function deny(request: NextRequest, reason: string) {
-  return NextResponse.redirect(new URL(`/ru/admin/denied?reason=${reason}`, request.url));
+function fail(request: NextRequest, next?: string) {
+  const locale = next?.startsWith("/en") ? "en" : "ru";
+  return NextResponse.redirect(new URL(`/${locale}/login?error=github`, request.url));
 }

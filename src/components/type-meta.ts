@@ -1,4 +1,4 @@
-import { FileText, Image as ImageIcon, Link2, type LucideIcon } from "lucide-react";
+import { FileText, FileType, Image as ImageIcon, Link2, type LucideIcon } from "lucide-react";
 import type { MaterialType } from "@/lib/content";
 
 // Icon and colour per material type, shared by cards, filters and search.
@@ -23,5 +23,11 @@ export const typeMeta: Record<
     tone: "text-rose",
     soft: "bg-rose-soft",
     glow: "group-hover:shadow-[0_8px_24px_-8px_var(--rose)]",
+  },
+  doc: {
+    icon: FileType,
+    tone: "text-plum",
+    soft: "bg-plum-soft",
+    glow: "group-hover:shadow-[0_8px_24px_-8px_var(--plum)]",
   },
 };

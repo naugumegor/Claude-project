@@ -22,7 +22,7 @@ export default async function HomePage() {
       return acc;
     }, {}),
   );
-  const byType = (["note", "link", "photo"] as MaterialType[]).map((t) => ({
+  const byType = (["note", "doc", "link", "photo"] as MaterialType[]).map((t) => ({
     type: t,
     count: materials.filter((m) => m.type === t).length,
   }));

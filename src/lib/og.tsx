@@ -14,7 +14,7 @@ const fonts = Promise.all(
   })),
 );
 
-const tone = { note: "#2f7d6d", link: "#c98a3d", photo: "#b5546b" } as const;
+const tone = { note: "#2f7d6d", link: "#c98a3d", photo: "#b5546b", doc: "#7a62a8" } as const;
 
 /** The shared social preview card: paper background, logo, badge, big title. */
 export async function renderOg({

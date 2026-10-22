@@ -3,6 +3,7 @@ import type { Locale } from "@/lib/i18n";
 import type { Material, MaterialStatus } from "@/lib/content";
 import { db } from "./index";
 import {
+  materialFiles,
   materialMedia,
   materialTags,
   materialTexts,
@@ -35,7 +36,7 @@ export async function loadMaterials(filter: {
   if (rows.length === 0) return [];
 
   const ids = rows.map((r) => r.m.id);
-  const [texts, tagRows, mediaRows] = await Promise.all([
+  const [texts, tagRows, mediaRows, fileRows] = await Promise.all([
     db.select().from(materialTexts).where(inArray(materialTexts.materialId, ids)),
     db
       .select({ materialId: materialTags.materialId, name: tags.name })
@@ -49,6 +50,11 @@ export async function loadMaterials(filter: {
       .innerJoin(media, eq(materialMedia.mediaId, media.id))
       .where(inArray(materialMedia.materialId, ids))
       .orderBy(asc(materialMedia.position)),
+    db
+      .select()
+      .from(materialFiles)
+      .where(inArray(materialFiles.materialId, ids))
+      .orderBy(asc(materialFiles.position), asc(materialFiles.id)),
   ]);
 
   return rows.map(({ m, s }) => ({
@@ -75,6 +81,9 @@ export async function loadMaterials(filter: {
         width: img.width,
         height: img.height,
       })),
+    files: fileRows
+      .filter((f) => f.materialId === m.id)
+      .map((f) => ({ id: f.id, url: f.url, name: f.name, kind: f.kind, size: f.size })),
   }));
 }
 
