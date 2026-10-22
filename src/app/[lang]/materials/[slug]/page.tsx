@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, ArrowUpRight, Languages } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronRight, Languages } from "lucide-react";
 import { getDictionary, getLocale } from "@/dictionaries";
 import { getMaterial, getMaterials, getSlugs } from "@/lib/materials";
 import { cardLabels, formatDate, isOptimizable } from "@/lib/format";
@@ -17,6 +17,8 @@ import { readingMinutes } from "@/lib/study";
 import { Favorite, FavoriteSkeleton } from "@/components/account/favorite";
 import { Reveal } from "@/components/reveal";
 import { typeMeta } from "@/components/type-meta";
+import { sectionMeta } from "@/components/section-icon";
+import { getSection } from "@/lib/taxonomy";
 import { alternates, siteUrl } from "@/lib/site";
 
 export async function generateStaticParams() {
@@ -37,7 +39,11 @@ export async function generateMetadata({
     description: material.excerpt,
     keywords: material.tags,
     alternates: alternates(locale, `/materials/${material.slug}`),
-    openGraph: { type: "article", publishedTime: material.createdAt, tags: material.tags },
+    openGraph: {
+      type: "article",
+      publishedTime: material.createdAt,
+      tags: material.tags,
+    },
   };
 }
 
@@ -49,6 +55,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
 
   const meta = typeMeta[material.type];
   const Icon = meta.icon;
+  const SectionIcon = sectionMeta[material.section].icon;
 
   // Related: shared tags count double, same topic once.
   const related = (await getMaterials(locale))
@@ -73,7 +80,10 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": material.type === "note" || material.type === "doc" ? "LearningResource" : "CreativeWork",
+            "@type":
+              material.type === "note" || material.type === "doc"
+                ? "LearningResource"
+                : "CreativeWork",
             headline: material.title,
             name: material.title,
             description: material.excerpt,
@@ -95,13 +105,36 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
           labels={{ resumeAt: dict.study.resumeAt, resume: dict.study.resume }}
         />
       )}
-      <Link
-        href={`/${locale}/materials`}
-        className="focus-hide group inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-accent"
+      <nav
+        aria-label="Breadcrumb"
+        className="focus-hide flex flex-wrap items-center gap-1.5 text-sm text-muted"
       >
-        <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-        {dict.materials.back}
-      </Link>
+        <Link
+          href={`/${locale}/materials`}
+          className="group inline-flex items-center gap-1.5 transition-colors hover:text-accent"
+        >
+          <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
+          {dict.materials.title}
+        </Link>
+        <ChevronRight size={14} className="text-muted/50" />
+        <Link
+          href={`/${locale}/materials?section=${material.section}`}
+          className="group inline-flex items-center gap-1.5 transition-colors hover:text-accent"
+        >
+          <SectionIcon
+            size={14}
+            className={`${sectionMeta[material.section].tone} transition-transform group-hover:scale-125`}
+          />
+          {getSection(material.section).name[locale]}
+        </Link>
+        <ChevronRight size={14} className="text-muted/50" />
+        <Link
+          href={`/${locale}/materials?subject=${material.subject}`}
+          className="transition-colors hover:text-accent"
+        >
+          {material.subjectName}
+        </Link>
+      </nav>
 
       <Reveal className="mt-8">
         <div className="flex flex-wrap items-center gap-2.5 text-sm text-muted">
@@ -111,8 +144,6 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
             <Icon size={15} />
             {dict.types[material.type]}
           </span>
-          <span>{material.subjectName}</span>
-          <span className="text-muted/50">·</span>
           <time dateTime={material.createdAt}>{formatDate(material.createdAt, locale)}</time>
         </div>
         <h1 className="mt-5 font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
@@ -180,6 +211,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
               openFull: dict.materials.openFull,
               download: dict.materials.download,
             }}
+            locale={locale}
           />
         </Reveal>
       )}
@@ -226,10 +258,18 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
 
       {related.length > 0 && (
         <section className="focus-hide no-print mt-20 border-t border-line pt-10">
-          <h2 className="mb-6 font-display text-2xl font-bold tracking-tight">{dict.materials.related}</h2>
+          <h2 className="mb-6 font-display text-2xl font-bold tracking-tight">
+            {dict.materials.related}
+          </h2>
           <div className="grid gap-5 sm:grid-cols-2">
             {related.map((m, i) => (
-              <MaterialCard key={m.slug} material={m} locale={locale} labels={relatedLabels[m.slug]} index={i} />
+              <MaterialCard
+                key={m.slug}
+                material={m}
+                locale={locale}
+                labels={relatedLabels[m.slug]}
+                index={i}
+              />
             ))}
           </div>
         </section>

@@ -17,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...entry("", materials[0]?.createdAt, 1),
     ...entry("/materials", materials[0]?.createdAt, 0.9),
+    ...entry("/reference", undefined, 0.8),
     ...materials.flatMap((m) => entry(`/materials/${m.slug}`, m.createdAt)),
   ];
 }

@@ -39,7 +39,8 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 
 | Путь | Что там |
 |---|---|
-| `src/app/[lang]/` | страницы: главная, `materials`, `materials/[slug]` |
+| `src/app/[lang]/` | страницы: главная, `materials`, `materials/[slug]`, `reference` (справочник) |
+| `src/lib/taxonomy.ts` | разделы (Математика, Механика, …) и какие темы в них входят |
 | `src/proxy.ts` | редирект `/` → `/ru` или `/en` по языку браузера |
 | `src/dictionaries/` | переводы интерфейса |
 | `src/lib/content.ts` | модель материала (тип, язык, переводы, теги) |
@@ -51,8 +52,12 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `src/app/api/auth/` | вход через GitHub OAuth (и клиенты, и владелец; админ = GitHub-логин владельца) |
 | `src/app/[lang]/login`, `src/app/[lang]/account` | вход/регистрация по почте и паролю, личный кабинет, избранное |
 | `src/lib/session.ts`, `src/lib/password.ts` | подписанная cookie-сессия, хэши паролей (scrypt), защита от перебора |
-| `src/app/api/upload` | выдаёт браузеру админа токен для прямой загрузки PDF/HTML в Blob (до 100 МБ) |
-| `src/app/api/files/[id]` | отдаёт документы: PDF inline, HTML в CSP-песочнице без доступа к сайту |
+| `src/app/api/upload` | выдаёт браузеру админа токен для прямой загрузки PDF/HTML/.glb в Blob (до 100 МБ) |
+| `src/app/api/files/[id]` | отдаёт документы: PDF inline, HTML в CSP-песочнице без доступа к сайту, 3D-модели |
+| `src/lib/calc.ts`, `src/components/study/calc.tsx` | ` ```calc `: живые формулы со слайдерами и графиками |
+| `src/lib/pyodide.ts`, `src/components/study/python-runner.tsx` | ` ```python `: запуск кода в браузере (Pyodide в Web Worker) |
+| `src/lib/fits.ts`, `src/lib/reference-data.ts` | допуски ISO 286, стали, знаки ГОСТ; подсказки `H7/p6`, `40Х` в конспектах |
+| `src/components/model-viewer.tsx`, `src/lib/embed.ts` | ` ```3d ` и вложения .glb: разнесённый вид, разрез, клик по детали; Sketchfab/Tinkercad |
 | `src/db/search.ts`, `src/app/api/search` | полнотекстовый поиск Postgres |
 | `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
 | `src/components/` | шапка, поиск, карточки, сетка с фильтрами |
@@ -66,4 +71,5 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 3. ✅ Полнотекстовый поиск (RU/EN морфология), теги, похожие материалы, подсветка кода, SEO (sitemap, robots, canonical, OG-картинки, JSON-LD)
 4. ✅ Документы (PDF, HTML) с просмотром на странице, аккаунты клиентов (почта+пароль, GitHub), избранное
 5. ✅ Учёба: время чтения и «продолжить с места», режим «Проверь себя», карточки (` ```cards `) и мини-тесты (` ```quiz `) прямо в Markdown, озвучка, помодоро с фоновым шумом, тёмная тема, фокус-режим, оглавление, шпора на А4, экспорт в .md и Anki (`src/components/study/`, `src/lib/study.ts`)
-6. Магазин: каталог, корзина, оплата, сброс пароля по почте
+6. ✅ Инженерное: разделы и темы, живые формулы, Python в браузере, справочник (посадки, стали, допуски формы, шероховатость, сварка), подсказки в тексте, 3D-просмотрщик
+7. Магазин: каталог, корзина, оплата, сброс пароля по почте

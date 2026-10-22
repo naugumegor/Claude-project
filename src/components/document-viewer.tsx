@@ -2,18 +2,22 @@
 
 import { useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
-import { Download, FileCode, FileText, Loader2, Maximize2 } from "lucide-react";
+import { Box, Download, FileCode, FileText, Loader2, Maximize2 } from "lucide-react";
 import type { MaterialFile } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
+import { ModelViewer } from "./model-viewer";
 
 const spring = { type: "spring", stiffness: 420, damping: 34 } as const;
 
-/** Shows attached PDFs and HTML pages inline, with tabs when there are several. */
+/** Shows attached PDFs, HTML pages and 3D models inline, with tabs when there are several. */
 export function DocumentViewer({
   files,
   labels,
+  locale,
 }: {
   files: (MaterialFile & { id: number })[];
   labels: { openFull: string; download: string };
+  locale: Locale;
 }) {
   const [active, setActive] = useState(files[0].id);
   const [loaded, setLoaded] = useState<Record<number, boolean>>({});
@@ -26,7 +30,7 @@ export function DocumentViewer({
         <LayoutGroup id="doc-tabs">
           <div className="flex min-w-0 flex-1 flex-wrap gap-1">
             {files.map((f) => {
-              const Icon = f.kind === "pdf" ? FileText : FileCode;
+              const Icon = f.kind === "pdf" ? FileText : f.kind === "model" ? Box : FileCode;
               const on = f.id === file.id;
               return (
                 <button
@@ -43,11 +47,13 @@ export function DocumentViewer({
                   <Icon
                     size={16}
                     className={`relative shrink-0 transition-transform group-hover:scale-110 ${
-                      f.kind === "pdf" ? "text-rose" : "text-plum"
+                      f.kind === "pdf" ? "text-rose" : f.kind === "model" ? "text-accent" : "text-plum"
                     }`}
                   />
                   <span className="relative truncate">{f.name}</span>
-                  <span className="relative text-[10px] font-semibold uppercase text-muted">{f.kind}</span>
+                  <span className="relative text-[10px] font-semibold uppercase text-muted">
+                    {f.kind === "model" ? "3D" : f.kind}
+                  </span>
                 </button>
               );
             })}
@@ -75,34 +81,40 @@ export function DocumentViewer({
         </div>
       </div>
 
-      <div className="relative h-[75vh] min-h-[28rem] bg-surface-2">
-        <AnimatePresence>
-          {!loaded[file.id] && (
-            <motion.div
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 flex items-center justify-center text-muted"
-            >
-              <Loader2 size={24} className="animate-spin" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <iframe
-          key={file.id}
-          src={src}
-          title={file.name}
-          onLoad={() => setLoaded((prev) => ({ ...prev, [file.id]: true }))}
-          // HTML documents run in a sandbox without our origin; Chrome's PDF viewer refuses sandboxed frames.
-          sandbox={
-            file.kind === "html"
-              ? "allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-modals allow-downloads"
-              : undefined
-          }
-          className={`absolute inset-0 size-full bg-white transition-opacity duration-500 ${
-            loaded[file.id] ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      </div>
+      {file.kind === "model" ? (
+        <div className="[&>figure]:my-0 [&>figure]:rounded-none [&>figure]:border-0">
+          <ModelViewer key={file.id} src={src} locale={locale} />
+        </div>
+      ) : (
+        <div className="relative h-[75vh] min-h-[28rem] bg-surface-2">
+          <AnimatePresence>
+            {!loaded[file.id] && (
+              <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 flex items-center justify-center text-muted"
+              >
+                <Loader2 size={24} className="animate-spin" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <iframe
+            key={file.id}
+            src={src}
+            title={file.name}
+            onLoad={() => setLoaded((prev) => ({ ...prev, [file.id]: true }))}
+            // HTML documents run in a sandbox without our origin; Chrome's PDF viewer refuses sandboxed frames.
+            sandbox={
+              file.kind === "html"
+                ? "allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-modals allow-downloads"
+                : undefined
+            }
+            className={`absolute inset-0 size-full bg-white transition-opacity duration-500 ${
+              loaded[file.id] ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </div>
+      )}
     </section>
   );
 }

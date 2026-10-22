@@ -1,4 +1,6 @@
 import type { Locale } from "@/lib/i18n";
+import { sectionOf, type SectionSlug } from "@/lib/taxonomy";
+import type { DocumentKind } from "@/lib/documents";
 
 export type MaterialType = "note" | "link" | "photo" | "doc";
 export type MaterialStatus = "draft" | "published";
@@ -21,7 +23,7 @@ export type MaterialFile = {
   id?: number;
   url: string;
   name: string;
-  kind: "pdf" | "html";
+  kind: DocumentKind;
   size: number;
 };
 
@@ -34,7 +36,7 @@ export type Material = {
   lang: Locale;
   /** Original text plus optional translations, keyed by locale. */
   text: Partial<Record<Locale, MaterialText>>;
-  subject: { slug: string; name: Record<Locale, string> };
+  subject: { slug: string; name: Record<Locale, string>; section?: string | null };
   tags: string[];
   url?: string;
   images: MaterialImage[];
@@ -44,7 +46,12 @@ export type Material = {
 
 /** What a page renders: the text in the requested locale, or the original as a fallback. */
 export type LocalizedMaterial = Omit<Material, "text" | "subject"> &
-  MaterialText & { subject: string; subjectName: string; translated: boolean };
+  MaterialText & {
+    subject: string;
+    subjectName: string;
+    section: SectionSlug;
+    translated: boolean;
+  };
 
 export function localize(material: Material, locale: Locale): LocalizedMaterial {
   const { text, subject, ...rest } = material;
@@ -54,6 +61,7 @@ export function localize(material: Material, locale: Locale): LocalizedMaterial 
     ...(own ?? text[material.lang]!),
     subject: subject.slug,
     subjectName: subject.name[locale],
+    section: sectionOf(subject.slug, subject.section),
     translated: Boolean(own) || material.lang === locale,
   };
 }

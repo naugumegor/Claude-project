@@ -20,6 +20,8 @@ import { hasLocale, locales } from "@/lib/i18n";
 import { slugify } from "@/lib/slug";
 import { requireAdmin } from "@/lib/session";
 import type { MaterialInput } from "./types";
+import { isSection } from "@/lib/taxonomy";
+import { DOCUMENT_KINDS, documentKind, isDocumentKind } from "@/lib/documents";
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -50,7 +52,7 @@ export async function saveMaterial(input: MaterialInput): Promise<Result<{ id: n
     }));
   const tagNames = [...new Set(input.tags.map((t) => t.trim().toLowerCase()).filter(Boolean))];
   const files = input.files.filter(
-    (f) => (f.kind === "pdf" || f.kind === "html") && isStoredFile(f.url) && f.name.trim(),
+    (f) => isDocumentKind(f.kind) && isStoredFile(f.url) && f.name.trim(),
   );
 
   const saved = await db.transaction(async (tx) => {
@@ -63,6 +65,7 @@ export async function saveMaterial(input: MaterialInput): Promise<Result<{ id: n
           slug: slugify(nameEn) || slugify(input.newSubject.nameRu),
           nameRu: input.newSubject.nameRu.trim(),
           nameEn,
+          section: isSection(input.newSubject.section) ? input.newSubject.section : null,
         })
         .onConflictDoUpdate({ target: subjects.slug, set: { nameEn } })
         .returning();
@@ -218,18 +221,13 @@ export async function uploadDocumentLocal(form: FormData): Promise<Result<{ url:
   const kind = file instanceof File ? documentKind(file) : null;
   if (!(file instanceof File) || !kind) return { ok: false, error: "badFile" };
 
-  const name = `documents/${crypto.randomUUID()}.${kind}`;
+  const name = `documents/${crypto.randomUUID()}.${DOCUMENT_KINDS[kind].ext}`;
   const target = path.join(process.cwd(), "public", "uploads", name);
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, Buffer.from(await file.arrayBuffer()));
   return { ok: true, data: { url: `/uploads/${name}` } };
 }
 
-function documentKind(file: File) {
-  if (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) return "pdf" as const;
-  if (file.type === "text/html" || /\.html?$/i.test(file.name)) return "html" as const;
-  return null;
-}
 
 /** Only files we stored ourselves: our Blob store, or local uploads in development. */
 function isStoredFile(url: string) {

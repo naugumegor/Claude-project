@@ -15,7 +15,7 @@ export type MaterialInput = {
   status: MaterialStatus;
   slug: string;
   subjectId?: number;
-  newSubject?: { nameRu: string; nameEn: string };
+  newSubject?: { nameRu: string; nameEn: string; section: string };
   url?: string;
   tags: string[];
   texts: Partial<Record<Locale, MaterialText>>;

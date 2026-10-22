@@ -4,7 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { upload } from "@vercel/blob/client";
-import { Check, FileCode, FileText, FileUp, ImagePlus, Loader2, Trash2, Wand2, X } from "lucide-react";
+import { Box, Check, FileCode, FileText, FileUp, ImagePlus, Loader2, Trash2, Wand2, X } from "lucide-react";
 import type { Dictionary } from "@/dictionaries";
 import { locales, type Locale } from "@/lib/i18n";
 import type { Material, MaterialFile, MaterialImage, MaterialText, MaterialType } from "@/lib/content";
@@ -18,6 +18,9 @@ import {
 } from "@/app/[lang]/admin/actions";
 import { Markdown } from "@/components/markdown";
 import { typeMeta } from "@/components/type-meta";
+import { sectionMeta } from "@/components/section-icon";
+import { SECTIONS, type SectionSlug } from "@/lib/taxonomy";
+import { DOCUMENT_ACCEPT, DOCUMENT_KINDS, documentKind } from "@/lib/documents";
 
 type Dict = Dictionary["admin"];
 type UploadingImage = MaterialImage & { key: string; uploading?: boolean };
@@ -39,7 +42,7 @@ export function MaterialForm({
 }: {
   locale: Locale;
   material: Material | null;
-  subjects: { id: number; slug: string; name: string }[];
+  subjects: { id: number; slug: string; name: string; section: SectionSlug }[];
   dict: Dict;
   typeNames: Record<MaterialType, string>;
   langNames: Record<Locale, string>;
@@ -57,7 +60,11 @@ export function MaterialForm({
   const [subjectId, setSubjectId] = useState<number | undefined>(
     material ? subjects.find((s) => s.slug === material.subject.slug)?.id : subjects[0]?.id,
   );
-  const [newSubject, setNewSubject] = useState<{ nameRu: string; nameEn: string } | null>(null);
+  const [newSubject, setNewSubject] = useState<{
+    nameRu: string;
+    nameEn: string;
+    section: SectionSlug;
+  } | null>(null);
   const [url, setUrl] = useState(material?.url ?? "");
   const [tags, setTags] = useState<string[]>(material?.tags ?? []);
   const [tagDraft, setTagDraft] = useState("");
@@ -150,17 +157,17 @@ export function MaterialForm({
         continue;
       }
       const key = crypto.randomUUID();
-      const name = file.name.replace(/\.(pdf|html?)$/i, "");
+      const name = file.name.replace(/\.(pdf|html?|glb)$/i, "");
       setFiles((prev) => [...prev, { key, url: "", name, kind, size: file.size, progress: 0 }]);
       const setProgress = (progress: number) =>
         setFiles((prev) => prev.map((x) => (x.key === key ? { ...x, progress } : x)));
       try {
         let url: string;
         if (directUpload) {
-          const blob = await upload(`documents/${slugify(name) || "document"}.${kind}`, file, {
+          const blob = await upload(`documents/${slugify(name) || "document"}.${DOCUMENT_KINDS[kind].ext}`, file, {
             access: "public",
             handleUploadUrl: "/api/upload",
-            contentType: kind === "pdf" ? "application/pdf" : "text/html",
+            contentType: DOCUMENT_KINDS[kind].type,
             multipart: file.size > 8 * 1024 * 1024,
             onUploadProgress: ({ percentage }) => setProgress(percentage),
           });
@@ -281,42 +288,82 @@ export function MaterialForm({
           {/* Subject */}
           <Field label={f.subject}>
             {newSubject ? (
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <Input
-                  placeholder={f.subjectRu}
-                  value={newSubject.nameRu}
-                  onChange={(e) => setNewSubject({ ...newSubject, nameRu: e.target.value })}
-                />
-                <Input
-                  placeholder={f.subjectEn}
-                  value={newSubject.nameEn}
-                  onChange={(e) => setNewSubject({ ...newSubject, nameEn: e.target.value })}
-                />
-                <IconButton label={f.remove} onClick={() => setNewSubject(null)}>
-                  <X size={16} />
-                </IconButton>
+              <div className="grid gap-2">
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Input
+                    placeholder={f.subjectRu}
+                    value={newSubject.nameRu}
+                    onChange={(e) => setNewSubject({ ...newSubject, nameRu: e.target.value })}
+                  />
+                  <Input
+                    placeholder={f.subjectEn}
+                    value={newSubject.nameEn}
+                    onChange={(e) => setNewSubject({ ...newSubject, nameEn: e.target.value })}
+                  />
+                  <IconButton label={f.remove} onClick={() => setNewSubject(null)}>
+                    <X size={16} />
+                  </IconButton>
+                </div>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="mr-1 text-xs text-muted">{f.section}</span>
+                  {SECTIONS.map((sec) => {
+                    const Icon = sectionMeta[sec.slug].icon;
+                    const active = newSubject.section === sec.slug;
+                    return (
+                      <button
+                        key={sec.slug}
+                        type="button"
+                        onClick={() => setNewSubject({ ...newSubject, section: sec.slug })}
+                        className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs transition-all ${
+                          active
+                            ? "border-ochre bg-ochre-soft text-ink"
+                            : "border-line text-muted hover:border-ochre hover:text-ink"
+                        }`}
+                      >
+                        <Icon size={12} />
+                        {sec.name[locale]}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
-              <div className="flex flex-wrap gap-2">
-                {subjects.map((s) => (
-                  <motion.button
-                    key={s.id}
-                    type="button"
-                    whileTap={{ scale: 0.94 }}
-                    onClick={() => setSubjectId(s.id)}
-                    className={`rounded-full border px-3 py-1 text-sm transition-all ${
-                      subjectId === s.id
-                        ? "border-ochre bg-ochre-soft text-ink shadow-[0_4px_14px_-6px_var(--ochre)]"
-                        : "border-line bg-surface text-muted hover:border-ochre hover:text-ink"
-                    }`}
-                  >
-                    {s.name}
-                  </motion.button>
-                ))}
+              <div className="grid gap-3">
+                {SECTIONS.map((sec) => ({ sec, items: subjects.filter((s) => s.section === sec.slug) }))
+                  .filter(({ items }) => items.length > 0)
+                  .map(({ sec, items }) => {
+                    const meta = sectionMeta[sec.slug];
+                    const Icon = meta.icon;
+                    return (
+                      <div key={sec.slug} className="flex flex-wrap items-center gap-2">
+                        <span
+                          className={`inline-flex w-full items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${meta.tone}`}
+                        >
+                          <Icon size={13} />
+                          {sec.name[locale]}
+                        </span>
+                        {items.map((s) => (
+                          <motion.button
+                            key={s.id}
+                            type="button"
+                            whileTap={{ scale: 0.94 }}
+                            onClick={() => setSubjectId(s.id)}
+                            className={`rounded-full border px-3 py-1 text-sm transition-all ${
+                              subjectId === s.id
+                                ? "border-ochre bg-ochre-soft text-ink shadow-[0_4px_14px_-6px_var(--ochre)]"
+                                : "border-line bg-surface text-muted hover:border-ochre hover:text-ink"
+                            }`}
+                          >
+                            {s.name}
+                          </motion.button>
+                        ))}
+                      </div>
+                    );
+                  })}
                 <button
                   type="button"
-                  onClick={() => setNewSubject({ nameRu: "", nameEn: "" })}
-                  className="rounded-full border border-dashed border-line px-3 py-1 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
+                  onClick={() => setNewSubject({ nameRu: "", nameEn: "", section: "other" })}
+                  className="w-fit rounded-full border border-dashed border-line px-3 py-1 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
                 >
                   {f.newSubject}
                 </button>
@@ -390,6 +437,9 @@ export function MaterialForm({
                   [
                     [f.insertCards, CARDS_TEMPLATE],
                     [f.insertQuiz, QUIZ_TEMPLATE],
+                    [f.insertCalc, CALC_TEMPLATE],
+                    [f.insertPython, PYTHON_TEMPLATE],
+                    [f.insert3d, MODEL_TEMPLATE],
                   ] as const
                 ).map(([label, template]) => (
                   <button
@@ -550,7 +600,7 @@ export function MaterialForm({
             <input
               ref={docInput}
               type="file"
-              accept=".pdf,.html,.htm,application/pdf,text/html"
+              accept={DOCUMENT_ACCEPT}
               multiple
               hidden
               onChange={(e) => {
@@ -563,7 +613,7 @@ export function MaterialForm({
             <motion.ul layout className="mt-3 grid gap-2">
               <AnimatePresence>
                 {files.map((doc) => {
-                  const Icon = doc.kind === "pdf" ? FileText : FileCode;
+                  const Icon = doc.kind === "pdf" ? FileText : doc.kind === "model" ? Box : FileCode;
                   return (
                     <motion.li
                       key={doc.key}
@@ -582,7 +632,11 @@ export function MaterialForm({
                       )}
                       <span
                         className={`relative flex size-9 shrink-0 items-center justify-center rounded-lg ${
-                          doc.kind === "pdf" ? "bg-rose-soft text-rose" : "bg-plum-soft text-plum"
+                          doc.kind === "pdf"
+                            ? "bg-rose-soft text-rose"
+                            : doc.kind === "model"
+                              ? "bg-accent-soft text-accent"
+                              : "bg-plum-soft text-plum"
                         }`}
                       >
                         <Icon size={18} />
@@ -791,12 +845,12 @@ function IconButton({ label, onClick, children }: { label: string; onClick: () =
 // Study blocks the note page turns into flip cards and a mini test (see src/lib/study.ts).
 const CARDS_TEMPLATE = "```cards\nВопрос или термин :: Ответ или определение\nФормула площади круга :: $S = \\pi r^2$\n```";
 const QUIZ_TEMPLATE = "```quiz\n? Вопрос\n- Неверный вариант\n+ Верный вариант\n- Ещё неверный\n> Пояснение (необязательно)\n```";
+// Live formula (src/lib/calc.ts), runnable Python and a 3D model (src/lib/embed.ts).
+const CALC_TEMPLATE =
+  "```calc\ntitle: Название\nF = 1000 | 100..5000 | Н | Сила\nL = 2 | 0.5..5 | м | Длина\nM = F*L | | Н·м | Момент\nplot x: 0..L | F*x | M(x)\naxes: x, м ; M, Н·м\n```";
+const PYTHON_TEMPLATE = "```python\nimport numpy as np\n\nx = np.linspace(0, 1, 5)\nprint(x ** 2)\n```";
+const MODEL_TEMPLATE = "```3d\nsrc: https://ссылка-на-модель.glb\ntitle: Подпись\n```";
 
-function documentKind(file: File) {
-  if (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) return "pdf" as const;
-  if (file.type === "text/html" || /\.html?$/i.test(file.name)) return "html" as const;
-  return null;
-}
 
 function formatBytes(bytes: number) {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;

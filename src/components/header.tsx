@@ -19,11 +19,12 @@ export async function Header() {
             links={[
               { href: "", label: dict.nav.home },
               { href: "/materials", label: dict.nav.materials },
+              { href: "/reference", label: dict.nav.reference },
             ]}
           />
         </div>
         <span
-          className="hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted/70 md:flex"
+          className="hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted/70 lg:flex"
           title={dict.footer.shop}
         >
           {dict.nav.shop}
@@ -48,6 +49,7 @@ export async function Header() {
           links={[
             { href: "", label: dict.nav.home },
             { href: "/materials", label: dict.nav.materials },
+            { href: "/reference", label: dict.nav.reference },
           ]}
         />
       </div>

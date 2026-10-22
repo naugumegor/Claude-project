@@ -11,13 +11,15 @@ import {
 
 export const materialType = pgEnum("material_type", ["note", "link", "photo", "doc"]);
 export const materialStatus = pgEnum("material_status", ["draft", "published"]);
-export const fileKind = pgEnum("file_kind", ["pdf", "html"]);
+export const fileKind = pgEnum("file_kind", ["pdf", "html", "model"]);
 
 export const subjects = pgTable("subjects", {
   id: serial("id").primaryKey(),
   slug: text("slug").notNull().unique(),
   nameRu: text("name_ru").notNull(),
   nameEn: text("name_en").notNull(),
+  /** Section slug from lib/taxonomy.ts; null falls back to the default map there. */
+  section: text("section"),
 });
 
 export const materials = pgTable("materials", {
@@ -93,7 +95,7 @@ export const materialMedia = pgTable(
 );
 
 
-/** PDF and HTML documents attached to a material, shown in a viewer on its page. */
+/** PDF and HTML documents and .glb 3D models attached to a material, shown in a viewer on its page. */
 export const materialFiles = pgTable("material_files", {
   id: serial("id").primaryKey(),
   materialId: integer("material_id")

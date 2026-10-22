@@ -9,7 +9,8 @@
     "shop": "Shop",
     "soon": "soon",
     "login": "Sign in",
-    "account": "Account"
+    "account": "Account",
+    "reference": "Reference"
   },
   "search": {
     "placeholder": "Find a note, link, topic…",
@@ -24,7 +25,8 @@
     "lead": "Lecture notes, useful links and photos of good finds. Collected, sorted and searchable in a second.",
     "recent": "Latest",
     "all": "All materials",
-    "subjects": "Topics"
+    "subjects": "Sections",
+    "subjectsLead": "Sections and topics, from calculus to drafting."
   },
   "materials": {
     "title": "Materials",
@@ -40,7 +42,8 @@
     "download": "Download",
     "favorite": "Save",
     "favorited": "Saved",
-    "loginToSave": "Sign in to save"
+    "loginToSave": "Sign in to save",
+    "allSections": "All sections"
   },
   "types": {
     "all": "All",
@@ -83,6 +86,10 @@
     "doc": {
       "one": "document",
       "other": "documents"
+    },
+    "topics": {
+      "one": "topic",
+      "other": "topics"
     }
   },
   "admin": {
@@ -140,12 +147,16 @@
       "needTitle": "A title in the original language is required",
       "needSubject": "Pick a topic",
       "files": "Documents",
-      "filesHint": "PDF or HTML, up to 100 MB",
-      "dropFiles": "Drop a PDF or HTML file here or click to choose",
-      "badFile": "Only PDF and HTML files",
+      "filesHint": "PDF, HTML or a .glb 3D model, up to 100 MB",
+      "dropFiles": "Drop a PDF, HTML or .glb file here or click to choose",
+      "badFile": "Only PDF, HTML and .glb files",
       "fileTooBig": "File is larger than 100 MB",
       "insertCards": "+ Cards",
-      "insertQuiz": "+ Quiz"
+      "insertQuiz": "+ Quiz",
+      "section": "Section:",
+      "insertCalc": "+ Formula",
+      "insertPython": "+ Python",
+      "insert3d": "+ 3D"
     },
     "switch": "Sign in with another account"
   },
@@ -228,5 +239,29 @@
   "theme": {
     "light": "Light theme",
     "dark": "Dark theme"
+  },
+  "reference": {
+    "title": "Reference",
+    "lead": "An engineer's cheat sheet: fits with a tolerance calculator, steel grades, GD&T symbols, surface roughness and welds. Values are typical; always check the standard for exact figures.",
+    "fits": "Fits and tolerances",
+    "fitsLead": "ISO 286. Pick a nominal size and tolerance classes and the diagram updates. In notes, write `H7/p6` or `Ø25 H7/p6` to get a tooltip.",
+    "steels": "Steels and alloys",
+    "steelsLead": "Grade, standard, foreign equivalents, strength and typical use. In notes, `40Х` or `Сталь 45` gets a tooltip.",
+    "gdt": "Geometric tolerances",
+    "gdtLead": "ISO 1101 / ГОСТ 2.308. A tolerance sits in a frame: symbol, value in mm, then datum letters.",
+    "frameExample": "Examples: perpendicularity 0.02 mm to datum A; position Ø0.1 mm to datums A and B.",
+    "datum": "needs a datum",
+    "noDatum": "no datum",
+    "roughness": "Surface roughness",
+    "roughnessLead": "ГОСТ 2789-73 / ISO 21920. Ra in µm is the usual parameter. Old Soviet roughness classes still show up in textbooks, so they are listed too.",
+    "ra": "Ra, µm",
+    "rz": "Rz, µm",
+    "oldClass": "Class",
+    "method": "Typical process",
+    "use": "Where it's needed",
+    "welds": "Welds",
+    "weldsLead": "ГОСТ 5264-80 (manual arc welding) and ГОСТ 2.312-72 (symbols). A weld code is the joint letter plus the preparation number, e.g. «ГОСТ 5264-80-Т1-⊿6».",
+    "joints": "Joint types",
+    "signs": "Supplementary signs"
   }
 }

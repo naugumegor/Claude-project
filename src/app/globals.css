@@ -93,63 +93,63 @@ body {
   line-height: 1.75;
   font-size: 1.0625rem;
 }
-.prose-ingenium h2 {
+.prose-ingenium h2:not(.not-prose *) {
   font-family: var(--font-manrope), sans-serif;
   font-weight: 700;
   font-size: 1.4rem;
   margin: 2.2rem 0 0.8rem;
 }
-.prose-ingenium h3 {
+.prose-ingenium h3:not(.not-prose *) {
   font-weight: 600;
   font-size: 1.15rem;
   margin: 1.6rem 0 0.6rem;
 }
-.prose-ingenium p {
+.prose-ingenium p:not(.not-prose *) {
   margin: 0.9rem 0;
 }
-.prose-ingenium ul,
-.prose-ingenium ol {
+.prose-ingenium ul:not(.not-prose *),
+.prose-ingenium ol:not(.not-prose *) {
   margin: 0.9rem 0;
   padding-left: 1.4rem;
 }
-.prose-ingenium ul {
+.prose-ingenium ul:not(.not-prose *) {
   list-style: disc;
 }
-.prose-ingenium ol {
+.prose-ingenium ol:not(.not-prose *) {
   list-style: decimal;
 }
-.prose-ingenium li {
+.prose-ingenium li:not(.not-prose *) {
   margin: 0.3rem 0;
 }
-.prose-ingenium li::marker {
+.prose-ingenium li:not(.not-prose *)::marker {
   color: var(--accent);
 }
-.prose-ingenium strong {
+.prose-ingenium strong:not(.not-prose *) {
   font-weight: 650;
 }
-.prose-ingenium a {
+.prose-ingenium a:not(.not-prose *) {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.prose-ingenium code {
+.prose-ingenium code:not(.not-prose *) {
   background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: 0.1rem 0.4rem;
   font-size: 0.92em;
 }
-.prose-ingenium blockquote {
+.prose-ingenium blockquote:not(.not-prose *) {
   border-left: 3px solid var(--ochre);
   background: var(--ochre-soft);
   border-radius: 0 10px 10px 0;
   padding: 0.6rem 1rem;
   margin: 1.2rem 0;
 }
-.prose-ingenium blockquote p {
+.prose-ingenium blockquote p:not(.not-prose *) {
   margin: 0.2rem 0;
 }
-.prose-ingenium table {
+.prose-ingenium table:not(.not-prose *) {
   width: 100%;
   border-collapse: collapse;
   margin: 1.2rem 0;
@@ -157,17 +157,17 @@ body {
   display: block;
   overflow-x: auto;
 }
-.prose-ingenium th,
-.prose-ingenium td {
+.prose-ingenium th:not(.not-prose *),
+.prose-ingenium td:not(.not-prose *) {
   border-bottom: 1px solid var(--line);
   padding: 0.5rem 0.8rem;
   text-align: left;
 }
-.prose-ingenium th {
+.prose-ingenium th:not(.not-prose *) {
   color: var(--muted);
   font-weight: 600;
 }
-.prose-ingenium pre {
+.prose-ingenium pre:not(.not-prose *) {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -177,7 +177,7 @@ body {
   font-size: 0.88rem;
   line-height: 1.6;
 }
-.prose-ingenium pre code {
+.prose-ingenium pre code:not(.not-prose *) {
   background: none;
   border: 0;
   padding: 0;
@@ -267,6 +267,52 @@ html[data-focus] body {
 
 .print-only {
   display: none;
+}
+
+/* Sliders in ```calc blocks: a slim track with a round accent thumb that grows on hover. */
+.calc-range {
+  appearance: none;
+  height: 1.25rem;
+  background: transparent;
+  cursor: pointer;
+}
+.calc-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--line);
+}
+.calc-range::-moz-range-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--line);
+}
+.calc-range::-moz-range-progress {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+.calc-range::-webkit-slider-thumb {
+  appearance: none;
+  margin-top: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 10px -4px var(--accent);
+  transition: transform 0.2s;
+}
+.calc-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.calc-range:hover::-webkit-slider-thumb,
+.calc-range:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.25);
 }
 
 @media print {

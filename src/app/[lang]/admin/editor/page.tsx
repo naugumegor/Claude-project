@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { getDictionary, getLocale, type Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { loadMaterials, loadSubjects } from "@/db/queries";
+import { sectionOf } from "@/lib/taxonomy";
 import { getAdmin, getUser } from "@/lib/session";
 import { AdminSkeleton, LoginCard } from "@/components/admin/login-card";
 import { MaterialForm } from "@/components/admin/material-form";
@@ -66,7 +67,12 @@ async function Editor({
       key={material?.id ?? "new"}
       locale={locale}
       material={material}
-      subjects={subjectRows.map((s) => ({ id: s.id, slug: s.slug, name: locale === "ru" ? s.nameRu : s.nameEn }))}
+      subjects={subjectRows.map((s) => ({
+        id: s.id,
+        slug: s.slug,
+        name: locale === "ru" ? s.nameRu : s.nameEn,
+        section: sectionOf(s.slug, s.section),
+      }))}
       dict={dict.admin}
       typeNames={dict.types}
       langNames={dict.langNames}

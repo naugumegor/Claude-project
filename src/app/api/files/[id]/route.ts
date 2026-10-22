@@ -5,8 +5,9 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { materialFiles, materials } from "@/db/schema";
 import { getAdmin } from "@/lib/session";
+import { DOCUMENT_KINDS } from "@/lib/documents";
 
-// Serves an attached PDF or HTML document from our own domain with headers we control:
+// Serves an attached PDF, HTML document or 3D model from our own domain with headers we control:
 // PDFs open inline, and HTML runs in a CSP sandbox (an opaque origin), so a document's
 // scripts can't touch the site, its cookies or its API.
 export async function GET(request: NextRequest, ctx: RouteContext<"/api/files/[id]">) {
@@ -36,8 +37,10 @@ export async function GET(request: NextRequest, ctx: RouteContext<"/api/files/[i
 
   const download = request.nextUrl.searchParams.has("download");
   const headers = new Headers({
-    "Content-Type": file.kind === "pdf" ? "application/pdf" : "text/html; charset=utf-8",
-    "Content-Disposition": `${download ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(file.name)}`,
+    "Content-Type": file.kind === "html" ? "text/html; charset=utf-8" : DOCUMENT_KINDS[file.kind].type,
+    "Content-Disposition": `${download ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(
+      `${file.name}.${DOCUMENT_KINDS[file.kind].ext}`,
+    )}`,
     "X-Content-Type-Options": "nosniff",
     "Cache-Control": row.status === "published" ? "public, max-age=300, s-maxage=3600" : "private, no-store",
   });

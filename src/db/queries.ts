@@ -65,7 +65,7 @@ export async function loadMaterials(filter: {
     lang: m.lang as Locale,
     url: m.url ?? undefined,
     createdAt: m.createdAt.toISOString(),
-    subject: { slug: s.slug, name: { ru: s.nameRu, en: s.nameEn } },
+    subject: { slug: s.slug, name: { ru: s.nameRu, en: s.nameEn }, section: s.section },
     text: Object.fromEntries(
       texts
         .filter((t) => t.materialId === m.id)

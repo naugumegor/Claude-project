@@ -34,7 +34,7 @@ export default async function MaterialsPage() {
         </p>
       </Reveal>
       <div className="mt-10">
-        {/* The grid reads ?subject= from the URL, which is only known at request time. */}
+        {/* The grid reads ?section= and ?subject= from the URL, which is only known at request time. */}
         <Suspense>
           <MaterialGrid
             materials={materials}
@@ -42,6 +42,7 @@ export default async function MaterialsPage() {
             labels={cardLabels(materials, dict, locale)}
             typeNames={dict.types}
             subjectNames={Object.fromEntries(materials.map((m) => [m.subject, m.subjectName]))}
+            allSectionsText={dict.materials.allSections}
             emptyText={dict.materials.empty}
           />
         </Suspense>
