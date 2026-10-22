@@ -1,6 +1,7 @@
 import type { Locale } from "@/lib/i18n";
 
 export type MaterialType = "note" | "link" | "photo";
+export type MaterialStatus = "draft" | "published";
 
 export type MaterialText = {
   title: string;
@@ -8,31 +9,42 @@ export type MaterialText = {
   body?: string; // Markdown
 };
 
+export type MaterialImage = {
+  id?: number;
+  src: string;
+  alt: string;
+  width: number | null;
+  height: number | null;
+};
+
 export type Material = {
-  id: string;
+  id: number;
   slug: string;
   type: MaterialType;
+  status: MaterialStatus;
   /** Language the material was originally written in. */
   lang: Locale;
   /** Original text plus optional translations, keyed by locale. */
   text: Partial<Record<Locale, MaterialText>>;
-  subject: string;
+  subject: { slug: string; name: Record<Locale, string> };
   tags: string[];
   url?: string;
-  images?: { src: string; alt: string }[];
+  images: MaterialImage[];
   createdAt: string; // ISO date
 };
 
 /** What a page renders: the text in the requested locale, or the original as a fallback. */
-export type LocalizedMaterial = Omit<Material, "text"> &
-  MaterialText & { translated: boolean };
+export type LocalizedMaterial = Omit<Material, "text" | "subject"> &
+  MaterialText & { subject: string; subjectName: string; translated: boolean };
 
 export function localize(material: Material, locale: Locale): LocalizedMaterial {
-  const { text, ...rest } = material;
+  const { text, subject, ...rest } = material;
   const own = text[locale];
   return {
     ...rest,
     ...(own ?? text[material.lang]!),
+    subject: subject.slug,
+    subjectName: subject.name[locale],
     translated: Boolean(own) || material.lang === locale,
   };
 }

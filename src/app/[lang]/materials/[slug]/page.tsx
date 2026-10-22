@@ -5,13 +5,15 @@ import type { Metadata } from "next";
 import { ArrowLeft, ArrowUpRight, Languages } from "lucide-react";
 import { getDictionary, getLocale } from "@/dictionaries";
 import { getMaterial, getSlugs } from "@/lib/materials";
-import { formatDate, subjectName } from "@/lib/format";
+import { formatDate, isOptimizable } from "@/lib/format";
 import { Markdown } from "@/components/markdown";
 import { Reveal } from "@/components/reveal";
 import { typeMeta } from "@/components/type-meta";
 
 export async function generateStaticParams() {
-  return (await getSlugs()).map((slug) => ({ slug }));
+  const slugs = await getSlugs();
+  // Cache Components needs at least one param; the placeholder simply 404s.
+  return (slugs.length > 0 ? slugs : ["__none__"]).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -50,7 +52,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
             <Icon size={15} />
             {dict.types[material.type]}
           </span>
-          <span>{subjectName(dict, material.subject)}</span>
+          <span>{material.subjectName}</span>
           <span className="text-muted/50">·</span>
           <time dateTime={material.createdAt}>{formatDate(material.createdAt, locale)}</time>
         </div>
@@ -96,19 +98,22 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
       )}
 
       {material.images?.map((img) => (
-        <Reveal key={img.src} delay={0.14} className="mt-8">
+        <Reveal key={img.id ?? img.src} delay={0.14} className="mt-8">
           <figure className="overflow-hidden rounded-2xl border border-line bg-surface">
             <Image
               src={img.src}
               alt={img.alt}
-              width={800}
-              height={600}
+              width={img.width ?? 1200}
+              height={img.height ?? 800}
+              unoptimized={!isOptimizable(img.src)}
               className="h-auto w-full"
               priority
             />
-            <figcaption className="border-t border-line px-4 py-2.5 text-sm text-muted">
-              {img.alt}
-            </figcaption>
+            {img.alt && (
+              <figcaption className="border-t border-line px-4 py-2.5 text-sm text-muted">
+                {img.alt}
+              </figcaption>
+            )}
           </figure>
         </Reveal>
       ))}

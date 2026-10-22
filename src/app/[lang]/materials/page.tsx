@@ -36,7 +36,7 @@ export default async function MaterialsPage() {
             locale={locale}
             labels={cardLabels(materials, dict, locale)}
             typeNames={dict.types}
-            subjectNames={dict.subjects}
+            subjectNames={Object.fromEntries(materials.map((m) => [m.subject, m.subjectName]))}
             emptyText={dict.materials.empty}
           />
         </Suspense>

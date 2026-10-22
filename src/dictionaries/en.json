@@ -45,18 +45,13 @@
   },
   "footer": {
     "made": "Made with love for knowledge.",
-    "shop": "The shop opens later."
+    "shop": "The shop opens later.",
+    "admin": "Sign in"
   },
   "notFound": {
     "title": "Nothing here",
     "text": "This page doesn't exist or was removed.",
     "home": "Go home"
-  },
-  "subjects": {
-    "math": "Mathematics",
-    "physics": "Physics",
-    "chemistry": "Chemistry",
-    "programming": "Programming"
   },
   "plurals": {
     "materials": {
@@ -74,6 +69,62 @@
     "photo": {
       "one": "photo",
       "other": "photos"
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "login": "Sign in with GitHub",
+    "loginLead": "Only the site owner can add and edit materials.",
+    "denied": "Sign-in failed",
+    "deniedText": "Either GitHub didn't confirm the sign-in, or this isn't the site owner's account.",
+    "logout": "Sign out",
+    "new": "New material",
+    "edit": "Editing",
+    "empty": "No materials yet. Add the first one!",
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "updated": "Added",
+    "view": "View on site",
+    "back": "Back to list",
+    "form": {
+      "type": "Type",
+      "lang": "Original language",
+      "subject": "Topic",
+      "newSubject": "+ New topic",
+      "subjectRu": "Name in Russian",
+      "subjectEn": "Name in English",
+      "tags": "Tags",
+      "tagsHint": "Comma or Enter to add",
+      "url": "Link",
+      "fetch": "Fetch",
+      "fetching": "Fetching…",
+      "fetchFailed": "Couldn't read that page",
+      "images": "Photos",
+      "drop": "Drop photos here or click to choose",
+      "uploading": "Uploading…",
+      "alt": "Caption",
+      "cover": "cover",
+      "remove": "Remove",
+      "texts": "Text",
+      "original": "original",
+      "translation": "translation, optional",
+      "title": "Title",
+      "excerpt": "Short description",
+      "body": "Notes (Markdown, math in $...$)",
+      "preview": "Preview",
+      "write": "Write",
+      "slug": "URL slug",
+      "publish": "Publish",
+      "draft": "Draft",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "delete": "Delete",
+      "confirmDelete": "Delete this material? This can't be undone.",
+      "needTitle": "A title in the original language is required",
+      "needSubject": "Pick a topic"
     }
   }
 }

@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "tsx scripts/migrate.ts && next dev",
+    "build": "tsx scripts/migrate.ts && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.ts"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.5.11",
+    "@neondatabase/serverless": "^1.2.0",
+    "@vercel/blob": "^2.8.2",
+    "drizzle-orm": "^0.45.4",
+    "jose": "^6.2.13",
     "katex": "^0.19.0",
     "lucide-react": "^1.61.0",
     "motion": "^14.6.0",
@@ -25,9 +32,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.11",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

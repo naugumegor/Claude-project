@@ -5,7 +5,6 @@ import "../globals.css";
 import { getDictionary, getLocale } from "@/dictionaries";
 import { locales } from "@/lib/i18n";
 import { getMaterials } from "@/lib/materials";
-import { subjectName } from "@/lib/format";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SearchProvider } from "@/components/search";
@@ -37,7 +36,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
     type: m.type,
     title: m.title,
     excerpt: m.excerpt,
-    subject: subjectName(dict, m.subject),
+    subject: m.subjectName,
     tags: m.tags,
   }));
 

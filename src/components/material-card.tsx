@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import type { LocalizedMaterial } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
+import { isOptimizable } from "@/lib/format";
 import { typeMeta } from "./type-meta";
 
 export type CardLabels = {
@@ -49,6 +50,7 @@ export function MaterialCard({
             alt={cover.alt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            unoptimized={!isOptimizable(cover.src)}
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
         ) : (

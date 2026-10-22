@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getDictionary, getLocale } from "@/dictionaries";
 import { getMaterials } from "@/lib/materials";
-import { cardLabels, plural, pluralWord, subjectName } from "@/lib/format";
+import { cardLabels, plural, pluralWord } from "@/lib/format";
 import { HeroSearch } from "@/components/search";
 import { MaterialCard } from "@/components/material-card";
 import { Reveal } from "@/components/reveal";
@@ -15,9 +15,10 @@ export default async function HomePage() {
   const recent = materials.slice(0, 3);
   const labels = cardLabels(recent, dict, locale);
 
-  const bySubject = Object.entries(
-    materials.reduce<Record<string, number>>((acc, m) => {
-      acc[m.subject] = (acc[m.subject] ?? 0) + 1;
+  const bySubject = Object.values(
+    materials.reduce<Record<string, { slug: string; name: string; count: number }>>((acc, m) => {
+      acc[m.subject] ??= { slug: m.subject, name: m.subjectName, count: 0 };
+      acc[m.subject].count++;
       return acc;
     }, {}),
   );
@@ -92,7 +93,7 @@ export default async function HomePage() {
       <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
         <h2 className="mb-6 font-display text-2xl font-bold tracking-tight">{dict.home.subjects}</h2>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          {bySubject.map(([subject, count]) => (
+          {bySubject.map(({ slug: subject, name, count }) => (
             <Link
               key={subject}
               href={`/${locale}/materials?subject=${subject}`}
@@ -100,7 +101,7 @@ export default async function HomePage() {
             >
               <span className="absolute -right-6 -top-6 size-20 rounded-full bg-accent-soft transition-transform duration-500 group-hover:scale-[2.4]" />
               <span className="relative block break-words hyphens-auto font-display text-base font-bold sm:text-lg">
-                {subjectName(dict, subject)}
+                {name}
               </span>
               <span className="relative text-sm text-muted">
                 {plural(count, dict.plurals.materials, locale)}

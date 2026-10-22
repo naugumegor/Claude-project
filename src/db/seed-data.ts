@@ -1,9 +1,29 @@
-import type { Material } from "@/lib/content";
+import type { Locale } from "../lib/i18n";
+import type { MaterialText, MaterialType } from "../lib/content";
 
-// Demo content for stage 1. Replaced by the database in stage 2.
-export const materials: Material[] = [
+// Demo content loaded into an empty database on first migration.
+
+export const seedSubjects = [
+  { slug: "math", nameRu: "Математика", nameEn: "Mathematics" },
+  { slug: "physics", nameRu: "Физика", nameEn: "Physics" },
+  { slug: "chemistry", nameRu: "Химия", nameEn: "Chemistry" },
+  { slug: "programming", nameRu: "Программирование", nameEn: "Programming" },
+];
+
+export type SeedMaterial = {
+  slug: string;
+  type: MaterialType;
+  lang: Locale;
+  subject: string;
+  tags: string[];
+  url?: string;
+  images?: { src: string; alt: string; width: number; height: number }[];
+  createdAt: string;
+  text: Partial<Record<Locale, MaterialText>>;
+};
+
+export const seedMaterials: SeedMaterial[] = [
   {
-    id: "1",
     slug: "derivative-meaning",
     type: "note",
     lang: "ru",
@@ -62,14 +82,13 @@ If $x(t)$ is position, $x'(t)$ is instantaneous velocity and $x''(t)$ is acceler
     },
   },
   {
-    id: "2",
     slug: "newton-laws",
     type: "note",
     lang: "ru",
     subject: "physics",
     tags: ["механика", "динамика"],
     createdAt: "2026-10-17",
-    images: [{ src: "/demo/mechanics.svg", alt: "Брусок на наклонной плоскости" }],
+    images: [{ src: "/demo/mechanics.svg", alt: "Брусок на наклонной плоскости", width: 800, height: 600 }],
     text: {
       ru: {
         title: "Законы Ньютона на наклонной плоскости",
@@ -94,7 +113,6 @@ If $x(t)$ is position, $x'(t)$ is instantaneous velocity and $x''(t)$ is acceler
     },
   },
   {
-    id: "3",
     slug: "3blue1brown-linear-algebra",
     type: "link",
     lang: "en",
@@ -116,14 +134,13 @@ If $x(t)$ is position, $x'(t)$ is instantaneous velocity and $x''(t)$ is acceler
     },
   },
   {
-    id: "4",
     slug: "integrals-table-photo",
     type: "photo",
     lang: "ru",
     subject: "math",
     tags: ["интегралы", "шпаргалка"],
     createdAt: "2026-10-12",
-    images: [{ src: "/demo/integrals.svg", alt: "Таблица основных интегралов" }],
+    images: [{ src: "/demo/integrals.svg", alt: "Таблица основных интегралов", width: 800, height: 600 }],
     text: {
       ru: {
         title: "Таблица интегралов с доски",
@@ -136,14 +153,13 @@ If $x(t)$ is position, $x'(t)$ is instantaneous velocity and $x''(t)$ is acceler
     },
   },
   {
-    id: "5",
     slug: "acid-base-titration",
     type: "note",
     lang: "ru",
     subject: "chemistry",
     tags: ["аналитика", "титрование", "лаба"],
     createdAt: "2026-10-09",
-    images: [{ src: "/demo/titration.svg", alt: "Схема установки для титрования" }],
+    images: [{ src: "/demo/titration.svg", alt: "Схема установки для титрования", width: 800, height: 600 }],
     text: {
       ru: {
         title: "Кислотно-основное титрование",
@@ -170,7 +186,6 @@ If $x(t)$ is position, $x'(t)$ is instantaneous velocity and $x''(t)$ is acceler
     },
   },
   {
-    id: "6",
     slug: "mdn-javascript-guide",
     type: "link",
     lang: "en",
@@ -192,7 +207,6 @@ If $x(t)$ is position, $x'(t)$ is instantaneous velocity and $x''(t)$ is acceler
     },
   },
   {
-    id: "7",
     slug: "thermodynamics-first-law",
     type: "note",
     lang: "en",

@@ -9,10 +9,6 @@ export function formatDate(iso: string, locale: Locale) {
   );
 }
 
-export function subjectName(dict: Dictionary, subject: string) {
-  return dict.subjects[subject as keyof Dictionary["subjects"]] ?? subject;
-}
-
 /** Pre-translated labels for each card, so client components don't need the dictionary. */
 export function cardLabels(
   materials: LocalizedMaterial[],
@@ -24,7 +20,7 @@ export function cardLabels(
       m.slug,
       {
         type: dict.types[m.type],
-        subject: subjectName(dict, m.subject),
+        subject: m.subjectName,
         date: formatDate(m.createdAt, locale),
       },
     ]),
@@ -38,4 +34,9 @@ export function pluralWord(count: number, forms: PluralForms, locale: Locale) {
 
 export function plural(count: number, forms: PluralForms, locale: Locale) {
   return `${count} ${pluralWord(count, forms, locale)}`;
+}
+
+/** next/image can only optimise local files and our Blob store; other hosts are shown as-is. */
+export function isOptimizable(src: string) {
+  return src.startsWith("/") || /\.public\.blob\.vercel-storage\.com\//.test(src);
 }
