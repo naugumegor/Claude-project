@@ -1,0 +1,1032 @@
+[
+ {
+  "ru": "Предел текучести",
+  "en": "Yield strength",
+  "def_ru": "Напряжение, при котором материал начинает пластически деформироваться без роста нагрузки (σт, Rp0.2).",
+  "def_en": "Stress at which a material starts to deform plastically (σy, Rp0.2).",
+  "area": "eng",
+  "aliases": [
+   "σт",
+   "Rp0.2"
+  ]
+ },
+ {
+  "ru": "Предел прочности",
+  "en": "Ultimate tensile strength",
+  "def_ru": "Наибольшее напряжение, которое выдерживает образец перед разрушением (σв, Rm).",
+  "def_en": "Maximum stress a specimen withstands before fracture (UTS, Rm).",
+  "area": "eng",
+  "aliases": [
+   "временное сопротивление",
+   "σв",
+   "UTS"
+  ]
+ },
+ {
+  "ru": "Модуль упругости",
+  "en": "Young's modulus",
+  "def_ru": "Коэффициент пропорциональности между напряжением и деформацией в законе Гука; у стали около 200 ГПа.",
+  "def_en": "Ratio of stress to strain in Hooke's law; about 200 GPa for steel.",
+  "area": "eng",
+  "aliases": [
+   "модуль Юнга",
+   "Elastic modulus"
+  ]
+ },
+ {
+  "ru": "Коэффициент Пуассона",
+  "en": "Poisson's ratio",
+  "def_ru": "Отношение поперечной деформации к продольной; у металлов около 0.3.",
+  "def_en": "Ratio of lateral to axial strain; about 0.3 for metals.",
+  "area": "eng"
+ },
+ {
+  "ru": "Напряжение",
+  "en": "Stress",
+  "def_ru": "Внутренняя сила на единицу площади сечения, Па.",
+  "def_en": "Internal force per unit area, Pa.",
+  "area": "eng"
+ },
+ {
+  "ru": "Деформация",
+  "en": "Strain",
+  "def_ru": "Относительное изменение размера тела под нагрузкой.",
+  "def_en": "Relative change in size under load.",
+  "area": "eng"
+ },
+ {
+  "ru": "Запас прочности",
+  "en": "Safety factor",
+  "def_ru": "Отношение предельного напряжения к действующему.",
+  "def_en": "Ratio of limiting stress to working stress.",
+  "area": "eng",
+  "aliases": [
+   "коэффициент запаса",
+   "Factor of safety"
+  ]
+ },
+ {
+  "ru": "Изгибающий момент",
+  "en": "Bending moment",
+  "def_ru": "Момент внутренних сил в сечении балки, вызывающий изгиб.",
+  "def_en": "Internal moment in a beam section that causes bending.",
+  "area": "eng"
+ },
+ {
+  "ru": "Поперечная сила",
+  "en": "Shear force",
+  "def_ru": "Равнодействующая внутренних сил в сечении, перпендикулярная оси балки.",
+  "def_en": "Resultant internal force in a section perpendicular to the beam axis.",
+  "area": "eng"
+ },
+ {
+  "ru": "Крутящий момент",
+  "en": "Torque",
+  "def_ru": "Момент, закручивающий вал вокруг его оси.",
+  "def_en": "Moment twisting a shaft about its axis.",
+  "area": "eng"
+ },
+ {
+  "ru": "Момент инерции сечения",
+  "en": "Second moment of area",
+  "def_ru": "Геометрическая характеристика сечения, определяющая жёсткость при изгибе, мм⁴.",
+  "def_en": "Section property governing bending stiffness, mm⁴.",
+  "area": "eng",
+  "aliases": [
+   "осевой момент инерции",
+   "Area moment of inertia"
+  ]
+ },
+ {
+  "ru": "Момент сопротивления",
+  "en": "Section modulus",
+  "def_ru": "Отношение момента инерции к расстоянию до крайнего волокна; σ = M/W.",
+  "def_en": "Second moment of area divided by distance to the extreme fibre; σ = M/W.",
+  "area": "eng"
+ },
+ {
+  "ru": "Прогиб",
+  "en": "Deflection",
+  "def_ru": "Перемещение точки оси балки перпендикулярно оси под нагрузкой.",
+  "def_en": "Displacement of a beam axis under load.",
+  "area": "eng"
+ },
+ {
+  "ru": "Потеря устойчивости",
+  "en": "Buckling",
+  "def_ru": "Внезапный изгиб сжатого стержня при достижении критической силы.",
+  "def_en": "Sudden sideways failure of a compressed member at the critical load.",
+  "area": "eng",
+  "aliases": [
+   "продольный изгиб"
+  ]
+ },
+ {
+  "ru": "Предел выносливости",
+  "en": "Endurance limit",
+  "def_ru": "Напряжение, которое материал выдерживает при бесконечно большом числе циклов.",
+  "def_en": "Stress a material can endure for an unlimited number of cycles.",
+  "area": "eng",
+  "aliases": [
+   "Fatigue limit"
+  ]
+ },
+ {
+  "ru": "Усталость",
+  "en": "Fatigue",
+  "def_ru": "Разрушение от многократно повторяющихся нагрузок ниже предела прочности.",
+  "def_en": "Failure under repeated loads below the ultimate strength.",
+  "area": "eng"
+ },
+ {
+  "ru": "Концентратор напряжений",
+  "en": "Stress concentrator",
+  "def_ru": "Галтель, отверстие или канавка, где местные напряжения резко выше номинальных.",
+  "def_en": "A fillet, hole or groove where local stress far exceeds nominal.",
+  "area": "eng",
+  "aliases": [
+   "Stress raiser"
+  ]
+ },
+ {
+  "ru": "Твёрдость",
+  "en": "Hardness",
+  "def_ru": "Сопротивление материала вдавливанию: HB, HRC, HV.",
+  "def_en": "Resistance to indentation: HB, HRC, HV.",
+  "area": "eng"
+ },
+ {
+  "ru": "Закалка",
+  "en": "Quenching",
+  "def_ru": "Нагрев выше критической точки и быстрое охлаждение для получения мартенсита.",
+  "def_en": "Heating above the critical point and rapid cooling to form martensite.",
+  "area": "eng"
+ },
+ {
+  "ru": "Отпуск",
+  "en": "Tempering",
+  "def_ru": "Нагрев закалённой стали ниже A1 для снятия напряжений и повышения вязкости.",
+  "def_en": "Reheating hardened steel below A1 to relieve stress and add toughness.",
+  "area": "eng"
+ },
+ {
+  "ru": "Отжиг",
+  "en": "Annealing",
+  "def_ru": "Нагрев и медленное охлаждение для смягчения и снятия напряжений.",
+  "def_en": "Heating and slow cooling to soften and relieve stress.",
+  "area": "eng"
+ },
+ {
+  "ru": "Цементация",
+  "en": "Carburizing",
+  "def_ru": "Насыщение поверхности стали углеродом для твёрдого слоя при вязкой сердцевине.",
+  "def_en": "Diffusing carbon into the surface for a hard case and tough core.",
+  "area": "eng"
+ },
+ {
+  "ru": "Мартенсит",
+  "en": "Martensite",
+  "def_ru": "Твёрдая игольчатая структура стали после закалки.",
+  "def_en": "Hard needle-like steel structure formed by quenching.",
+  "area": "eng"
+ },
+ {
+  "ru": "Аустенит",
+  "en": "Austenite",
+  "def_ru": "Твёрдый раствор углерода в γ-железе, существует при высоких температурах.",
+  "def_en": "Solid solution of carbon in γ-iron, stable at high temperature.",
+  "area": "eng"
+ },
+ {
+  "ru": "Посадка",
+  "en": "Fit",
+  "def_ru": "Характер соединения вала и отверстия: с зазором, переходная, с натягом.",
+  "def_en": "How a shaft and hole mate: clearance, transition or interference.",
+  "area": "eng"
+ },
+ {
+  "ru": "Допуск",
+  "en": "Tolerance",
+  "def_ru": "Разность наибольшего и наименьшего допустимых размеров.",
+  "def_en": "Difference between the largest and smallest permitted sizes.",
+  "area": "eng"
+ },
+ {
+  "ru": "Квалитет",
+  "en": "Tolerance grade",
+  "def_ru": "Степень точности размера (IT6, IT7…), задающая величину допуска.",
+  "def_en": "Accuracy class (IT6, IT7…) that sets the tolerance size.",
+  "area": "eng",
+  "aliases": [
+   "IT grade"
+  ]
+ },
+ {
+  "ru": "Натяг",
+  "en": "Interference",
+  "def_ru": "Отрицательный зазор: вал больше отверстия, соединение держится трением.",
+  "def_en": "Negative clearance: the shaft is larger than the hole.",
+  "area": "eng"
+ },
+ {
+  "ru": "Шероховатость",
+  "en": "Surface roughness",
+  "def_ru": "Микронеровности поверхности, Ra в мкм.",
+  "def_en": "Micro-irregularities of a surface, Ra in µm.",
+  "area": "eng",
+  "aliases": [
+   "Ra"
+  ]
+ },
+ {
+  "ru": "Допуск формы и расположения",
+  "en": "Geometric tolerance",
+  "def_ru": "Ограничение отклонений формы и положения поверхностей (GD&T).",
+  "def_en": "Limits on form and position of features (GD&T).",
+  "area": "eng",
+  "aliases": [
+   "GD&T"
+  ]
+ },
+ {
+  "ru": "База",
+  "en": "Datum",
+  "def_ru": "Поверхность или ось, от которой задают расположение других элементов.",
+  "def_en": "Surface or axis from which other features are located.",
+  "area": "eng"
+ },
+ {
+  "ru": "Разрез",
+  "en": "Section view",
+  "def_ru": "Изображение предмета, мысленно рассечённого плоскостью, с тем, что за ней.",
+  "def_en": "View of an object cut by a plane, showing what lies behind.",
+  "area": "eng"
+ },
+ {
+  "ru": "Сборочный чертёж",
+  "en": "Assembly drawing",
+  "def_ru": "Чертёж изделия, показывающий расположение и связь составных частей.",
+  "def_en": "Drawing showing how parts fit together.",
+  "area": "eng"
+ },
+ {
+  "ru": "Спецификация",
+  "en": "Bill of materials",
+  "def_ru": "Перечень составных частей изделия.",
+  "def_en": "List of an assembly's parts.",
+  "area": "eng",
+  "aliases": [
+   "BOM"
+  ]
+ },
+ {
+  "ru": "Передаточное отношение",
+  "en": "Gear ratio",
+  "def_ru": "Отношение угловых скоростей ведущего и ведомого звеньев.",
+  "def_en": "Ratio of input to output angular speed.",
+  "area": "eng",
+  "aliases": [
+   "Transmission ratio"
+  ]
+ },
+ {
+  "ru": "Модуль зацепления",
+  "en": "Module",
+  "def_ru": "Отношение делительного диаметра к числу зубьев, мм.",
+  "def_en": "Pitch diameter divided by the number of teeth, mm.",
+  "area": "eng",
+  "aliases": [
+   "модуль зубчатого колеса"
+  ]
+ },
+ {
+  "ru": "Редуктор",
+  "en": "Gearbox",
+  "def_ru": "Механизм, снижающий частоту вращения и увеличивающий момент.",
+  "def_en": "Mechanism that reduces speed and increases torque.",
+  "area": "eng",
+  "aliases": [
+   "Gear reducer"
+  ]
+ },
+ {
+  "ru": "Подшипник качения",
+  "en": "Rolling bearing",
+  "def_ru": "Опора вала с телами качения: шариками или роликами.",
+  "def_en": "Shaft support with balls or rollers.",
+  "area": "eng"
+ },
+ {
+  "ru": "Ресурс подшипника",
+  "en": "Bearing life",
+  "def_ru": "Число оборотов или часов до появления усталостного выкрашивания (L10).",
+  "def_en": "Revolutions or hours before fatigue spalling (L10).",
+  "area": "eng",
+  "aliases": [
+   "L10"
+  ]
+ },
+ {
+  "ru": "КПД",
+  "en": "Efficiency",
+  "def_ru": "Отношение полезной работы или мощности к затраченной.",
+  "def_en": "Ratio of useful output to input power.",
+  "area": "eng",
+  "aliases": [
+   "коэффициент полезного действия"
+  ]
+ },
+ {
+  "ru": "Степень подвижности",
+  "en": "Degrees of freedom",
+  "def_ru": "Число независимых координат, задающих положение механизма.",
+  "def_en": "Number of independent coordinates defining a mechanism's position.",
+  "area": "eng",
+  "aliases": [
+   "DOF",
+   "формула Чебышева"
+  ]
+ },
+ {
+  "ru": "Энтальпия",
+  "en": "Enthalpy",
+  "def_ru": "Функция состояния h = u + pv, удобная для открытых систем.",
+  "def_en": "State function h = u + pv, convenient for flow systems.",
+  "area": "eng"
+ },
+ {
+  "ru": "Энтропия",
+  "en": "Entropy",
+  "def_ru": "Функция состояния, мера необратимости; dS = δQ/T.",
+  "def_en": "State function measuring irreversibility; dS = δQ/T.",
+  "area": "eng"
+ },
+ {
+  "ru": "Цикл Карно",
+  "en": "Carnot cycle",
+  "def_ru": "Идеальный цикл с наибольшим КПД 1 − Tх/Tг.",
+  "def_en": "Ideal cycle with maximum efficiency 1 − Tc/Th.",
+  "area": "eng"
+ },
+ {
+  "ru": "Число Рейнольдса",
+  "en": "Reynolds number",
+  "def_ru": "Отношение сил инерции к силам вязкости; определяет ламинарный или турбулентный режим.",
+  "def_en": "Ratio of inertial to viscous forces; sets laminar or turbulent flow.",
+  "area": "eng",
+  "aliases": [
+   "Re"
+  ]
+ },
+ {
+  "ru": "Уравнение Бернулли",
+  "en": "Bernoulli's equation",
+  "def_ru": "Сохранение энергии вдоль линии тока: p + ρv²/2 + ρgz = const.",
+  "def_en": "Energy conservation along a streamline: p + ρv²/2 + ρgz = const.",
+  "area": "eng"
+ },
+ {
+  "ru": "Вязкость",
+  "en": "Viscosity",
+  "def_ru": "Сопротивление жидкости сдвигу, Па·с.",
+  "def_en": "A fluid's resistance to shear, Pa·s.",
+  "area": "eng"
+ },
+ {
+  "ru": "Метод конечных элементов",
+  "en": "Finite element method",
+  "def_ru": "Численный метод: деталь разбивают на элементы и решают систему уравнений.",
+  "def_en": "Numerical method that splits a part into elements and solves a system of equations.",
+  "area": "eng",
+  "aliases": [
+   "МКЭ",
+   "FEA",
+   "FEM"
+  ]
+ },
+ {
+  "ru": "Сетка",
+  "en": "Mesh",
+  "def_ru": "Разбиение модели на конечные элементы.",
+  "def_en": "Division of a model into finite elements.",
+  "area": "eng"
+ },
+ {
+  "ru": "Граничные условия",
+  "en": "Boundary conditions",
+  "def_ru": "Закрепления и нагрузки, заданные на границе расчётной модели.",
+  "def_en": "Supports and loads applied at the model boundary.",
+  "area": "eng"
+ },
+ {
+  "ru": "Параметрическая модель",
+  "en": "Parametric model",
+  "def_ru": "3D-модель, где размеры и связи заданы параметрами и легко меняются.",
+  "def_en": "3D model driven by editable dimensions and constraints.",
+  "area": "eng"
+ },
+ {
+  "ru": "Эскиз",
+  "en": "Sketch",
+  "def_ru": "2D-контур с размерами и связями, основа 3D-операций в САПР.",
+  "def_en": "Constrained 2D profile underlying CAD features.",
+  "area": "eng"
+ },
+ {
+  "ru": "Реакция опоры",
+  "en": "Support reaction",
+  "def_ru": "Сила или момент, которыми опора действует на конструкцию.",
+  "def_en": "Force or moment a support exerts on a structure.",
+  "area": "eng"
+ },
+ {
+  "ru": "Ферма",
+  "en": "Truss",
+  "def_ru": "Конструкция из стержней, соединённых шарнирами, работающих на растяжение-сжатие.",
+  "def_en": "Structure of pin-jointed bars in tension or compression.",
+  "area": "eng"
+ },
+ {
+  "ru": "Центр масс",
+  "en": "Centre of mass",
+  "def_ru": "Точка, в которой можно считать сосредоточенной всю массу тела.",
+  "def_en": "Point where the whole mass can be considered concentrated.",
+  "area": "eng",
+  "aliases": [
+   "центр тяжести",
+   "Center of gravity"
+  ]
+ },
+ {
+  "ru": "Резонанс",
+  "en": "Resonance",
+  "def_ru": "Резкий рост амплитуды, когда частота воздействия близка к собственной.",
+  "def_en": "Large amplitude when forcing frequency approaches the natural frequency.",
+  "area": "eng"
+ },
+ {
+  "ru": "Собственная частота",
+  "en": "Natural frequency",
+  "def_ru": "Частота свободных колебаний системы, √(k/m) для простого осциллятора.",
+  "def_en": "Frequency of free vibration, √(k/m) for a simple oscillator.",
+  "area": "eng"
+ },
+ {
+  "ru": "Стоимость привлечения клиента",
+  "en": "Customer acquisition cost",
+  "def_ru": "Все расходы на привлечение, делённые на число новых клиентов.",
+  "def_en": "All acquisition spend divided by new customers.",
+  "area": "biz",
+  "aliases": [
+   "CAC"
+  ]
+ },
+ {
+  "ru": "Пожизненная ценность клиента",
+  "en": "Lifetime value",
+  "def_ru": "Валовая прибыль, которую клиент принесёт за всё время отношений.",
+  "def_en": "Gross profit a customer brings over the whole relationship.",
+  "area": "biz",
+  "aliases": [
+   "LTV",
+   "CLV"
+  ]
+ },
+ {
+  "ru": "Отток клиентов",
+  "en": "Churn",
+  "def_ru": "Доля клиентов, ушедших за период.",
+  "def_en": "Share of customers lost in a period.",
+  "area": "biz",
+  "aliases": [
+   "Churn rate",
+   "отток"
+  ]
+ },
+ {
+  "ru": "Средняя выручка на клиента",
+  "en": "Average revenue per user",
+  "def_ru": "Выручка за период, делённая на число клиентов.",
+  "def_en": "Revenue per period divided by customers.",
+  "area": "biz",
+  "aliases": [
+   "ARPU"
+  ]
+ },
+ {
+  "ru": "Средний чек",
+  "en": "Average order value",
+  "def_ru": "Выручка, делённая на число заказов.",
+  "def_en": "Revenue divided by the number of orders.",
+  "area": "biz",
+  "aliases": [
+   "AOV"
+  ]
+ },
+ {
+  "ru": "Конверсия",
+  "en": "Conversion rate",
+  "def_ru": "Доля пользователей, перешедших на следующий этап воронки.",
+  "def_en": "Share of users moving to the next funnel stage.",
+  "area": "biz",
+  "aliases": [
+   "CR"
+  ]
+ },
+ {
+  "ru": "Маржинальность",
+  "en": "Margin",
+  "def_ru": "Доля выручки, остающаяся после вычета затрат определённого вида.",
+  "def_en": "Share of revenue left after a given class of costs.",
+  "area": "biz",
+  "aliases": [
+   "маржа"
+  ]
+ },
+ {
+  "ru": "Маржинальный доход",
+  "en": "Contribution margin",
+  "def_ru": "Цена минус переменные затраты; покрывает постоянные затраты и даёт прибыль.",
+  "def_en": "Price minus variable cost; covers fixed costs and profit.",
+  "area": "biz"
+ },
+ {
+  "ru": "Валовая прибыль",
+  "en": "Gross profit",
+  "def_ru": "Выручка минус себестоимость продаж.",
+  "def_en": "Revenue minus cost of goods sold.",
+  "area": "biz"
+ },
+ {
+  "ru": "Себестоимость",
+  "en": "Cost of goods sold",
+  "def_ru": "Затраты на производство или закупку проданных товаров.",
+  "def_en": "Cost of producing or buying the goods sold.",
+  "area": "biz",
+  "aliases": [
+   "COGS"
+  ]
+ },
+ {
+  "ru": "EBITDA",
+  "en": "EBITDA",
+  "def_ru": "Прибыль до вычета процентов, налогов и амортизации.",
+  "def_en": "Earnings before interest, taxes, depreciation and amortization.",
+  "area": "biz"
+ },
+ {
+  "ru": "Операционная прибыль",
+  "en": "Operating profit",
+  "def_ru": "Прибыль от основной деятельности до процентов и налогов.",
+  "def_en": "Profit from operations before interest and taxes.",
+  "area": "biz",
+  "aliases": [
+   "EBIT"
+  ]
+ },
+ {
+  "ru": "Чистая прибыль",
+  "en": "Net income",
+  "def_ru": "Прибыль после всех расходов, процентов и налогов.",
+  "def_en": "Profit after all expenses, interest and taxes.",
+  "area": "biz",
+  "aliases": [
+   "Net profit"
+  ]
+ },
+ {
+  "ru": "Выручка",
+  "en": "Revenue",
+  "def_ru": "Деньги от продаж до вычета расходов.",
+  "def_en": "Money from sales before expenses.",
+  "area": "biz",
+  "aliases": [
+   "Sales"
+  ]
+ },
+ {
+  "ru": "Амортизация",
+  "en": "Depreciation",
+  "def_ru": "Перенос стоимости основных средств на расходы в течение срока службы.",
+  "def_en": "Spreading an asset's cost over its useful life.",
+  "area": "biz",
+  "aliases": [
+   "D&A"
+  ]
+ },
+ {
+  "ru": "Капитальные затраты",
+  "en": "Capital expenditure",
+  "def_ru": "Вложения в основные средства: оборудование, здания.",
+  "def_en": "Spending on fixed assets such as equipment and buildings.",
+  "area": "biz",
+  "aliases": [
+   "CAPEX",
+   "капвложения"
+  ]
+ },
+ {
+  "ru": "Операционные расходы",
+  "en": "Operating expenses",
+  "def_ru": "Текущие расходы на ведение бизнеса.",
+  "def_en": "Ongoing costs of running the business.",
+  "area": "biz",
+  "aliases": [
+   "OPEX"
+  ]
+ },
+ {
+  "ru": "Оборотный капитал",
+  "en": "Working capital",
+  "def_ru": "Оборотные активы минус краткосрочные обязательства.",
+  "def_en": "Current assets minus current liabilities.",
+  "area": "biz",
+  "aliases": [
+   "NWC"
+  ]
+ },
+ {
+  "ru": "Свободный денежный поток",
+  "en": "Free cash flow",
+  "def_ru": "Операционный денежный поток минус капитальные затраты.",
+  "def_en": "Operating cash flow minus capital expenditure.",
+  "area": "biz",
+  "aliases": [
+   "FCF"
+  ]
+ },
+ {
+  "ru": "Баланс",
+  "en": "Balance sheet",
+  "def_ru": "Отчёт об активах, обязательствах и капитале на дату.",
+  "def_en": "Statement of assets, liabilities and equity at a date.",
+  "area": "biz"
+ },
+ {
+  "ru": "Отчёт о прибылях и убытках",
+  "en": "Income statement",
+  "def_ru": "Отчёт о выручке, расходах и прибыли за период.",
+  "def_en": "Statement of revenue, expenses and profit for a period.",
+  "area": "biz",
+  "aliases": [
+   "P&L",
+   "ОПУ"
+  ]
+ },
+ {
+  "ru": "Рентабельность собственного капитала",
+  "en": "Return on equity",
+  "def_ru": "Чистая прибыль, делённая на собственный капитал.",
+  "def_en": "Net income divided by equity.",
+  "area": "biz",
+  "aliases": [
+   "ROE"
+  ]
+ },
+ {
+  "ru": "Окупаемость инвестиций",
+  "en": "Return on investment",
+  "def_ru": "(Доход − вложения) / вложения.",
+  "def_en": "(Gain − cost) / cost.",
+  "area": "biz",
+  "aliases": [
+   "ROI"
+  ]
+ },
+ {
+  "ru": "Чистая приведённая стоимость",
+  "en": "Net present value",
+  "def_ru": "Сумма дисконтированных денежных потоков проекта, включая инвестицию.",
+  "def_en": "Sum of a project's discounted cash flows, including the investment.",
+  "area": "biz",
+  "aliases": [
+   "NPV",
+   "ЧДД"
+  ]
+ },
+ {
+  "ru": "Внутренняя норма доходности",
+  "en": "Internal rate of return",
+  "def_ru": "Ставка дисконтирования, при которой NPV равен нулю.",
+  "def_en": "Discount rate at which NPV equals zero.",
+  "area": "biz",
+  "aliases": [
+   "IRR",
+   "ВНД"
+  ]
+ },
+ {
+  "ru": "Средневзвешенная стоимость капитала",
+  "en": "Weighted average cost of capital",
+  "def_ru": "Средняя требуемая доходность собственного и заёмного капитала с учётом налогового щита.",
+  "def_en": "Average required return on equity and debt, after the tax shield.",
+  "area": "biz",
+  "aliases": [
+   "WACC"
+  ]
+ },
+ {
+  "ru": "Ставка дисконтирования",
+  "en": "Discount rate",
+  "def_ru": "Доходность, требуемая за риск и время; переводит будущие деньги в сегодняшние.",
+  "def_en": "Required return used to convert future money to today's.",
+  "area": "biz"
+ },
+ {
+  "ru": "Срок окупаемости",
+  "en": "Payback period",
+  "def_ru": "Время, за которое поступления покрывают инвестицию.",
+  "def_en": "Time for inflows to recover the investment.",
+  "area": "biz",
+  "aliases": [
+   "PP",
+   "DPP"
+  ]
+ },
+ {
+  "ru": "Аннуитет",
+  "en": "Annuity",
+  "def_ru": "Серия равных платежей через равные интервалы.",
+  "def_en": "A series of equal payments at equal intervals.",
+  "area": "biz"
+ },
+ {
+  "ru": "Точка безубыточности",
+  "en": "Break-even point",
+  "def_ru": "Объём продаж, при котором прибыль равна нулю.",
+  "def_en": "Sales volume at which profit is zero.",
+  "area": "biz",
+  "aliases": [
+   "BEP"
+  ]
+ },
+ {
+  "ru": "Постоянные затраты",
+  "en": "Fixed costs",
+  "def_ru": "Затраты, не зависящие от объёма в рамках периода.",
+  "def_en": "Costs that do not vary with volume in a period.",
+  "area": "biz"
+ },
+ {
+  "ru": "Переменные затраты",
+  "en": "Variable costs",
+  "def_ru": "Затраты, растущие пропорционально объёму.",
+  "def_en": "Costs that rise in proportion to volume.",
+  "area": "biz"
+ },
+ {
+  "ru": "Операционный рычаг",
+  "en": "Operating leverage",
+  "def_ru": "Во сколько раз изменение прибыли сильнее изменения выручки.",
+  "def_en": "How much faster profit changes than revenue.",
+  "area": "biz",
+  "aliases": [
+   "DOL"
+  ]
+ },
+ {
+  "ru": "Невозвратные затраты",
+  "en": "Sunk cost",
+  "def_ru": "Уже понесённые затраты, которые не вернуть ни при каком решении.",
+  "def_en": "Costs already incurred that no decision can recover.",
+  "area": "biz"
+ },
+ {
+  "ru": "Альтернативная стоимость",
+  "en": "Opportunity cost",
+  "def_ru": "Ценность лучшей упущенной альтернативы.",
+  "def_en": "Value of the best forgone alternative.",
+  "area": "biz"
+ },
+ {
+  "ru": "Эластичность спроса",
+  "en": "Price elasticity of demand",
+  "def_ru": "Процентное изменение спроса при изменении цены на 1%.",
+  "def_en": "Percentage change in quantity for a 1% price change.",
+  "area": "biz",
+  "aliases": [
+   "эластичность"
+  ]
+ },
+ {
+  "ru": "Равновесная цена",
+  "en": "Equilibrium price",
+  "def_ru": "Цена, при которой спрос равен предложению.",
+  "def_en": "Price at which demand equals supply.",
+  "area": "biz"
+ },
+ {
+  "ru": "Предельные издержки",
+  "en": "Marginal cost",
+  "def_ru": "Затраты на производство ещё одной единицы.",
+  "def_en": "Cost of producing one more unit.",
+  "area": "biz",
+  "aliases": [
+   "MC"
+  ]
+ },
+ {
+  "ru": "Монополия",
+  "en": "Monopoly",
+  "def_ru": "Рынок с единственным продавцом без близких заменителей.",
+  "def_en": "A market with a single seller and no close substitutes.",
+  "area": "biz"
+ },
+ {
+  "ru": "Олигополия",
+  "en": "Oligopoly",
+  "def_ru": "Рынок с несколькими крупными взаимозависимыми продавцами.",
+  "def_en": "A market with a few large interdependent sellers.",
+  "area": "biz"
+ },
+ {
+  "ru": "SWOT-анализ",
+  "en": "SWOT analysis",
+  "def_ru": "Сильные и слабые стороны, возможности и угрозы.",
+  "def_en": "Strengths, weaknesses, opportunities and threats.",
+  "area": "biz",
+  "aliases": [
+   "SWOT"
+  ]
+ },
+ {
+  "ru": "PESTEL-анализ",
+  "en": "PESTEL analysis",
+  "def_ru": "Анализ политических, экономических, социальных, технологических, экологических и правовых факторов.",
+  "def_en": "Analysis of political, economic, social, technological, environmental and legal factors.",
+  "area": "biz",
+  "aliases": [
+   "PESTEL"
+  ]
+ },
+ {
+  "ru": "Пять сил Портера",
+  "en": "Porter's five forces",
+  "def_ru": "Модель привлекательности отрасли: конкуренты, новые игроки, заменители, покупатели, поставщики.",
+  "def_en": "Industry attractiveness model: rivalry, entrants, substitutes, buyers, suppliers.",
+  "area": "biz"
+ },
+ {
+  "ru": "Ценностное предложение",
+  "en": "Value proposition",
+  "def_ru": "Какую задачу клиента решает продукт и почему лучше альтернатив.",
+  "def_en": "What customer job a product does and why it beats alternatives.",
+  "area": "biz",
+  "aliases": [
+   "UVP"
+  ]
+ },
+ {
+  "ru": "Минимально жизнеспособный продукт",
+  "en": "Minimum viable product",
+  "def_ru": "Простейшая версия продукта для проверки гипотезы на реальных клиентах.",
+  "def_en": "Simplest product version that tests a hypothesis with real customers.",
+  "area": "biz",
+  "aliases": [
+   "MVP"
+  ]
+ },
+ {
+  "ru": "Пивот",
+  "en": "Pivot",
+  "def_ru": "Смена элемента бизнес-модели после проверки гипотез.",
+  "def_en": "Changing part of the business model after testing hypotheses.",
+  "area": "biz"
+ },
+ {
+  "ru": "Воронка продаж",
+  "en": "Sales funnel",
+  "def_ru": "Этапы пути клиента от первого контакта до покупки.",
+  "def_en": "Stages from first contact to purchase.",
+  "area": "biz"
+ },
+ {
+  "ru": "Лид",
+  "en": "Lead",
+  "def_ru": "Потенциальный клиент, оставивший контакт.",
+  "def_en": "A potential customer who left contact details.",
+  "area": "biz"
+ },
+ {
+  "ru": "Цепь поставок",
+  "en": "Supply chain",
+  "def_ru": "Путь товара от сырья до конечного покупателя.",
+  "def_en": "The path of goods from raw materials to the end customer.",
+  "area": "biz"
+ },
+ {
+  "ru": "Оптимальный размер заказа",
+  "en": "Economic order quantity",
+  "def_ru": "Размер заказа, минимизирующий сумму затрат на заказы и хранение.",
+  "def_en": "Order size minimising ordering plus holding costs.",
+  "area": "biz",
+  "aliases": [
+   "EOQ",
+   "формула Уилсона"
+  ]
+ },
+ {
+  "ru": "Страховой запас",
+  "en": "Safety stock",
+  "def_ru": "Дополнительный запас на случай колебаний спроса и сроков поставки.",
+  "def_en": "Extra stock covering demand and lead-time variability.",
+  "area": "biz"
+ },
+ {
+  "ru": "Узкое место",
+  "en": "Bottleneck",
+  "def_ru": "Этап с наименьшей производительностью, определяющий темп процесса.",
+  "def_en": "The slowest step, which sets process throughput.",
+  "area": "biz"
+ },
+ {
+  "ru": "Бережливое производство",
+  "en": "Lean manufacturing",
+  "def_ru": "Система устранения потерь, выросшая из производственной системы Toyota.",
+  "def_en": "A waste-elimination system derived from the Toyota Production System.",
+  "area": "biz",
+  "aliases": [
+   "Lean"
+  ]
+ },
+ {
+  "ru": "Канбан",
+  "en": "Kanban",
+  "def_ru": "Метод управления потоком работ с визуальной доской и лимитом незавершённой работы.",
+  "def_en": "Flow management with a visual board and WIP limits.",
+  "area": "biz"
+ },
+ {
+  "ru": "Критический путь",
+  "en": "Critical path",
+  "def_ru": "Самая длинная цепочка зависимых работ; определяет срок проекта.",
+  "def_en": "Longest chain of dependent tasks; sets the project duration.",
+  "area": "biz",
+  "aliases": [
+   "CPM"
+  ]
+ },
+ {
+  "ru": "Диаграмма Ганта",
+  "en": "Gantt chart",
+  "def_ru": "График работ проекта в виде полос на шкале времени.",
+  "def_en": "Project schedule shown as bars on a timeline.",
+  "area": "biz"
+ },
+ {
+  "ru": "Иерархическая структура работ",
+  "en": "Work breakdown structure",
+  "def_ru": "Разбиение результата проекта на пакеты работ.",
+  "def_en": "Decomposition of a project's deliverables into work packages.",
+  "area": "biz",
+  "aliases": [
+   "WBS",
+   "ИСР"
+  ]
+ },
+ {
+  "ru": "Освоенный объём",
+  "en": "Earned value",
+  "def_ru": "Стоимость фактически выполненной работы по бюджету.",
+  "def_en": "Budgeted value of work actually completed.",
+  "area": "biz",
+  "aliases": [
+   "EV",
+   "EVM"
+  ]
+ },
+ {
+  "ru": "Спринт",
+  "en": "Sprint",
+  "def_ru": "Итерация Scrum длиной 1–4 недели с готовым результатом.",
+  "def_en": "A 1–4 week Scrum iteration with a working increment.",
+  "area": "biz"
+ },
+ {
+  "ru": "Ключевой показатель эффективности",
+  "en": "Key performance indicator",
+  "def_ru": "Метрика, по которой оценивают достижение цели.",
+  "def_en": "A metric used to judge progress toward a goal.",
+  "area": "biz",
+  "aliases": [
+   "KPI"
+  ]
+ },
+ {
+  "ru": "Сводная таблица",
+  "en": "Pivot table",
+  "def_ru": "Инструмент Excel для группировки и агрегирования данных.",
+  "def_en": "Spreadsheet tool for grouping and aggregating data.",
+  "area": "biz"
+ },
+ {
+  "ru": "Когортный анализ",
+  "en": "Cohort analysis",
+  "def_ru": "Сравнение групп клиентов, пришедших в один период.",
+  "def_en": "Comparing groups of customers acquired in the same period.",
+  "area": "biz",
+  "aliases": [
+   "когорта"
+  ]
+ }
+]
