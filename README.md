@@ -57,6 +57,8 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
 | `src/components/` | шапка, поиск, карточки, сетка с фильтрами |
 
+Аналитика: `@vercel/analytics` в `src/app/[lang]/layout.tsx`; данные смотреть во вкладке Analytics проекта на Vercel (там же её надо один раз включить).
+
 ## Этапы
 
 1. ✅ Каркас, дизайн, RU/EN, анимации, деплой на Vercel

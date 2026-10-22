@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter, Manrope } from "next/font/google";
 import "katex/dist/katex.min.css";
 import "../globals.css";
@@ -49,6 +51,10 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
           <main className="flex-1">{children}</main>
           <Footer />
         </SearchProvider>
+        {/* Vercel Web Analytics: page views, no cookies. It reads the URL, so it sits in Suspense. */}
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
       </body>
     </html>
   );
