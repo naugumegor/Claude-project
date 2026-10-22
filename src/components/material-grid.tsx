@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid, X } from "lucide-react";
 import type { LocalizedMaterial, MaterialType } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
 import { MaterialCard, type CardLabels } from "./material-card";
@@ -33,17 +33,21 @@ export function MaterialGrid({
   const params = useSearchParams();
   const [type, setType] = useState<Filter>("all");
   const subject = params.get("subject");
+  const tag = params.get("tag");
 
-  const setSubject = (next: string | null) => {
+  const setParam = (key: "subject" | "tag", next: string | null) => {
     const q = new URLSearchParams(params);
-    if (next) q.set("subject", next);
-    else q.delete("subject");
+    if (next) q.set(key, next);
+    else q.delete(key);
     const qs = q.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
   const visible = materials.filter(
-    (m) => (type === "all" || m.type === type) && (!subject || m.subject === subject),
+    (m) =>
+      (type === "all" || m.type === type) &&
+      (!subject || m.subject === subject) &&
+      (!tag || m.tags.includes(tag)),
   );
   const subjects = [...new Set(materials.map((m) => m.subject))];
   const filters: Filter[] = ["all", "note", "link", "photo"];
@@ -89,7 +93,7 @@ export function MaterialGrid({
               <motion.button
                 key={s}
                 whileTap={{ scale: 0.94 }}
-                onClick={() => setSubject(active ? null : s)}
+                onClick={() => setParam("subject", active ? null : s)}
                 className={`rounded-full border px-3 py-1 text-sm transition-all duration-300 ${
                   active
                     ? "border-ochre bg-ochre-soft text-ink shadow-[0_4px_14px_-6px_var(--ochre)]"
@@ -100,6 +104,21 @@ export function MaterialGrid({
               </motion.button>
             );
           })}
+          <AnimatePresence>
+            {tag && (
+              <motion.button
+                key={tag}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                onClick={() => setParam("tag", null)}
+                className="group flex items-center gap-1 rounded-full border border-accent bg-accent-soft px-3 py-1 text-sm text-ink"
+              >
+                #{tag}
+                <X size={14} className="text-muted transition-transform group-hover:rotate-90" />
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 

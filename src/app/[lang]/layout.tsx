@@ -4,6 +4,7 @@ import "katex/dist/katex.min.css";
 import "../globals.css";
 import { getDictionary, getLocale } from "@/dictionaries";
 import { locales } from "@/lib/i18n";
+import { alternates, siteUrl } from "@/lib/site";
 import { getMaterials } from "@/lib/materials";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -19,12 +20,12 @@ export async function generateStaticParams() {
 export async function generateMetadata(): Promise<Metadata> {
   const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
   return {
+    metadataBase: new URL(siteUrl),
     title: { default: dict.meta.title, template: `%s · ${dict.meta.title}` },
     description: dict.meta.description,
-    alternates: {
-      languages: Object.fromEntries(locales.map((l) => [l, `/${l}`])),
-    },
-    openGraph: { siteName: "Ingenium", locale },
+    alternates: alternates(locale),
+    openGraph: { siteName: "Ingenium", locale, type: "website" },
+    twitter: { card: "summary_large_image" },
   };
 }
 

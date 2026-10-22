@@ -4,11 +4,16 @@ import { getDictionary, getLocale } from "@/dictionaries";
 import { getMaterials } from "@/lib/materials";
 import { cardLabels, plural } from "@/lib/format";
 import { MaterialGrid } from "@/components/material-grid";
+import { alternates } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const dict = await getDictionary();
-  return { title: dict.materials.title, description: dict.materials.lead };
+  const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
+  return {
+    title: dict.materials.title,
+    description: dict.materials.lead,
+    alternates: alternates(locale, "/materials"),
+  };
 }
 
 export default async function MaterialsPage() {

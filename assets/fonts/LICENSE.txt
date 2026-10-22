@@ -1,0 +1,2 @@
+Manrope by The Manrope Project Authors, SIL Open Font License 1.1 (https://openfontlicense.org).
+Static 500/800 instances of the variable font from github.com/google/fonts, used to render Open Graph images.

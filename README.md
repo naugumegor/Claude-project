@@ -24,6 +24,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 ```
 
 Локально без `GITHUB_CLIENT_ID` вход в админку (`/ru/admin`) пускает сразу, без GitHub.
+Локальный PGlite однопользовательский: не запускай `build` и `start`/`dev` одновременно.
 
 ### Переменные окружения (Vercel)
 
@@ -48,11 +49,13 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `src/lib/materials.ts` | кэшированные чтения для публичных страниц |
 | `src/app/[lang]/admin/` | админка и Server Actions (сохранение, удаление, загрузка фото, превью ссылок) |
 | `src/app/api/auth/` | вход через GitHub OAuth |
+| `src/db/search.ts`, `src/app/api/search` | полнотекстовый поиск Postgres |
+| `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
 | `src/components/` | шапка, поиск, карточки, сетка с фильтрами |
 
 ## Этапы
 
 1. ✅ Каркас, дизайн, RU/EN, анимации, деплой на Vercel
 2. ✅ База (Neon Postgres + Drizzle), фото в Vercel Blob, вход через GitHub, админка
-3. Полнотекстовый поиск, теги, SEO
+3. ✅ Полнотекстовый поиск (RU/EN морфология), теги, похожие материалы, подсветка кода, SEO (sitemap, robots, canonical, OG-картинки, JSON-LD)
 4. Магазин: каталог, корзина, оплата

@@ -7,6 +7,8 @@ export type SearchItem = {
   excerpt: string;
   subject: string;
   tags: string[];
+  /** Fragment of the note body around the match, with << >> around matched words. */
+  snippet?: string;
 };
 
 const normalize = (s: string) => s.toLowerCase().replace(/ё/g, "е");

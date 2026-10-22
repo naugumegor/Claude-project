@@ -31,7 +31,8 @@
     "open": "Open",
     "visit": "Visit link",
     "onlyIn": "Only available in:",
-    "empty": "Nothing here yet."
+    "empty": "Nothing here yet.",
+    "related": "Related materials"
   },
   "types": {
     "all": "All",

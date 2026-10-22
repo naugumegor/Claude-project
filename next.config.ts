@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // PGlite (local dev database) loads its WASM from disk, so it must not be bundled.
   serverExternalPackages: ["@electric-sql/pglite"],
+  // Fonts for the generated social preview images are read from disk at runtime.
+  outputFileTracingIncludes: { "/*": ["./assets/fonts/**"] },
   images: {
     // Photos uploaded through the admin live in Vercel Blob.
     remotePatterns: [new URL("https://*.public.blob.vercel-storage.com/**")],

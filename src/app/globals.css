@@ -143,6 +143,56 @@ body {
   color: var(--muted);
   font-weight: 600;
 }
+.prose-ingenium pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  margin: 1.2rem 0;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.prose-ingenium pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+}
+/* Syntax colours (highlight.js classes) in the site palette. */
+.hljs-comment,
+.hljs-quote {
+  color: var(--muted);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-literal {
+  color: var(--accent);
+  font-weight: 600;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-attr,
+.hljs-template-variable {
+  color: var(--ochre);
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-variable {
+  color: var(--rose);
+}
+.hljs-title,
+.hljs-function .hljs-title,
+.hljs-title.function_ {
+  color: #3b5f9b;
+}
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: #7a4fa0;
+}
 .prose-ingenium .katex {
   font-size: 1.05em;
 }

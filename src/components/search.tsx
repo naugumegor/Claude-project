@@ -146,7 +146,31 @@ function SearchDialog({
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
-  const results = useMemo(() => searchItems(items, query).slice(0, 8), [items, query]);
+  const [remote, setRemote] = useState<{ query: string; items: SearchItem[] } | null>(null);
+  const local = useMemo(() => searchItems(items, query).slice(0, 8), [items, query]);
+  // Instant results from the titles we already have, replaced by the database's
+  // full-text results (which also look inside note bodies) once they arrive.
+  const results = remote?.query === query.trim() ? remote.items : local;
+
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) return;
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/search?locale=${locale}&q=${encodeURIComponent(q)}`, {
+          signal: controller.signal,
+        });
+        if (res.ok) setRemote({ query: q, items: (await res.json()).items });
+      } catch {
+        // Aborted or offline: the local results stay on screen.
+      }
+    }, 180);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query, locale]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -271,7 +295,19 @@ function SearchDialog({
                             ),
                           )}
                         </span>
-                        <span className="line-clamp-1 text-sm text-muted">{item.excerpt}</span>
+                        <span className="line-clamp-2 text-sm text-muted">
+                          {item.snippet
+                            ? item.snippet.split(/(<<.*?>>)/).map((part, j) =>
+                                part.startsWith("<<") ? (
+                                  <mark key={j} className="rounded bg-ochre-soft px-0.5 text-ink">
+                                    {part.slice(2, -2)}
+                                  </mark>
+                                ) : (
+                                  <span key={j}>{part}</span>
+                                ),
+                              )
+                            : item.excerpt}
+                        </span>
                       </span>
                       {active === i && (
                         <CornerDownLeft size={16} className="relative mt-1 text-muted" />
