@@ -22,6 +22,7 @@ import { requireAdmin } from "@/lib/session";
 import type { MaterialInput } from "./types";
 import { isSection } from "@/lib/taxonomy";
 import { DOCUMENT_KINDS, documentKind, isDocumentKind } from "@/lib/documents";
+import { isOwnBlob } from "@/lib/blob";
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -232,8 +233,8 @@ export async function uploadDocumentLocal(form: FormData): Promise<Result<{ url:
 /** Only files we stored ourselves: our Blob store, or local uploads in development. */
 function isStoredFile(url: string) {
   return (
-    /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/documents\//i.test(url) ||
-    (!process.env.VERCEL && url.startsWith("/uploads/documents/"))
+    isOwnBlob(url, "documents/") ||
+    (!process.env.VERCEL && url.startsWith("/uploads/documents/") && !url.includes(".."))
   );
 }
 

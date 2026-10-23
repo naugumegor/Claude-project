@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
   if (!gh.id || !gh.login) return fail(request, next);
 
   const user = await upsertGithubUser({ id: String(gh.id), login: gh.login, name: gh.name });
-  await createSession({ id: user.id, name: user.name, login: gh.login });
+  await createSession({ id: user.id, name: user.name, login: gh.login, githubId: String(gh.id) });
   return NextResponse.redirect(new URL(safeNext(next, "/ru/account"), request.url));
 }
 
