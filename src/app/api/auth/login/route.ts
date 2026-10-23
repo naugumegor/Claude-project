@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
   if (devBypass) {
     const user = await upsertGithubUser({ id: "dev", login: ADMIN_LOGIN, name: ADMIN_LOGIN });
-    await createSession({ id: user.id, name: user.name, login: ADMIN_LOGIN });
+    await createSession({ id: user.id, name: user.name, login: ADMIN_LOGIN, githubId: "dev" });
     return NextResponse.redirect(new URL(next, request.url));
   }
 

@@ -10,6 +10,7 @@ import { userDocuments } from "@/db/schema";
 import { requireAdmin, requireUser } from "@/lib/session";
 import { DOCUMENT_KINDS, documentKind, isDocumentKind } from "@/lib/documents";
 import { USER_DOC_MAX_BYTES, USER_DOC_MAX_COUNT } from "@/lib/user-docs-shared";
+import { blobInfo, isOwnBlob } from "@/lib/blob";
 
 // "Мои документы": a reader's own files. Everything is checked against the signed-in user,
 // so nobody can touch another reader's documents by sending a different id.
@@ -19,8 +20,8 @@ type Result<T = null> = { ok: true; data: T } | { ok: false; error: string };
 /** Only files stored in this user's own folder: our Blob store, or public/uploads locally. */
 function isOwnFile(url: string, userId: number) {
   return (
-    new RegExp(`^https://[a-z0-9]+\\.public\\.blob\\.vercel-storage\\.com/user-docs/${userId}/`, "i").test(url) ||
-    (!process.env.VERCEL && url.startsWith(`/uploads/user-docs/${userId}/`))
+    isOwnBlob(url, `user-docs/${userId}/`) ||
+    (!process.env.VERCEL && url.startsWith(`/uploads/user-docs/${userId}/`) && !url.includes(".."))
   );
 }
 
@@ -50,6 +51,14 @@ export async function addUserDocument(input: {
   const name = input.name.trim().slice(0, 120);
   if (!name) return { ok: false, error: "failed" };
   if (!isDocumentKind(input.kind) || !isOwnFile(input.url, user.id)) return { ok: false, error: "badType" };
+  let size = Math.max(0, Math.round(input.size) || 0);
+  if (isOwnBlob(input.url, "user-docs/")) {
+    // Size and type as stored, not as the browser reports them.
+    const info = await blobInfo(input.url);
+    if (!info || info.contentType.split(";")[0].trim() !== DOCUMENT_KINDS[input.kind].type) return { ok: false, error: "badType" };
+    if (info.size > USER_DOC_MAX_BYTES) return { ok: false, error: "tooBig" };
+    size = info.size;
+  }
   const [{ n }] = await db.select({ n: count() }).from(userDocuments).where(eq(userDocuments.userId, user.id));
   if (n >= USER_DOC_MAX_COUNT) return { ok: false, error: "failed" };
   const [row] = await db
@@ -60,7 +69,7 @@ export async function addUserDocument(input: {
       description: input.description.trim().slice(0, 400),
       url: input.url,
       kind: input.kind,
-      size: Math.max(0, Math.round(input.size) || 0),
+      size,
     })
     .returning();
   return { ok: true, data: { id: row.id } };
