@@ -3,7 +3,9 @@
 import { useActionState, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail, UserRound } from "lucide-react";
+import Link from "next/link";
 import type { Dictionary } from "@/dictionaries";
+import type { Locale } from "@/lib/i18n";
 import { signIn, signUp, type FormState } from "@/app/[lang]/account/actions";
 
 type Mode = "signin" | "signup";
@@ -11,11 +13,13 @@ const spring = { type: "spring", stiffness: 420, damping: 34 } as const;
 
 export function AuthForm({
   dict,
+  locale,
   next,
   initialMode,
   initialError,
 }: {
   dict: Dictionary["auth"];
+  locale: Locale;
   next: string;
   initialMode: Mode;
   initialError?: string;
@@ -24,6 +28,10 @@ export function AuthForm({
   const [inState, inAction, inPending] = useActionState<FormState, FormData>(signIn, undefined);
   const [upState, upAction, upPending] = useActionState<FormState, FormData>(signUp, undefined);
   const [showPassword, setShowPassword] = useState(false);
+  // Controlled, because React clears a form after its action runs: a typo in the password
+  // shouldn't wipe the email and name too.
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   const signup = mode === "signup";
   const pending = signup ? upPending : inPending;
@@ -81,11 +89,28 @@ export function AuthForm({
               exit={{ opacity: 0, height: 0 }}
               className="overflow-hidden"
             >
-              <IconInput icon={UserRound} name="name" placeholder={dict.name} autoComplete="name" required />
+              <IconInput
+                icon={UserRound}
+                name="name"
+                placeholder={dict.name}
+                autoComplete="name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </motion.div>
           )}
         </AnimatePresence>
-        <IconInput icon={Mail} name="email" type="email" placeholder={dict.email} autoComplete="email" required />
+        <IconInput
+          icon={Mail}
+          name="email"
+          type="email"
+          placeholder={dict.email}
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <div className="relative">
           <IconInput
             icon={Lock}
@@ -105,6 +130,15 @@ export function AuthForm({
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
+
+        {!signup && (
+          <Link
+            href={`/${locale}/reset`}
+            className="-mt-1 justify-self-end text-xs text-muted transition-colors hover:text-accent"
+          >
+            {dict.forgot}
+          </Link>
+        )}
 
         <AnimatePresence>
           {error && (
@@ -154,7 +188,7 @@ export function AuthForm({
   );
 }
 
-function IconInput({
+export function IconInput({
   icon: Icon,
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement> & { icon: React.ComponentType<{ size?: number; className?: string }> }) {

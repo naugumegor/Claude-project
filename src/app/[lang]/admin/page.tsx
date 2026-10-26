@@ -9,6 +9,7 @@ import { loadMaterials } from "@/db/queries";
 import { db } from "@/db";
 import { news, userDocuments, users } from "@/db/schema";
 import { DocReview } from "@/components/admin/doc-review";
+import { UserList } from "@/components/admin/user-list";
 import { localize } from "@/lib/content";
 import { formatDate } from "@/lib/format";
 import { getAdmin, getUser } from "@/lib/session";
@@ -36,7 +37,7 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
   const [admin, user] = await Promise.all([getAdmin(), getUser()]);
   if (!admin) return <LoginCard dict={dict.admin} next={`/${locale}/admin`} denied={Boolean(user)} />;
 
-  const [materialRows, newsRows, docRows] = await Promise.all([
+  const [materialRows, newsRows, docRows, userRows] = await Promise.all([
     loadMaterials({}),
     db.select().from(news).orderBy(desc(news.pinned), desc(news.createdAt)),
     db
@@ -45,6 +46,11 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
       .innerJoin(users, eq(userDocuments.userId, users.id))
       .where(inArray(userDocuments.status, ["pending", "published"]))
       .orderBy(desc(userDocuments.createdAt)),
+    db
+      .select({ id: users.id, name: users.name, email: users.email, githubLogin: users.githubLogin, createdAt: users.createdAt })
+      .from(users)
+      .orderBy(desc(users.createdAt))
+      .limit(200),
   ]);
   const rows = materialRows.map((m) => localize(m, locale));
   const docs = docRows.map(({ doc, author }) => ({
@@ -143,6 +149,25 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
             </li>
           ))}
         </ul>
+      )}
+
+      <h2 className="mb-3 mt-10 font-display text-xl font-bold">
+        {dict.admin.users} <span className="text-base font-medium text-muted">{userRows.length}</span>
+      </h2>
+      {userRows.length === 0 ? (
+        <p className="text-sm text-muted">{dict.admin.noUsers}</p>
+      ) : (
+        <UserList
+          locale={locale}
+          labels={{ resetLink: dict.admin.resetLink, copied: dict.admin.copied, noPassword: dict.admin.noPassword }}
+          rows={userRows.map((u) => ({
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            github: u.githubLogin,
+            created: formatDate(u.createdAt.toISOString(), locale),
+          }))}
+        />
       )}
 
       <h2 className="mb-3 mt-10 font-display text-xl font-bold">{dict.admin.materials}</h2>

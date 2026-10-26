@@ -185,3 +185,21 @@ export const news = pgTable("news", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   publishedAt: timestamp("published_at", { withTimezone: true }),
 });
+
+/**
+ * One-time password reset links. Only a SHA-256 of the token is stored, so a database leak
+ * gives nobody a working link; a link dies after an hour, after use, or when a newer one is issued.
+ */
+export const passwordResets = pgTable(
+  "password_resets",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    tokenHash: text("token_hash").notNull().unique(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("password_resets_user_idx").on(t.userId)],
+);

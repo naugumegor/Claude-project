@@ -36,6 +36,13 @@
       "when": 1792679046096,
       "tag": "0004_docs_and_news",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793054250409,
+      "tag": "0005_password_resets",
+      "breakpoints": true
     }
   ]
 }

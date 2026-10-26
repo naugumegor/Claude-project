@@ -6,6 +6,9 @@ import { and, count, eq, gt, lt } from "drizzle-orm";
 import { db } from "@/db";
 import { authFailures, favorites, materials, users } from "@/db/schema";
 import { hashPassword, verifyPassword } from "@/lib/password";
+import { hasLocale, type Locale } from "@/lib/i18n";
+import { mailEnabled, sendMail } from "@/lib/mail";
+import { consumeResetToken, createResetLink } from "@/lib/password-reset";
 import {
   createSession,
   destroySession,
@@ -52,6 +55,16 @@ async function signUpsFrom(ip: string) {
     .select({ n: count() })
     .from(authFailures)
     .where(and(eq(authFailures.key, `signup:${ip}`), gt(authFailures.createdAt, since)));
+  return row.n;
+}
+
+/** Rows under this key in the last 15 minutes. */
+async function recent(key: string) {
+  const since = new Date(Date.now() - WINDOW_MS);
+  const [row] = await db
+    .select({ n: count() })
+    .from(authFailures)
+    .where(and(eq(authFailures.key, key), gt(authFailures.createdAt, since)));
   return row.n;
 }
 
@@ -104,6 +117,72 @@ export async function signIn(_prev: FormState, form: FormData): Promise<FormStat
   // No GitHub login in this session on purpose: admin rights always need GitHub itself.
   await createSession({ id: user.id, name: user.name });
   redirect(safeNext(field(form, "next"), "/ru/account"));
+}
+
+const resetMail = {
+  ru: {
+    subject: "Ingenium: новый пароль",
+    lead: "Кто-то (надеемся, ты) попросил сбросить пароль на Ingenium. Ссылка работает один раз в течение часа:",
+    button: "Задать новый пароль",
+    ignore: "Если это был не ты, просто ничего не делай: старый пароль продолжит работать.",
+  },
+  en: {
+    subject: "Ingenium: reset your password",
+    lead: "Someone (hopefully you) asked to reset your Ingenium password. The link works once, within an hour:",
+    button: "Choose a new password",
+    ignore: "If it wasn't you, just ignore this email: your current password keeps working.",
+  },
+} as const;
+
+/**
+ * Emails a one-time reset link. Always answers "sent" for a valid address, whether or not an
+ * account exists, so the form can't be used to find out who is registered.
+ */
+export async function requestPasswordReset(_prev: FormState, form: FormData): Promise<FormState> {
+  const email = field(form, "email").toLowerCase();
+  const lang = field(form, "lang");
+  const locale: Locale = hasLocale(lang) ? lang : "ru";
+  if (!EMAIL.test(email) || email.length > 200) return { error: "badEmail" };
+  if (!mailEnabled) return { error: "mailOff" };
+
+  const ip = await clientIp();
+  if ((await recent(`reset:${email}`)) >= 3 || (await recent(`reset-ip:${ip}`)) >= 10) return { error: "tooMany" };
+  await db.insert(authFailures).values([{ key: `reset:${email}` }, { key: `reset-ip:${ip}` }]);
+
+  const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  if (user) {
+    const link = await createResetLink(user.id, locale);
+    const t = resetMail[locale];
+    const html = `<div style="font-family:system-ui,sans-serif;max-width:480px;line-height:1.5;color:#23262b">
+<p>${t.lead}</p>
+<p><a href="${link}" style="display:inline-block;background:#2f7d6d;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600">${t.button}</a></p>
+<p style="color:#6b7078;font-size:14px">${t.ignore}</p></div>`;
+    await sendMail(email, t.subject, `${t.lead}\n\n${link}\n\n${t.ignore}`, html);
+  }
+  return { ok: "sent" };
+}
+
+/** Sets a new password from a reset link and signs the user in. */
+export async function resetPassword(_prev: FormState, form: FormData): Promise<FormState> {
+  const token = field(form, "token");
+  const lang = field(form, "lang");
+  const locale: Locale = hasLocale(lang) ? lang : "ru";
+  const password = String(form.get("password") ?? "");
+  if (password.length < 8 || password.length > 200) return { error: "shortPassword" };
+
+  const userId = await consumeResetToken(token);
+  if (!userId) return { error: "badToken" };
+  const [user] = await db
+    .update(users)
+    .set({ passwordHash: await hashPassword(password) })
+    .where(eq(users.id, userId))
+    .returning();
+  if (!user) return { error: "badToken" };
+
+  // Clears the lockout, so the owner of the address can sign in straight away.
+  if (user.email) await db.delete(authFailures).where(eq(authFailures.key, `email:${user.email}`));
+  await createSession({ id: user.id, name: user.name });
+  redirect(`/${locale}/account`);
 }
 
 export async function signOut(form: FormData) {
