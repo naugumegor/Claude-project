@@ -57,6 +57,20 @@
       "when": 1793055250652,
       "tag": "0007_study_sessions",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793055250653,
+      "tag": "0008_owner_dashboard",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793055250654,
+      "tag": "0009_owner_timetable",
+      "breakpoints": true
     }
   ]
 }

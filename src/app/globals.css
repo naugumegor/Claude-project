@@ -392,3 +392,19 @@ html[data-profile="business"] [data-for]:not([data-for~="business"]) {
 :root[data-theme="dark"] .hljs-title.class_ {
   color: #c4a2e6;
 }
+
+/* Weather icon on the owner's dashboard drifts slowly up and down. */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[float_5s_ease-in-out_infinite\] {
+    animation: none;
+  }
+}
