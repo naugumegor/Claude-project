@@ -171,10 +171,12 @@ async function Account({
           <ProfileForms
             dict={dict.account}
             errors={dict.auth.errors}
-            labels={{ name: dict.auth.name, email: dict.auth.email }}
+            labels={{ name: dict.auth.name, email: dict.auth.email, forgot: dict.auth.forgot }}
             name={user.name}
             hasPassword={Boolean(user.passwordHash)}
             viaGithub={Boolean(user.githubLogin)}
+            locale={locale}
+            canDelete={!admin}
           />
         </aside>
       </div>

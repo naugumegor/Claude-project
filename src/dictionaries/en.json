@@ -218,7 +218,9 @@
       "github": "GitHub didn't confirm the sign-in",
       "wrongPassword": "Current password is wrong",
       "mailOff": "Email is not set up yet. Sign in with GitHub or ask the site owner for a reset link.",
-      "badToken": "The link expired or was already used. Request a new one"
+      "badToken": "The link expired or was already used. Request a new one",
+      "confirmDelete": "Type \"delete\" to confirm",
+      "ownerAccount": "The site owner's account can't be deleted"
     },
     "forgot": "Forgot password?",
     "reset": {
@@ -251,7 +253,11 @@
     "changed": "Password updated",
     "viaGithub": "Signs in with GitHub",
     "logout": "Sign out",
-    "admin": "Admin"
+    "admin": "Admin",
+    "deleteTitle": "Delete account",
+    "deleteLead": "We will erase your profile, favorites and uploaded documents. This cannot be undone. Type \"delete\" to confirm.",
+    "deleteWord": "delete",
+    "deleteButton": "Delete forever"
   },
   "study": {
     "minutes": "min read",

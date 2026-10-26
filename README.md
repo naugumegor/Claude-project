@@ -52,7 +52,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `src/lib/materials.ts` | кэшированные чтения для публичных страниц |
 | `src/app/[lang]/admin/` | админка и Server Actions (сохранение, удаление, загрузка фото, превью ссылок) |
 | `src/app/api/auth/` | вход через GitHub OAuth (и клиенты, и владелец; админ = GitHub-логин владельца) |
-| `src/app/[lang]/login`, `src/app/[lang]/account` | вход/регистрация по почте и паролю, личный кабинет, избранное |
+| `src/app/[lang]/login`, `src/app/[lang]/account` | вход/регистрация по почте и паролю, личный кабинет, избранное, удаление аккаунта (вместе с файлами) |
 | `src/lib/session.ts`, `src/lib/password.ts` | подписанная cookie-сессия, хэши паролей (scrypt), защита от перебора |
 | `src/app/[lang]/reset`, `src/lib/password-reset.ts`, `src/lib/mail.ts` | сброс пароля: одноразовая ссылка на час (в базе только SHA-256), письмо через Resend или ссылка из админки («Читатели») |
 | `src/app/api/upload` | выдаёт браузеру админа токен для прямой загрузки PDF/HTML/.glb в Blob (до 100 МБ) |

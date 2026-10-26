@@ -2,9 +2,10 @@
 
 import { useActionState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, KeyRound, Loader2, UserRound } from "lucide-react";
+import { Check, KeyRound, Loader2, Trash2, UserRound } from "lucide-react";
 import type { Dictionary } from "@/dictionaries";
-import { changePassword, updateProfile, type FormState } from "@/app/[lang]/account/actions";
+import type { Locale } from "@/lib/i18n";
+import { changePassword, deleteAccount, updateProfile, type FormState } from "@/app/[lang]/account/actions";
 
 export function ProfileForms({
   dict,
@@ -13,19 +14,25 @@ export function ProfileForms({
   name,
   hasPassword,
   viaGithub,
+  locale,
+  canDelete,
 }: {
   dict: Dictionary["account"];
   errors: Dictionary["auth"]["errors"];
-  labels: { name: string; email: string };
+  labels: { name: string; email: string; forgot: string };
   name: string;
   hasPassword: boolean;
   viaGithub: boolean;
+  locale: Locale;
+  /** False for the site owner, whose account holds the admin rights. */
+  canDelete: boolean;
 }) {
   const [profile, profileAction, profilePending] = useActionState<FormState, FormData>(updateProfile, undefined);
   const [password, passwordAction, passwordPending] = useActionState<FormState, FormData>(
     changePassword,
     undefined,
   );
+  const [removal, removeAction, removePending] = useActionState<FormState, FormData>(deleteAccount, undefined);
 
   const say = (state: FormState) =>
     state?.error
@@ -69,9 +76,36 @@ export function ProfileForms({
             className={inputClass}
           />
           <Submit pending={passwordPending} label={hasPassword ? dict.save : dict.setPassword} />
+          {hasPassword && (
+            <a href={`/${locale}/reset`} className="justify-self-start text-xs text-muted transition-colors hover:text-accent">
+              {labels.forgot}
+            </a>
+          )}
           <Status message={say(password)} />
         </form>
       </Card>
+
+      {canDelete && (
+        <details className="group/del rounded-2xl border border-line bg-surface p-5">
+          <summary className="flex cursor-pointer list-none items-center gap-2 text-sm text-muted transition-colors hover:text-rose">
+            <Trash2 size={15} />
+            {dict.deleteTitle}
+          </summary>
+          <form action={removeAction} className="mt-4 grid gap-3">
+            <p className="text-sm leading-relaxed text-muted">{dict.deleteLead}</p>
+            <input type="hidden" name="lang" value={locale} />
+            <input name="confirm" autoComplete="off" placeholder={dict.deleteWord} required className={inputClass} />
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              disabled={removePending}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-rose px-4 text-sm font-medium text-rose transition-colors hover:bg-rose-soft disabled:opacity-60"
+            >
+              {removePending ? <Loader2 size={16} className="animate-spin" /> : dict.deleteButton}
+            </motion.button>
+            <Status message={say(removal)} />
+          </form>
+        </details>
+      )}
     </div>
   );
 }
