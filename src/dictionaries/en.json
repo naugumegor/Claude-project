@@ -291,7 +291,8 @@
     "rain": "Rain",
     "white": "White noise",
     "brown": "Brown noise",
-    "done": "Time's up!"
+    "done": "Time's up!",
+    "today": "Pomodoros today"
   },
   "theme": {
     "light": "Light theme",
@@ -394,6 +395,33 @@
     "community": "Readers' documents",
     "communityLead": "Work by readers that passed review.",
     "by": "By"
+  },
+  "tracker": {
+    "tab": "Study",
+    "today": "Today",
+    "pomodoros": "pomodoros",
+    "min": "min",
+    "streak": "Streak",
+    "record": "Best",
+    "days": "d",
+    "total": "Total",
+    "hours": "h",
+    "activeDays": "active days",
+    "heatmap": "Activity this year",
+    "less": "less",
+    "more": "more",
+    "none": "no pomodoros",
+    "weekdays": [
+      "Mon",
+      "",
+      "Wed",
+      "",
+      "Fri",
+      "",
+      ""
+    ],
+    "empty": "Nothing here yet. Hit the timer in the bottom left: every 25 minutes of focus lands here and your streak starts growing.",
+    "keepUp": "Keep the streak alive: no pomodoro yet today."
   },
   "dashboard": {
     "hello": {

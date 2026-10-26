@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { LayoutGroup, motion } from "motion/react";
-import { FolderOpen, Heart } from "lucide-react";
+import { Flame, FolderOpen, Heart } from "lucide-react";
 
-const ICONS = { favorites: Heart, docs: FolderOpen };
+const ICONS = { favorites: Heart, docs: FolderOpen, study: Flame };
 
-/** The account's main area: favourites and «Мои документы» as two tabs (?tab=docs opens the second). */
+/** The account's main area: favourites, «Мои документы» and the study tracker as tabs (?tab=docs, ?tab=study). */
 export function AccountTabs({
   tabs,
   initial,
@@ -16,9 +16,9 @@ export function AccountTabs({
 }) {
   const [active, setActive] = useState(tabs.some((t) => t.id === initial) ? initial : tabs[0].id);
   return (
-    <div>
+    <div className="min-w-0">
       <LayoutGroup id="account-tabs">
-        <div role="tablist" className="mb-6 flex gap-1 border-b border-line">
+        <div role="tablist" className="mb-6 flex gap-1 overflow-x-auto border-b border-line [scrollbar-width:none]">
           {tabs.map((t) => {
             const Icon = ICONS[t.id];
             const on = t.id === active;
@@ -32,13 +32,13 @@ export function AccountTabs({
                   setActive(t.id);
                   window.history.replaceState(null, "", t.id === tabs[0].id ? "?" : `?tab=${t.id}`);
                 }}
-                className={`group relative -mb-px flex items-center gap-2 px-3 pb-3 pt-1 font-display text-lg font-bold tracking-tight transition-colors sm:text-xl ${
+                className={`group relative flex shrink-0 items-center gap-2 px-3 pb-3 pt-1 font-display text-lg font-bold tracking-tight transition-colors sm:text-xl ${
                   on ? "text-ink" : "text-muted hover:text-ink"
                 }`}
               >
                 <Icon
                   size={20}
-                  className={`transition-transform group-hover:scale-110 ${t.id === "favorites" ? (on ? "fill-rose text-rose" : "") : on ? "text-accent" : ""}`}
+                  className={`transition-transform group-hover:scale-110 ${t.id === "favorites" ? (on ? "fill-rose text-rose" : "") : t.id === "study" ? (on ? "text-rose" : "") : on ? "text-accent" : ""}`}
                 />
                 {t.label}
                 <span className="text-sm font-medium text-muted">{t.count}</span>

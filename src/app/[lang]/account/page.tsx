@@ -17,6 +17,9 @@ import { ProfileForms } from "@/components/account/profile-forms";
 import { GithubMark } from "@/components/account/auth-form";
 import { AccountTabs } from "@/components/account/account-tabs";
 import { MyDocuments } from "@/components/account/my-documents";
+import { StudyTracker } from "@/components/account/study-tracker";
+import { getStudyDays, getStudyTotals } from "@/db/study";
+import { addDays } from "@/lib/streaks";
 import { signOut } from "./actions";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,7 +51,9 @@ async function Account({
   const session = await getUser();
   if (!session) redirect(`/${locale}/login?next=/${locale}/account`);
 
-  const [[user], favRows, admin, docRows] = await Promise.all([
+  // A year and a week of heat map, plus a day of slack for readers ahead of UTC.
+  const since = addDays(new Date().toISOString().slice(0, 10), -372);
+  const [[user], favRows, admin, docRows, studyDays, studyTotals] = await Promise.all([
     db.select().from(users).where(eq(users.id, session.id)).limit(1),
     db
       .select({ materialId: favorites.materialId })
@@ -57,6 +62,8 @@ async function Account({
       .orderBy(desc(favorites.createdAt)),
     getAdmin(),
     db.select().from(userDocuments).where(eq(userDocuments.userId, session.id)).orderBy(desc(userDocuments.createdAt)),
+    getStudyDays(session.id, since),
+    getStudyTotals(session.id),
   ]);
 
   const logout = (
@@ -163,6 +170,12 @@ async function Account({
                   directUpload={Boolean(process.env.BLOB_READ_WRITE_TOKEN)}
                 />
               ),
+            },
+            {
+              id: "study",
+              label: dict.tracker.tab,
+              count: studyTotals.count,
+              content: <StudyTracker days={studyDays} totals={studyTotals} labels={dict.tracker} locale={locale} />,
             },
           ]}
         />
