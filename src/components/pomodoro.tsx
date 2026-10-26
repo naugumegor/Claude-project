@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { CloudRain, Pause, Play, RotateCcw, Timer, Volume2, VolumeX, Waves, Wind, X } from "lucide-react";
+import { CloudRain, Flame, Pause, Play, RotateCcw, Timer, Volume2, VolumeX, Waves, Wind, X } from "lucide-react";
 import type { Dictionary } from "@/dictionaries";
+import { localDay } from "@/lib/streaks";
 
 type Labels = Dictionary["pomodoro"];
 type Mode = "focus" | "rest";
@@ -24,6 +27,9 @@ export function Pomodoro({ labels }: { labels: Labels }) {
   const [sound, setSound] = useState<Sound>("silence");
   const [volume, setVolume] = useState(0.5);
   const noise = useNoise(sound, volume);
+  // Pomodoros finished today, from the study tracker; null for guests.
+  const [today, setToday] = useState<number | null>(null);
+  const lang = usePathname().split("/")[1] || "ru";
 
   // Restore a timer that was running before a reload.
   useEffect(() => {
@@ -38,6 +44,11 @@ export function Pomodoro({ labels }: { labels: Labels }) {
         setLeft(Math.round((s.endsAt - Date.now()) / 1000));
       } else if (!s.running) {
         setLeft(s.left);
+      } else if (s.mode === "focus" && Date.now() - s.endsAt < 12 * 3600_000) {
+        // The tab was closed while focusing and the period ended meanwhile: it still counts.
+        void logFocus(new Date(s.endsAt)).then((n) => n !== null && setToday(n));
+        setMode("rest");
+        setLeft(DURATION.rest);
       }
       /* eslint-enable react-hooks/set-state-in-effect */
     } catch {}
@@ -56,6 +67,7 @@ export function Pomodoro({ labels }: { labels: Labels }) {
       setLeft(remaining);
       if (remaining === 0) {
         chime();
+        if (mode === "focus") void logFocus(new Date()).then((n) => n !== null && setToday(n));
         const next: Mode = mode === "focus" ? "rest" : "focus";
         setMode(next);
         setRunning(false);
@@ -66,6 +78,19 @@ export function Pomodoro({ labels }: { labels: Labels }) {
     const id = setInterval(tick, 500);
     return () => clearInterval(id);
   }, [running, mode]);
+
+  // Today's count is refreshed whenever the panel opens (another tab may have logged one).
+  useEffect(() => {
+    if (!open) return;
+    let alive = true;
+    fetch(`/api/study?day=${localDay()}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { count: number } | null) => alive && setToday(d ? d.count : null))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [open]);
 
   // The countdown in the tab title, so it's visible from other tabs.
   useEffect(() => {
@@ -171,6 +196,16 @@ export function Pomodoro({ labels }: { labels: Labels }) {
               </button>
             </div>
 
+            {today !== null && (
+              <Link
+                href={`/${lang}/account?tab=study`}
+                className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted transition-colors hover:text-ink"
+              >
+                <Flame size={14} className={today > 0 ? "text-rose" : ""} />
+                {labels.today}: <span className="font-semibold tabular-nums text-ink">{today}</span>
+              </Link>
+            )}
+
             <div className="mt-4 border-t border-line pt-3">
               <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">{labels.sound}</p>
               <div className="grid grid-cols-4 gap-1">
@@ -238,6 +273,22 @@ export function Pomodoro({ labels }: { labels: Labels }) {
       </motion.button>
     </div>
   );
+}
+
+/** Logs a finished focus period for a signed-in reader; returns that day's count, or null for guests. */
+async function logFocus(at: Date): Promise<number | null> {
+  try {
+    const r = await fetch("/api/study", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ day: localDay(at) }),
+    });
+    if (r.status === 401) return null;
+    const d = (await r.json()) as { count?: number };
+    return typeof d.count === "number" ? d.count : null;
+  } catch {
+    return null;
+  }
 }
 
 function format(seconds: number) {
