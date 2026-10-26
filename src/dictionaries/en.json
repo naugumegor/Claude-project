@@ -189,7 +189,12 @@
       "needTitle": "A Russian title is required",
       "badCover": "The cover must be an https link",
       "back": "Back to admin"
-    }
+    },
+    "users": "Readers",
+    "noUsers": "Nobody has signed up yet.",
+    "resetLink": "Reset link",
+    "copied": "Link copied, valid for 1 hour",
+    "noPassword": "GitHub only"
   },
   "auth": {
     "signIn": "Sign in",
@@ -211,7 +216,22 @@
       "needName": "Enter your name",
       "tooMany": "Too many attempts. Wait 15 minutes",
       "github": "GitHub didn't confirm the sign-in",
-      "wrongPassword": "Current password is wrong"
+      "wrongPassword": "Current password is wrong",
+      "mailOff": "Email is not set up yet. Sign in with GitHub or ask the site owner for a reset link.",
+      "badToken": "The link expired or was already used. Request a new one"
+    },
+    "forgot": "Forgot password?",
+    "reset": {
+      "title": "Reset password",
+      "lead": "Enter your account email and we will send a link to set a new password. It works once, within an hour.",
+      "send": "Send link",
+      "sent": "If that account exists, the email is on its way. Check your inbox and spam.",
+      "newTitle": "New password",
+      "newLead": "Choose a new password and you will be signed in right away.",
+      "save": "Save and sign in",
+      "back": "Back to sign in",
+      "dead": "This link no longer works: it was used, expired or replaced by a newer one.",
+      "again": "Request a new one"
     }
   },
   "account": {

@@ -39,6 +39,7 @@ async function Login({
   return (
     <AuthForm
       dict={dict.auth}
+      locale={locale}
       next={next}
       initialMode={params.mode === "signup" ? "signup" : "signin"}
       initialError={params.error === "github" ? "github" : undefined}
