@@ -223,3 +223,21 @@ export const telegramChats = pgTable("telegram_chats", {
   remindedOn: text("reminded_on"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+/**
+ * Finished pomodoro focus periods of signed-in readers, for the study tracker in the account.
+ * `day` is the reader's own calendar date (YYYY-MM-DD in their time zone), so streaks follow their midnight.
+ */
+export const studySessions = pgTable(
+  "study_sessions",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    day: text("day").notNull(),
+    minutes: integer("minutes").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("study_sessions_user_day_idx").on(t.userId, t.day)],
+);
