@@ -2,9 +2,11 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { updateTag } from "next/cache";
+import { del } from "@vercel/blob";
 import { and, count, eq, gt, lt } from "drizzle-orm";
 import { db } from "@/db";
-import { authFailures, favorites, materials, users } from "@/db/schema";
+import { authFailures, favorites, materials, userDocuments, users } from "@/db/schema";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import { hasLocale, type Locale } from "@/lib/i18n";
 import { mailEnabled, sendMail } from "@/lib/mail";
@@ -12,6 +14,7 @@ import { consumeResetToken, createResetLink } from "@/lib/password-reset";
 import {
   createSession,
   destroySession,
+  getAdmin,
   getUser,
   requireUser,
   safeNext,
@@ -231,6 +234,31 @@ export async function changePassword(_prev: FormState, form: FormData): Promise<
 
   await db.update(users).set(patch).where(eq(users.id, user.id));
   return { ok: "changed" };
+}
+
+/**
+ * Deletes the account with everything attached to it: favorites, uploaded documents (rows and
+ * files) and reset links. The owner's account is kept, so the admin can't lock themselves out.
+ */
+export async function deleteAccount(_prev: FormState, form: FormData): Promise<FormState> {
+  const session = await requireUser();
+  const lang = field(form, "lang");
+  const words = ["удалить", "delete"];
+  if (!words.includes(field(form, "confirm").toLowerCase())) return { error: "confirmDelete" };
+  if (await getAdmin()) return { error: "ownerAccount" };
+
+  const docs = await db
+    .select({ url: userDocuments.url, status: userDocuments.status })
+    .from(userDocuments)
+    .where(eq(userDocuments.userId, session.id));
+  await db.delete(users).where(eq(users.id, session.id)); // cascades to favorites, documents, resets
+
+  const blobs = docs.map((d) => d.url).filter((u) => u.includes(".blob.vercel-storage.com/"));
+  if (blobs.length && process.env.BLOB_READ_WRITE_TOKEN) await del(blobs).catch(() => {});
+  if (docs.some((d) => d.status === "published")) updateTag("user-docs");
+
+  await destroySession();
+  redirect(`/${hasLocale(lang) ? lang : "ru"}`);
 }
 
 /** Adds or removes a published material from the user's favorites. Returns the new state. */

@@ -1,5 +1,5 @@
 {
-  "id": "e5e1b2f0-97b6-4425-84bc-e2eaaf7971de",
+  "id": "5ec034ea-b67e-421c-a865-cef954bb7a78",
   "prevId": "e24e5c72-82eb-4635-9cfa-7f246e076412",
   "version": "7",
   "dialect": "postgresql",
@@ -40,73 +40,6 @@
             },
             {
               "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.deadlines": {
-      "name": "deadlines",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "note": {
-          "name": "note",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "due_at": {
-          "name": "due_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "done_at": {
-          "name": "done_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "deadlines_due_idx": {
-          "name": "deadlines_due_idx",
-          "columns": [
-            {
-              "expression": "due_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -527,6 +460,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "announced_at": {
+          "name": "announced_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -704,38 +643,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.owner_settings": {
-      "name": "owner_settings",
-      "schema": "",
-      "columns": {
-        "key": {
-          "name": "key",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "value": {
-          "name": "value",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.password_resets": {
       "name": "password_resets",
       "schema": "",
@@ -902,94 +809,66 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.timetable": {
-      "name": "timetable",
+    "public.telegram_chats": {
+      "name": "telegram_chats",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
+        "chat_id": {
+          "name": "chat_id",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
-        "weekday": {
-          "name": "weekday",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "starts": {
-          "name": "starts",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ends": {
-          "name": "ends",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "room": {
-          "name": "room",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "default": "''"
         },
-        "teacher": {
-          "name": "teacher",
+        "locale": {
+          "name": "locale",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "''"
+          "default": "'ru'"
         },
-        "kind": {
-          "name": "kind",
-          "type": "class_kind",
-          "typeSchema": "public",
+        "is_owner": {
+          "name": "is_owner",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "'lecture'"
+          "default": false
         },
-        "parity": {
-          "name": "parity",
-          "type": "week_parity",
-          "typeSchema": "public",
+        "notify": {
+          "name": "notify",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "'every'"
+          "default": true
+        },
+        "remind": {
+          "name": "remind",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "reminded_on": {
+          "name": "reminded_on",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
-      "indexes": {
-        "timetable_day_idx": {
-          "name": "timetable_day_idx",
-          "columns": [
-            {
-              "expression": "weekday",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "starts",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -1195,16 +1074,6 @@
     }
   },
   "enums": {
-    "public.class_kind": {
-      "name": "class_kind",
-      "schema": "public",
-      "values": [
-        "lecture",
-        "practice",
-        "lab",
-        "other"
-      ]
-    },
     "public.file_kind": {
       "name": "file_kind",
       "schema": "public",
@@ -1240,15 +1109,6 @@
         "pending",
         "published",
         "rejected"
-      ]
-    },
-    "public.week_parity": {
-      "name": "week_parity",
-      "schema": "public",
-      "values": [
-        "every",
-        "odd",
-        "even"
       ]
     }
   },

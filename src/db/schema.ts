@@ -1,4 +1,5 @@
 import {
+  boolean,
   index,
   integer,
   jsonb,
@@ -36,6 +37,8 @@ export const materials = pgTable("materials", {
   status: materialStatus("status").notNull().default("draft"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  /** When the Telegram bot told subscribers about it; set once, so re-publishing stays quiet. */
+  announcedAt: timestamp("announced_at", { withTimezone: true }),
 });
 
 /** Title/excerpt/body per locale: the original plus an optional translation. */
@@ -248,4 +251,21 @@ export const ownerSettings = pgTable("owner_settings", {
   key: text("key").primaryKey(),
   value: jsonb("value").notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/**
+ * Telegram chats that pressed Start in the site's bot. Everybody gets new materials and a daily
+ * flashcard; the one chat linked by the admin (is_owner) may also send notes that become drafts.
+ */
+export const telegramChats = pgTable("telegram_chats", {
+  /** Telegram chat id; can exceed 2^31, so kept as text. */
+  chatId: text("chat_id").primaryKey(),
+  name: text("name").notNull().default(""),
+  locale: text("locale").notNull().default("ru"),
+  isOwner: boolean("is_owner").notNull().default(false),
+  notify: boolean("notify").notNull().default(true),
+  remind: boolean("remind").notNull().default(true),
+  /** Date (YYYY-MM-DD, UTC) of the last daily reminder, so a repeated cron run sends nothing. */
+  remindedOn: text("reminded_on"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

@@ -36,6 +36,8 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth App (callback: `/api/auth/callback`) |
 | `RESEND_API_KEY` | необязательно: ключ [Resend](https://resend.com) для писем со сбросом пароля |
 | `MAIL_FROM` | необязательно: отправитель, напр. `Ingenium <mail@твой-домен>` (без своего домена Resend шлёт только на свою почту) |
+| `TELEGRAM_BOT_TOKEN` | токен бота от @BotFather (без него бот просто молчит) |
+| `CRON_SECRET` | необязательно: случайная строка, закрывает `/api/telegram/cron` от чужих |
 
 ## Где что лежит
 
@@ -52,7 +54,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `src/lib/materials.ts` | кэшированные чтения для публичных страниц |
 | `src/app/[lang]/admin/` | админка и Server Actions (сохранение, удаление, загрузка фото, превью ссылок) |
 | `src/app/api/auth/` | вход через GitHub OAuth (и клиенты, и владелец; админ = GitHub-логин владельца) |
-| `src/app/[lang]/login`, `src/app/[lang]/account` | вход/регистрация по почте и паролю, личный кабинет, избранное |
+| `src/app/[lang]/login`, `src/app/[lang]/account` | вход/регистрация по почте и паролю, личный кабинет, избранное, удаление аккаунта (вместе с файлами) |
 | `src/lib/session.ts`, `src/lib/password.ts` | подписанная cookie-сессия, хэши паролей (scrypt), защита от перебора |
 | `src/app/[lang]/reset`, `src/lib/password-reset.ts`, `src/lib/mail.ts` | сброс пароля: одноразовая ссылка на час (в базе только SHA-256), письмо через Resend или ссылка из админки («Читатели») |
 | `src/app/api/upload` | выдаёт браузеру админа токен для прямой загрузки PDF/HTML/.glb в Blob (до 100 МБ) |
@@ -66,6 +68,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `content/glossary.json`, `src/lib/glossary.ts` | двуязычный глоссарий; `[[NPV]]` или `[[текст\|ключ]]` в конспекте даёт подсказку |
 | `src/app/[lang]/account/doc-actions.ts`, `src/app/api/user-files/[id]` | «Мои документы» читателей: загрузка до 20 МБ, заявка на главную, модерация в админке |
 | `src/app/[lang]/admin/news-actions.ts`, `src/app/[lang]/admin/news` | новости: редактор в админке, `/news` и блок на главной |
+| `src/lib/telegram*.ts`, `src/app/api/telegram/` | Telegram-бот: вебхук (секрет в заголовке), `/setup` для админа (ставит вебхук и привязывает чат владельца), ежедневная карточка по крону из `vercel.json`, рассылка о новых материалах и новостях, заметки/фото/PDF владельца → черновики в теме «Входящие» |
 | `src/db/search.ts`, `src/app/api/search` | полнотекстовый поиск Postgres |
 | `src/app/[lang]/feed.xml` | RSS: 50 последних материалов и новостей, `/ru/feed.xml` и `/en/feed.xml` |
 | `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
