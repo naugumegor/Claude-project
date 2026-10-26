@@ -2,6 +2,7 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { DOCUMENT_KINDS, type DocumentKind } from "@/lib/documents";
+import { isOwnBlob } from "@/lib/blob";
 
 /**
  * Streams a stored PDF, HTML document or 3D model from our own domain with headers we control:
@@ -13,10 +14,12 @@ export async function fileResponse(
   { download, cache }: { download: boolean; cache: boolean },
 ) {
   let body: BodyInit;
-  if (file.url.startsWith("/uploads/")) {
+  if (file.url.startsWith("/uploads/") && !process.env.VERCEL && !file.url.includes("..")) {
     // Local development: the file lives in public/uploads.
     body = new Uint8Array(await readFile(path.join(process.cwd(), "public", file.url)));
   } else {
+    // Only ever stream from our own store, whatever ended up in the database.
+    if (!isOwnBlob(file.url, "")) return new Response("Not found", { status: 404 });
     const upstream = await fetch(file.url);
     if (!upstream.ok || !upstream.body) return new Response("Not found", { status: 404 });
     body = upstream.body;

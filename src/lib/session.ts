@@ -3,9 +3,11 @@ import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 
 // Everyone who signs in (customers and the site owner) gets the same signed cookie.
-// The owner is recognised by their GitHub login, which only GitHub can vouch for.
+// The owner is recognised by their numeric GitHub account id, which only GitHub can vouch for
+// and which, unlike the login, never changes or passes to somebody else.
 
 export const ADMIN_LOGIN = (process.env.ADMIN_GITHUB_LOGIN ?? "naugumegor").toLowerCase();
+const ADMIN_GITHUB_ID = process.env.ADMIN_GITHUB_ID ?? "326945319";
 const COOKIE = "ingenium_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
@@ -14,6 +16,8 @@ export type SessionUser = {
   name: string;
   /** GitHub login, when the user signed in with GitHub. */
   login?: string;
+  /** Numeric GitHub account id, when the user signed in with GitHub. */
+  githubId?: string;
 };
 
 function secret() {
@@ -23,7 +27,7 @@ function secret() {
 }
 
 export async function createSession(user: SessionUser) {
-  const token = await new SignJWT({ uid: user.id, name: user.name, login: user.login })
+  const token = await new SignJWT({ uid: user.id, name: user.name, login: user.login, gid: user.githubId })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE}s`)
@@ -59,6 +63,7 @@ export async function getUser(): Promise<SessionUser | null> {
     id: payload.uid,
     name: String(payload.name ?? ""),
     login: typeof payload.login === "string" ? payload.login : undefined,
+    githubId: typeof payload.gid === "string" ? payload.gid : undefined,
   };
 }
 
@@ -73,7 +78,9 @@ export async function requireUser(): Promise<SessionUser> {
 export async function getAdmin(): Promise<string | null> {
   const payload = await readSession();
   const login = String(payload?.login ?? "").toLowerCase();
-  return login === ADMIN_LOGIN ? login : null;
+  const gid = String(payload?.gid ?? "");
+  const owner = gid === ADMIN_GITHUB_ID || (devBypass && gid === "dev");
+  return owner ? login || ADMIN_LOGIN : null;
 }
 
 /** Use at the top of every Server Action that changes materials. */
@@ -92,9 +99,18 @@ export const github = {
 /** Local development without a GitHub OAuth app: the GitHub button signs in as the owner. Never on Vercel. */
 export const devBypass = !process.env.VERCEL && !github.clientId;
 
-/** Only same-site relative paths, so `?next=` can't be used as an open redirect. */
+/**
+ * Only same-site relative paths, so `?next=` can't be used as an open redirect. The value is
+ * parsed the way the browser will parse it: URL parsing drops tabs and newlines, so a string
+ * check alone lets "/\t/evil.com" through as "//evil.com".
+ */
 export function safeNext(value: string | null | undefined, fallback: string) {
-  return value && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\")
-    ? value
-    : fallback;
+  if (!value?.startsWith("/")) return fallback;
+  const base = "https://same-origin.invalid";
+  try {
+    const url = new URL(value, base);
+    return url.origin === base ? url.pathname + url.search + url.hash : fallback;
+  } catch {
+    return fallback;
+  }
 }

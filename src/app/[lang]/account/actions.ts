@@ -20,6 +20,7 @@ export type FormState = { error?: string; ok?: string } | undefined;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const WINDOW_MS = 15 * 60 * 1000;
 const MAX_FAILURES = 5;
+const MAX_SIGNUPS = 3;
 
 function field(form: FormData, name: string) {
   return String(form.get(name) ?? "").trim();
@@ -44,6 +45,16 @@ async function throttled(email: string, ip: string) {
   return byEmail.n >= MAX_FAILURES || byIp.n >= MAX_FAILURES * 4;
 }
 
+/** Accounts created from this IP in the last 15 minutes. */
+async function signUpsFrom(ip: string) {
+  const since = new Date(Date.now() - WINDOW_MS);
+  const [row] = await db
+    .select({ n: count() })
+    .from(authFailures)
+    .where(and(eq(authFailures.key, `signup:${ip}`), gt(authFailures.createdAt, since)));
+  return row.n;
+}
+
 async function recordFailure(email: string, ip: string) {
   await db.insert(authFailures).values([{ key: `email:${email}` }, { key: `ip:${ip}` }]);
   // Housekeeping: old rows are useless.
@@ -59,7 +70,7 @@ export async function signUp(_prev: FormState, form: FormData): Promise<FormStat
   if (password.length < 8 || password.length > 200) return { error: "shortPassword" };
 
   const ip = await clientIp();
-  if (await throttled(email, ip)) return { error: "tooMany" };
+  if ((await throttled(email, ip)) || (await signUpsFrom(ip)) >= MAX_SIGNUPS) return { error: "tooMany" };
 
   const [user] = await db
     .insert(users)
@@ -71,6 +82,8 @@ export async function signUp(_prev: FormState, form: FormData): Promise<FormStat
     return { error: "emailTaken" };
   }
 
+  // Counted like a failure, so one address can't script hundreds of accounts.
+  await db.insert(authFailures).values({ key: `signup:${ip}` });
   await createSession({ id: user.id, name: user.name });
   redirect(safeNext(field(form, "next"), "/ru/account"));
 }
