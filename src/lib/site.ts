@@ -7,7 +7,10 @@ export const siteUrl =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "http://localhost:3000");
 
-/** canonical + hreflang links for a path that exists in every locale, e.g. "/materials". */
+/**
+ * canonical + hreflang links for a path that exists in every locale, e.g. "/materials",
+ * plus the RSS feed, so feed readers find it from any page.
+ */
 export function alternates(locale: Locale, path = "") {
   return {
     canonical: `/${locale}${path}`,
@@ -15,5 +18,6 @@ export function alternates(locale: Locale, path = "") {
       ...Object.fromEntries(locales.map((l) => [l, `/${l}${path}`])),
       "x-default": `/ru${path}`,
     },
+    types: { "application/rss+xml": [{ url: `/${locale}/feed.xml`, title: "Ingenium RSS" }] },
   };
 }
