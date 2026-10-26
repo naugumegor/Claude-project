@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getDictionary, getLocale, type Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { peekResetToken } from "@/lib/password-reset";
@@ -34,6 +35,8 @@ async function Reset({
   const params = await searchParams;
   const token = typeof params.token === "string" ? params.token.slice(0, 100) : "";
   if (!token) return <ForgotForm dict={dict.auth} locale={locale} />;
+  // The token check compares against the current time, so it must never run while prerendering.
+  await connection();
   if (!(await peekResetToken(token))) return <DeadLink dict={dict.auth} locale={locale} />;
   return <NewPasswordForm dict={dict.auth} locale={locale} token={token} />;
 }
