@@ -1,11 +1,13 @@
 "use server";
 
 import { updateTag } from "next/cache";
+import { after } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { news } from "@/db/schema";
 import { slugify } from "@/lib/slug";
 import { requireAdmin } from "@/lib/session";
+import { announceNews } from "@/lib/telegram-notify";
 
 type Result<T = null> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -56,6 +58,7 @@ export async function saveNews(input: NewsInput): Promise<Result<{ id: number; s
     ? await db.update(news).set(values).where(eq(news.id, existing.id)).returning()
     : await db.insert(news).values(values).returning();
   updateTag("news");
+  if (input.published && !existing?.publishedAt) after(() => announceNews(row.id));
   return { ok: true, data: { id: row.id, slug: row.slug } };
 }
 

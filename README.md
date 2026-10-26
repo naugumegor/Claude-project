@@ -36,6 +36,8 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth App (callback: `/api/auth/callback`) |
 | `RESEND_API_KEY` | необязательно: ключ [Resend](https://resend.com) для писем со сбросом пароля |
 | `MAIL_FROM` | необязательно: отправитель, напр. `Ingenium <mail@твой-домен>` (без своего домена Resend шлёт только на свою почту) |
+| `TELEGRAM_BOT_TOKEN` | токен бота от @BotFather (без него бот просто молчит) |
+| `CRON_SECRET` | необязательно: случайная строка, закрывает `/api/telegram/cron` от чужих |
 
 ## Где что лежит
 
@@ -66,6 +68,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `content/glossary.json`, `src/lib/glossary.ts` | двуязычный глоссарий; `[[NPV]]` или `[[текст\|ключ]]` в конспекте даёт подсказку |
 | `src/app/[lang]/account/doc-actions.ts`, `src/app/api/user-files/[id]` | «Мои документы» читателей: загрузка до 20 МБ, заявка на главную, модерация в админке |
 | `src/app/[lang]/admin/news-actions.ts`, `src/app/[lang]/admin/news` | новости: редактор в админке, `/news` и блок на главной |
+| `src/lib/telegram*.ts`, `src/app/api/telegram/` | Telegram-бот: вебхук (секрет в заголовке), `/setup` для админа (ставит вебхук и привязывает чат владельца), ежедневная карточка по крону из `vercel.json`, рассылка о новых материалах и новостях, заметки/фото/PDF владельца → черновики в теме «Входящие» |
 | `src/db/search.ts`, `src/app/api/search` | полнотекстовый поиск Postgres |
 | `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
 | `src/components/` | шапка, поиск, карточки, сетка с фильтрами |

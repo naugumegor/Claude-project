@@ -3,6 +3,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { updateTag } from "next/cache";
+import { after } from "next/server";
 import { del, put } from "@vercel/blob";
 import { and, eq, inArray, ne, notInArray } from "drizzle-orm";
 import { db } from "@/db";
@@ -23,6 +24,7 @@ import type { MaterialInput } from "./types";
 import { isSection } from "@/lib/taxonomy";
 import { DOCUMENT_KINDS, documentKind, isDocumentKind } from "@/lib/documents";
 import { isOwnBlob } from "@/lib/blob";
+import { announceMaterial } from "@/lib/telegram-notify";
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -159,6 +161,8 @@ export async function saveMaterial(input: MaterialInput): Promise<Result<{ id: n
 
   await deleteBlobs(saved.removedUrls);
   updateTag("materials");
+  // Telegram subscribers hear about it once, after the admin already has their answer.
+  if (input.status === "published") after(() => announceMaterial(saved.id));
   return { ok: true, data: { id: saved.id, slug: saved.slug } };
 }
 
