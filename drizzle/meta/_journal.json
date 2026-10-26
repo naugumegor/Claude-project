@@ -50,6 +50,13 @@
       "when": 1793054795862,
       "tag": "0006_owner_dashboard",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793055032538,
+      "tag": "0007_owner_timetable",
+      "breakpoints": true
     }
   ]
 }

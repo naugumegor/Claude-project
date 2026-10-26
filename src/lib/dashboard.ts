@@ -11,11 +11,12 @@ import type { DashboardData, DashboardSettings, Rates, Weather } from "@/lib/das
 // the APIs; when an API is down the widget just says "no data" instead of breaking the page.
 
 export const DEFAULT_SETTINGS: DashboardSettings = {
-  city: "Москва",
-  lat: 55.7558,
-  lon: 37.6173,
-  timezone: "Europe/Moscow",
-  semesterStart: "2026-09-01",
+  city: "Будапешт",
+  lat: 47.4979,
+  lon: 19.0402,
+  timezone: "Europe/Budapest",
+  // BME autumn semester 2026; odd/even weeks of the timetable are counted from here.
+  semesterStart: "2026-09-07",
 };
 
 export async function getSettings(): Promise<DashboardSettings> {
