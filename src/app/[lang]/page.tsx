@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight, Box, FileCode, FileText, Megaphone, Pin } from "lucide-react";
 import { getDictionary, getLocale } from "@/dictionaries";
@@ -12,6 +13,7 @@ import { SECTIONS, subjectOrder } from "@/lib/taxonomy";
 import { sectionMeta } from "@/components/section-icon";
 import { excerpt, getNews, getPublishedUserDocs } from "@/lib/community";
 import { formatDate } from "@/lib/format";
+import { OwnerPanel } from "@/components/dashboard/owner-panel";
 
 export default async function HomePage() {
   const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
@@ -50,6 +52,10 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* The owner's personal dashboard; reads the session cookie, so it streams in. */}
+      <Suspense fallback={null}>
+        <OwnerPanel labels={dict.dashboard} locale={locale} />
+      </Suspense>
       <section className="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 sm:pt-24">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">

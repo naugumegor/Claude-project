@@ -388,5 +388,102 @@
     "community": "Readers' documents",
     "communityLead": "Work by readers that passed review.",
     "by": "By"
+  },
+  "dashboard": {
+    "hello": {
+      "night": "Good night",
+      "morning": "Good morning",
+      "day": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "title": "My day",
+    "only": "Only you can see this",
+    "week": "Week {n}",
+    "odd": "odd week",
+    "even": "even week",
+    "weather": "Weather",
+    "feels": "feels like",
+    "wind": "m/s",
+    "humidity": "humidity",
+    "changeCity": "Change city",
+    "cityPlaceholder": "City…",
+    "cityNotFound": "City not found",
+    "noData": "The service isn't answering, try later",
+    "rates": "CBR rates",
+    "ratesOn": "on {date}",
+    "today": "Classes today",
+    "tomorrow": "Tomorrow",
+    "noClasses": "No classes, take a rest",
+    "dayOver": "Done for today",
+    "now": "Now",
+    "next": "In {t}",
+    "left": "{t} left",
+    "editSchedule": "Timetable",
+    "deadlines": "Deadlines",
+    "noDeadlines": "No deadlines. Suspicious.",
+    "add": "Add",
+    "titlePlaceholder": "What's due…",
+    "overdue": "overdue",
+    "in": "in {t}",
+    "doneShow": "Done: {n}",
+    "delete": "Delete",
+    "needTitle": "Say what's due",
+    "badDate": "Bad date",
+    "units": {
+      "m": "min",
+      "h": "h",
+      "d": "d"
+    },
+    "kinds": {
+      "lecture": "Lecture",
+      "practice": "Practice",
+      "lab": "Lab",
+      "other": "Other"
+    },
+    "parity": {
+      "every": "Every week",
+      "odd": "Odd weeks",
+      "even": "Even weeks"
+    },
+    "weekdays": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
+    "codes": {
+      "clear": "Clear",
+      "partly": "Partly cloudy",
+      "cloudy": "Overcast",
+      "fog": "Fog",
+      "drizzle": "Drizzle",
+      "rain": "Rain",
+      "snow": "Snow",
+      "showers": "Showers",
+      "storm": "Thunderstorm"
+    },
+    "schedule": {
+      "title": "Class timetable",
+      "lead": "Classes by weekday. Odd and even weeks are counted from the start of the semester.",
+      "semesterStart": "Semester start",
+      "save": "Save",
+      "add": "Add class",
+      "subject": "Subject",
+      "room": "Room",
+      "teacher": "Teacher",
+      "starts": "Starts",
+      "ends": "Ends",
+      "kind": "Type",
+      "parity": "Weeks",
+      "empty": "Empty",
+      "badTime": "Check the time: the end must be after the start",
+      "saved": "Saved",
+      "back": "Home",
+      "edit": "Edit",
+      "cancel": "Cancel"
+    }
   }
 }

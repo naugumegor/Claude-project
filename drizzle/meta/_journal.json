@@ -43,6 +43,13 @@
       "when": 1793054250409,
       "tag": "0005_password_resets",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793054795862,
+      "tag": "0006_owner_dashboard",
+      "breakpoints": true
     }
   ]
 }

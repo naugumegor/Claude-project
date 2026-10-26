@@ -1,6 +1,7 @@
 import {
   index,
   integer,
+  jsonb,
   pgEnum,
   pgTable,
   primaryKey,
@@ -203,3 +204,48 @@ export const passwordResets = pgTable(
   },
   (t) => [index("password_resets_user_idx").on(t.userId)],
 );
+
+// ---------- The owner's personal dashboard (home page, visible only to the admin) ----------
+
+/** The owner's deadlines: homework, exams, anything with a due date. */
+export const deadlines = pgTable(
+  "deadlines",
+  {
+    id: serial("id").primaryKey(),
+    title: text("title").notNull(),
+    note: text("note").notNull().default(""),
+    dueAt: timestamp("due_at", { withTimezone: true }).notNull(),
+    doneAt: timestamp("done_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("deadlines_due_idx").on(t.dueAt)],
+);
+
+export const classKind = pgEnum("class_kind", ["lecture", "practice", "lab", "other"]);
+/** "Числитель / знаменатель": classes that happen every week, or only on odd or even weeks. */
+export const weekParity = pgEnum("week_parity", ["every", "odd", "even"]);
+
+/** The owner's weekly class timetable. Times are local wall-clock "HH:MM" in the owner's time zone. */
+export const timetable = pgTable(
+  "timetable",
+  {
+    id: serial("id").primaryKey(),
+    /** ISO weekday: 1 = Monday … 7 = Sunday. */
+    weekday: integer("weekday").notNull(),
+    starts: text("starts").notNull(),
+    ends: text("ends").notNull(),
+    title: text("title").notNull(),
+    room: text("room").notNull().default(""),
+    teacher: text("teacher").notNull().default(""),
+    kind: classKind("kind").notNull().default("lecture"),
+    parity: weekParity("parity").notNull().default("every"),
+  },
+  (t) => [index("timetable_day_idx").on(t.weekday, t.starts)],
+);
+
+/** Small key → JSON settings of the owner (weather city, semester start, …). */
+export const ownerSettings = pgTable("owner_settings", {
+  key: text("key").primaryKey(),
+  value: jsonb("value").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
