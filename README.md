@@ -67,6 +67,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `src/app/[lang]/account/doc-actions.ts`, `src/app/api/user-files/[id]` | «Мои документы» читателей: загрузка до 20 МБ, заявка на главную, модерация в админке |
 | `src/app/[lang]/admin/news-actions.ts`, `src/app/[lang]/admin/news` | новости: редактор в админке, `/news` и блок на главной |
 | `src/db/search.ts`, `src/app/api/search` | полнотекстовый поиск Postgres |
+| `src/app/[lang]/feed.xml` | RSS: 50 последних материалов и новостей, `/ru/feed.xml` и `/en/feed.xml` |
 | `src/lib/og.tsx`, `assets/fonts` | картинки-превью для соцсетей |
 | `src/components/` | шапка, поиск, карточки, сетка с фильтрами |
 
