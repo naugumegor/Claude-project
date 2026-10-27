@@ -7,7 +7,7 @@ import { SignJWT, jwtVerify } from "jose";
 // and which, unlike the login, never changes or passes to somebody else.
 
 export const ADMIN_LOGIN = (process.env.ADMIN_GITHUB_LOGIN ?? "naugumegor").toLowerCase();
-const ADMIN_GITHUB_ID = process.env.ADMIN_GITHUB_ID ?? "326945319";
+export const ADMIN_GITHUB_ID = process.env.ADMIN_GITHUB_ID ?? "326945319";
 const COOKIE = "ingenium_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 

@@ -287,3 +287,39 @@ export const studySessions = pgTable(
   },
   (t) => [index("study_sessions_user_day_idx").on(t.userId, t.day)],
 );
+
+/** Short links: /s/<code> redirects to `url`. Readers' links go through a "you're leaving" page first. */
+export const shortLinks = pgTable(
+  "short_links",
+  {
+    id: serial("id").primaryKey(),
+    /** Lowercase letters, digits, "-" and "_". */
+    code: text("code").notNull().unique(),
+    url: text("url").notNull(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    clicks: integer("clicks").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("short_links_user_idx").on(t.userId, t.createdAt)],
+);
+
+/** Pastebin: code or notes shared by an unguessable link, shown with syntax highlighting. */
+export const pastes = pgTable(
+  "pastes",
+  {
+    /** Random lowercase id, the only way to find a paste: there is no public list. */
+    id: text("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull().default(""),
+    /** A lowlight language name, or "auto". */
+    language: text("language").notNull().default("auto"),
+    body: text("body").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+  },
+  (t) => [index("pastes_user_idx").on(t.userId, t.createdAt)],
+);

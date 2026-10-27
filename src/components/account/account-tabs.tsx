@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { LayoutGroup, motion } from "motion/react";
-import { Flame, FolderOpen, Heart } from "lucide-react";
+import { Flame, FolderOpen, Heart, Link2 } from "lucide-react";
 
-const ICONS = { favorites: Heart, docs: FolderOpen, study: Flame };
+const ICONS = { favorites: Heart, docs: FolderOpen, study: Flame, share: Link2 };
 
-/** The account's main area: favourites, «Мои документы» and the study tracker as tabs (?tab=docs, ?tab=study). */
+/** The account's main area: favourites, «Мои документы» and the study tracker and «Ссылки и пасты» as tabs (?tab=docs, ?tab=study, ?tab=share). */
 export function AccountTabs({
   tabs,
   initial,
@@ -32,7 +32,7 @@ export function AccountTabs({
                   setActive(t.id);
                   window.history.replaceState(null, "", t.id === tabs[0].id ? "?" : `?tab=${t.id}`);
                 }}
-                className={`group relative flex shrink-0 items-center gap-2 px-3 pb-3 pt-1 font-display text-lg font-bold tracking-tight transition-colors sm:text-xl ${
+                className={`group relative flex shrink-0 items-center gap-2 whitespace-nowrap px-3 pb-3 pt-1 font-display text-lg font-bold tracking-tight transition-colors sm:text-xl ${
                   on ? "text-ink" : "text-muted hover:text-ink"
                 }`}
               >

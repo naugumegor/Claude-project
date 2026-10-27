@@ -93,6 +93,10 @@
     "topics": {
       "one": "topic",
       "other": "topics"
+    },
+    "clicks": {
+      "one": "click",
+      "other": "clicks"
     }
   },
   "admin": {
@@ -518,6 +522,61 @@
       "back": "Home",
       "edit": "Edit",
       "cancel": "Cancel"
+    }
+  },
+  "share": {
+    "tab": "Links & pastes",
+    "lead": "Shorten long links to /s/code and share code or notes with syntax highlighting. A paste is visible only to people who have its link.",
+    "linkTitle": "Short link",
+    "url": "https://…",
+    "code": "custom-code",
+    "shorten": "Shorten",
+    "pasteTitle": "Paste",
+    "name": "Title (optional)",
+    "body": "Paste code or text…",
+    "language": "Language",
+    "auto": "Auto-detect",
+    "expiry": "Keep",
+    "expiryOptions": {
+      "0": "Forever",
+      "1": "1 hour",
+      "24": "1 day",
+      "168": "1 week",
+      "720": "30 days"
+    },
+    "create": "Create paste",
+    "copy": "Copy",
+    "copied": "Copied",
+    "open": "Open",
+    "delete": "Delete",
+    "confirmDelete": "Delete for good?",
+    "links": "Links",
+    "pastes": "Pastes",
+    "emptyLinks": "No links yet.",
+    "emptyPastes": "No pastes yet.",
+    "untitled": "Untitled",
+    "by": "By",
+    "everyone": "You're the admin: this lists everyone's items, and you can delete any of them.",
+    "limit": "Up to 200 KB",
+    "raw": "Raw",
+    "download": "Download",
+    "expires": "Expires",
+    "back": "Links & pastes",
+    "leaving": "You're leaving Ingenium",
+    "leavingLead": "This short link points to another site. Check the address before you go:",
+    "go": "Continue",
+    "home": "Home",
+    "missing": "No such link",
+    "missingLead": "It was deleted, or the code has a typo.",
+    "errors": {
+      "badUrl": "Needs a plain http(s) link to an outside site",
+      "selfLink": "A short link can't point to another short link",
+      "badCode": "Code: 3–40 characters, a-z, 0-9, - and _",
+      "codeTaken": "That code is taken",
+      "tooMany": "Too many this hour, try again later",
+      "tooBig": "Over 200 KB",
+      "empty": "It's empty",
+      "failed": "Something went wrong"
     }
   }
 }
