@@ -4,7 +4,11 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 // Thin client for the Telegram Bot API plus the secrets the bot relies on. Everything here is
 // derived from TELEGRAM_BOT_TOKEN, so the token is the only variable that has to be set.
 
-export const botToken = () => process.env.TELEGRAM_BOT_TOKEN?.trim() || null;
+/**
+ * The token itself ("123456789:AAH…"), even when the variable was pasted with extra text around
+ * it: quotes, a "bot" prefix or BotFather's whole "Use this token…" line.
+ */
+export const botToken = () => process.env.TELEGRAM_BOT_TOKEN?.match(/\d{5,}:[\w-]{30,}/)?.[0] ?? null;
 
 type ApiResult<T> = { ok: true; result: T } | { ok: false; error_code: number; description: string };
 

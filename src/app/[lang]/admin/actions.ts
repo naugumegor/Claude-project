@@ -238,6 +238,8 @@ export async function uploadDocumentLocal(form: FormData): Promise<Result<{ url:
 function isStoredFile(url: string) {
   return (
     isOwnBlob(url, "documents/") ||
+    // Documents that ship with the code (content/docs).
+    /^bundle:[\w.-]+\.html$/.test(url) ||
     (!process.env.VERCEL && url.startsWith("/uploads/documents/") && !url.includes(".."))
   );
 }

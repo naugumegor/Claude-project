@@ -14,7 +14,11 @@ export async function fileResponse(
   { download, cache }: { download: boolean; cache: boolean },
 ) {
   let body: BodyInit;
-  if (file.url.startsWith("/uploads/") && !process.env.VERCEL && !file.url.includes("..")) {
+  const bundled = file.url.match(/^bundle:([\w.-]+\.html)$/);
+  if (bundled) {
+    // A document that ships with the code (content/docs), seeded by scripts/seed-library.ts.
+    body = new Uint8Array(await readFile(path.join(process.cwd(), "content", "docs", bundled[1])));
+  } else if (file.url.startsWith("/uploads/") && !process.env.VERCEL && !file.url.includes("..")) {
     // Local development: the file lives in public/uploads.
     body = new Uint8Array(await readFile(path.join(process.cwd(), "public", file.url)));
   } else {
