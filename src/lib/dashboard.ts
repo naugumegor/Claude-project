@@ -39,9 +39,37 @@ async function getJson(url: string) {
   return res.json();
 }
 
-async function fetchWeather(lat: number, lon: number): Promise<Weather> {
+// API failures are caught inside the cached functions, so a "no data" answer is cached only
+// for a minute. Nothing outside may catch their rejections: when Next abandons a prerender pass it
+// rejects pending "use cache" calls on purpose, and React handles that silently.
+
+async function fetchWeather(lat: number, lon: number): Promise<Weather | null> {
   "use cache";
-  cacheLife({ stale: 300, revalidate: 900, expire: 3600 });
+  try {
+    const weather = await loadWeather(lat, lon);
+    cacheLife({ stale: 300, revalidate: 900, expire: 3600 });
+    return weather;
+  } catch (err) {
+    console.error("dashboard: weather", err);
+    cacheLife("minutes");
+    return null;
+  }
+}
+
+async function fetchRates(): Promise<Rates | null> {
+  "use cache";
+  try {
+    const rates = await loadRates();
+    cacheLife("hours");
+    return rates;
+  } catch (err) {
+    console.error("dashboard: rates", err);
+    cacheLife("minutes");
+    return null;
+  }
+}
+
+async function loadWeather(lat: number, lon: number): Promise<Weather> {
   const q = new URLSearchParams({
     latitude: String(lat),
     longitude: String(lon),
@@ -70,9 +98,7 @@ async function fetchWeather(lat: number, lon: number): Promise<Weather> {
   };
 }
 
-async function fetchRates(): Promise<Rates> {
-  "use cache";
-  cacheLife("hours");
+async function loadRates(): Promise<Rates> {
   const j = await getJson("https://www.cbr-xml-daily.ru/daily_json.js");
   return {
     date: j.Date,
@@ -92,12 +118,6 @@ export async function geocode(name: string, locale: string) {
   return { city: String(hit.name), lat: Number(hit.latitude), lon: Number(hit.longitude), timezone: String(hit.timezone) };
 }
 
-const orNull = <T>(p: Promise<T>) =>
-  p.catch((err) => {
-    console.error("dashboard:", err);
-    return null;
-  });
-
 export async function loadDashboard(): Promise<DashboardData> {
   const settings = await getSettings();
   const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
@@ -108,8 +128,8 @@ export async function loadDashboard(): Promise<DashboardData> {
       .where(or(isNull(deadlines.doneAt), gt(deadlines.doneAt, weekAgo)))
       .orderBy(asc(deadlines.dueAt)),
     db.select().from(timetable).orderBy(asc(timetable.weekday), asc(timetable.starts)),
-    orNull(fetchWeather(settings.lat, settings.lon)),
-    orNull(fetchRates()),
+    fetchWeather(settings.lat, settings.lon),
+    fetchRates(),
   ]);
   return {
     settings,
