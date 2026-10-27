@@ -3,8 +3,17 @@
     "slug": "midterm-1-intro-me",
     "subject": "intro-me",
     "date": "2026-10-27",
-    "tags": ["мидтерм", "BME", "полиспаст", "пружины", "КПД"],
-    "file": { "path": "midterm1-intro-me.html", "name": "Мидтерм 1 Intro ME" },
+    "tags": [
+      "мидтерм",
+      "BME",
+      "полиспаст",
+      "пружины",
+      "КПД"
+    ],
+    "file": {
+      "path": "midterm1-intro-me.html",
+      "name": "Мидтерм 1 Intro ME"
+    },
     "text": {
       "ru": {
         "title": "Мидтерм 1 Intro ME: разбор до последнего винтика",
@@ -14,6 +23,34 @@
       "en": {
         "title": "Intro ME midterm 1: every bolt explained",
         "excerpt": "Prep for the first Introduction to Mechanical Engineering midterm at BME: step-by-step theory, interactive stands, the 2023–2025 midterms solved, a trainer with random numbers and a cheat sheet. The page itself is in Russian.",
+        "body": ""
+      }
+    }
+  },
+  {
+    "slug": "ps7-ps8-efficiency",
+    "subject": "intro-me",
+    "date": "2026-10-27",
+    "tags": [
+      "КПД",
+      "коэффициент нагрузки",
+      "потери",
+      "передачи",
+      "BME"
+    ],
+    "file": {
+      "path": "ps7-ps8-efficiency.html",
+      "name": "КПД и нагрузка: PS7–PS8"
+    },
+    "text": {
+      "ru": {
+        "title": "КПД, нагрузка и потери: Practice 7–8",
+        "excerpt": "Куда деваются ватты: КПД, коэффициент нагрузки, функция потерь и максимум КПД, средний КПД за цикл, передачи и балансирная машина. Словарь обозначений, разбор задач 7.1–8.4 и пробный тест в двух вариантах с проверкой.",
+        "body": ""
+      },
+      "en": {
+        "title": "Efficiency, load and losses: Practice 7–8",
+        "excerpt": "Where the watts go: efficiency, load factor, the loss function and peak efficiency, average efficiency over a cycle, gear drives and the balance machine. Symbols glossary, worked exercises 7.1–8.4 and a two-variant mock test. The page itself is in Russian.",
         "body": ""
       }
     }

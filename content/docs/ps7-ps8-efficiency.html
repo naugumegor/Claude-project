@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>КПД и нагрузка · PS7–PS8 · Ingenium</title>
+<meta name="description" content="Practice 7–8 Intro ME (BME): КПД, коэффициент нагрузки, функция потерь, средний КПД за цикл, передачи. Словарь обозначений, разбор всех задач и пробный тест в двух вариантах.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap">
+<style>
+/* Ingenium · PS7–PS8. Тёплая бумага сайта; энергия течёт слева направо: вход (синий) → полезная (бирюза) + потери (терракота). */
+:root{
+  --paper:#F7F4EE; --sheet:#FFFDF9; --soft:#F1ECE3; --ink:#23262B; --ink2:#6B6F76; --rule:#E6E0D6;
+  --in:#2F6FA8;      /* входная мощность */
+  --use:#2F7D6D;     /* полезная */
+  --loss:#C4573A;    /* потери */
+  --pc:#B07A2E;      /* постоянные потери */
+  --pv:#7A62A8;      /* переменные потери */
+  --glow1:#E3F0EC; --glow2:#F6EBDC; --glow3:#EDE8F5;
+  --shadow:0 1px 2px rgba(35,38,43,.05),0 12px 32px -18px rgba(35,38,43,.28);
+  --shadow-hi:0 2px 4px rgba(35,38,43,.06),0 22px 48px -22px rgba(35,38,43,.38);
+  --display:"Manrope","Inter",system-ui,sans-serif;
+  --body:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:16px; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#17191D; --sheet:#1F2227; --soft:#282C32; --ink:#E9E5DD; --ink2:#9DA1A8; --rule:#34383F;
+  --in:#79AEE0; --use:#5DB3A0; --loss:#EE8A6C; --pc:#E2AB62; --pv:#AD95DA;
+  --glow1:#1D3430; --glow2:#3A2F20; --glow3:#2D2740;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6); --shadow-hi:0 2px 4px rgba(0,0,0,.3),0 22px 48px -22px rgba(0,0,0,.75);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#17191D; --sheet:#1F2227; --soft:#282C32; --ink:#E9E5DD; --ink2:#9DA1A8; --rule:#34383F;
+  --in:#79AEE0; --use:#5DB3A0; --loss:#EE8A6C; --pc:#E2AB62; --pv:#AD95DA;
+  --glow1:#1D3430; --glow2:#3A2F20; --glow3:#2D2740;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6); --shadow-hi:0 2px 4px rgba(0,0,0,.3),0 22px 48px -22px rgba(0,0,0,.75);
+  color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 var(--body);-webkit-text-size-adjust:100%;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(38% 30% at 10% 4%,var(--glow1),transparent 70%),radial-gradient(30% 26% at 95% 0%,var(--glow2),transparent 70%),radial-gradient(34% 30% at 85% 98%,var(--glow3),transparent 70%)}
+a{color:var(--in);text-underline-offset:3px}
+b,strong{font-weight:650}
+[hidden]{display:none!important}
+:focus-visible{outline:2.5px solid var(--use);outline-offset:2px;border-radius:6px}
+h1,h2,h3{text-wrap:balance}
+h1{font:800 clamp(38px,7.4vw,74px)/.98 var(--display);letter-spacing:-.035em;margin:0}
+h2{font:800 clamp(24px,3.6vw,34px)/1.12 var(--display);letter-spacing:-.025em;margin:0}
+h3{font:750 20px/1.3 var(--display);letter-spacing:-.01em;margin:34px 0 10px}
+h4{font:700 16px/1.35 var(--body);margin:20px 0 6px}
+p{margin:0 0 14px} ul,ol{padding-left:22px;margin:0 0 14px} li{margin:4px 0} li::marker{color:var(--use)}
+.muted{color:var(--ink2)} .small{font-size:14.5px} .mono{font-family:var(--mono);font-size:.92em}
+.c-in{color:var(--in)} .c-use{color:var(--use)} .c-loss{color:var(--loss)} .c-pc{color:var(--pc)} .c-pv{color:var(--pv)}
+
+/* формулы без KaTeX */
+.f{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:1.12em;white-space:nowrap}
+.f i{font-style:italic}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.2}
+.fr>span:first-child{border-bottom:1.3px solid currentColor;padding:0 4px 2px}
+.fr>span:last-child{padding:2px 4px 0}
+.sq{white-space:nowrap}.sq>span{border-top:1.3px solid currentColor;padding:2px 3px 0;margin-left:1px}
+sub,sup{font-size:.68em}
+
+/* шапка */
+.scrollbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:70;pointer-events:none}
+.scrollbar i{display:block;height:100%;transform-origin:0 50%;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--in),var(--use),var(--pc),var(--loss))}
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 78%,transparent);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);border-bottom:1px solid color-mix(in srgb,var(--rule) 70%,transparent)}
+.topbar-in{display:flex;align-items:center;gap:10px;height:60px;max-width:1180px;margin:0 auto;padding:0 16px}
+.brand{font:800 15px/1 var(--display);white-space:nowrap;display:flex;align-items:center;gap:9px;margin-right:auto}
+.brand i{width:22px;height:22px;border-radius:7px;background:conic-gradient(from 200deg,var(--in),var(--use),var(--pc),var(--loss),var(--in));animation:spin 14s linear infinite;
+  -webkit-mask:radial-gradient(circle,transparent 4.5px,#000 5px);mask:radial-gradient(circle,transparent 4.5px,#000 5px)}
+.brand span{color:var(--use)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font:600 13px/1 var(--body);color:var(--ink2);text-decoration:none;padding:9px 11px;border-radius:10px;white-space:nowrap;transition:background .2s,color .2s}
+.nav a:hover{color:var(--ink);background:var(--soft)}
+.nav a.cur{color:var(--ink);background:var(--sheet);box-shadow:var(--shadow)}
+.iconbtn{appearance:none;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);height:38px;width:38px;border-radius:12px;cursor:pointer;display:grid;place-items:center;flex:none;transition:all .2s}
+.iconbtn:hover{border-color:var(--use);color:var(--use);transform:rotate(30deg)}
+.iconbtn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2}
+@media (max-width:900px){.nav{display:none}}
+
+main{max-width:900px;margin:0 auto;padding:0 16px 90px}
+
+/* обложка */
+.hero{position:relative;padding:44px 0 20px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font:600 11.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--use);
+  background:color-mix(in srgb,var(--glow1) 80%,transparent);border:1px solid color-mix(in srgb,var(--use) 25%,transparent);border-radius:99px;padding:6px 12px;margin:0 0 22px}
+.kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--use);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--use) 50%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.hero h1 .sub{display:block;font-size:.4em;letter-spacing:-.01em;margin-top:14px;font-weight:700;
+  background:linear-gradient(90deg,var(--in),var(--use) 45%,var(--pc) 70%,var(--loss));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:shine 8s ease-in-out infinite alternate}
+@keyframes shine{to{background-position:100% 0}}
+.lead{font-size:18px;line-height:1.6;max-width:66ch;margin-top:22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.chip{font:600 12.5px/1 var(--mono);border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:9px 13px}
+.chip b{color:var(--loss)}
+
+/* поток энергии — главный рисунок */
+.flow{position:relative;margin:26px 0 8px;background:var(--sheet);border:1px solid var(--rule);border-radius:24px;box-shadow:var(--shadow-hi);padding:18px 18px 12px;overflow:hidden}
+.flow svg{display:block;width:100%;height:auto}
+.flow .lbl{font:700 13px/1 var(--mono)}
+.flow .val{font:800 22px/1 var(--display)}
+.flow path.stream{fill:none;stroke-linecap:butt;transition:stroke-width .5s cubic-bezier(.2,.8,.2,1)}
+.flow path.dash{fill:none;stroke:#fff;stroke-opacity:.35;stroke-dasharray:2 14;animation:flowdash 1.2s linear infinite}
+@keyframes flowdash{to{stroke-dashoffset:-16}}
+.flow-ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:6px;font:600 12.5px/1.2 var(--mono);color:var(--ink2)}
+.flow-ctrl input{flex:1;min-width:160px;accent-color:var(--use)}
+.flow-ctrl output{color:var(--ink);font-weight:700;min-width:5ch}
+
+/* разделы */
+.sec{padding-top:70px;--sc:var(--use)}
+.sec-h{position:relative;display:flex;align-items:center;gap:16px;padding:20px 0 16px;margin-bottom:20px}
+.sec-h::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--sc),color-mix(in srgb,var(--sc) 30%,transparent) 40%,var(--rule) 70%)}
+.sec-no{display:grid;place-items:center;min-width:54px;height:54px;padding:0 8px;border-radius:16px;font:800 17px/1 var(--display);color:var(--sc);flex:none;
+  background:color-mix(in srgb,var(--sc) 12%,var(--sheet));border:1px solid color-mix(in srgb,var(--sc) 30%,transparent);transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.sec-h:hover .sec-no{transform:rotate(-8deg) scale(1.06)}
+
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);min-width:0;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hi)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
+@media (max-width:720px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.formula{position:relative;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);padding:16px 20px;margin:16px 0;box-shadow:var(--shadow);overflow-x:auto;text-align:center}
+.formula::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--sc)}
+.formula .f{font-size:1.3em}
+.formula .cap{display:block;font:500 12.5px/1.4 var(--mono);color:var(--ink2);margin-top:8px;white-space:normal}
+.note{position:relative;border:1px solid color-mix(in srgb,var(--pc) 30%,var(--rule));border-radius:var(--r);padding:15px 18px 13px 20px;margin:18px 0;background:color-mix(in srgb,var(--glow2) 60%,var(--sheet));overflow:hidden}
+.note::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pc)}
+.note .lbl{display:inline-flex;align-items:center;gap:6px;font:700 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--pc);margin-bottom:7px}
+.note .lbl::before{content:"!";display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--pc);color:#fff;font-size:11px}
+.note.trap{border-color:color-mix(in srgb,var(--loss) 30%,var(--rule));background:color-mix(in srgb,var(--loss) 7%,var(--sheet))}
+.note.trap::before,.note.trap .lbl::before{background:var(--loss)} .note.trap .lbl{color:var(--loss)}
+.note.why{border-color:color-mix(in srgb,var(--pv) 30%,var(--rule));background:color-mix(in srgb,var(--glow3) 60%,var(--sheet))}
+.note.why::before,.note.why .lbl::before{background:var(--pv)} .note.why .lbl{color:var(--pv)} .note.why .lbl::before{content:"?"}
+.note p:last-child,.note ul:last-child{margin-bottom:0}
+
+/* словарь */
+.dict{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:16px 0}
+.term{position:relative;background:var(--sheet);border:1px solid var(--rule);border-radius:14px;padding:12px 14px 12px 16px;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s}
+.term::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tc,var(--use))}
+.term:hover{transform:translateY(-2px);border-color:var(--tc,var(--use));box-shadow:var(--shadow)}
+.term .sym{font:italic 600 22px/1 "Cambria Math","STIX Two Math","Times New Roman",serif;color:var(--tc,var(--use))}
+.term .u{float:right;font:700 11.5px/1 var(--mono);background:var(--soft);border-radius:99px;padding:6px 9px;color:var(--ink)}
+.term .n{display:block;font-weight:650;margin:8px 0 2px}
+.term .d{display:block;font-size:13.5px;color:var(--ink2);line-height:1.5}
+.dict-filter{display:flex;flex-wrap:wrap;gap:3px;padding:3px;border:1px solid var(--rule);border-radius:12px;background:var(--soft);width:max-content;max-width:100%}
+.dict-filter button,.seg button{appearance:none;border:0;background:transparent;color:var(--ink2);font:650 12.5px/1 var(--body);padding:8px 12px;border-radius:9px;cursor:pointer;transition:all .25s}
+.dict-filter button[aria-pressed="true"],.seg button[aria-pressed="true"]{background:var(--sheet);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08),0 4px 12px -6px rgba(0,0,0,.25)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:3px;padding:3px;border:1px solid var(--rule);border-radius:12px;background:var(--soft)}
+table.tbl{border-collapse:collapse;width:100%;font-size:14.5px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border-bottom:1px solid var(--rule);padding:9px 12px;text-align:left;vertical-align:top}
+.tbl th{font:700 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);background:var(--soft)}
+.tbl tr:last-child td{border-bottom:0}
+.tblwrap{overflow-x:auto;margin:16px 0;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
+
+/* лаборатории */
+.lab{position:relative;background:var(--sheet);border:1px solid var(--rule);border-radius:22px;margin:24px 0;overflow:hidden;box-shadow:var(--shadow-hi)}
+.lab::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--in),var(--use),var(--pc),var(--loss))}
+.lab-h{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--rule);background:linear-gradient(180deg,color-mix(in srgb,var(--sc) 7%,var(--sheet)),var(--sheet))}
+.lab-h .ttl{display:inline-flex;align-items:center;gap:9px;font:700 11.5px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.lab-h .ttl::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--use);animation:pulse 2s infinite}
+.lab-b{padding:16px}
+.ctrls{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px 16px;margin-bottom:12px}
+.ctrl{display:grid;gap:5px;min-width:0}
+.ctrl label{display:flex;justify-content:space-between;gap:8px;font:600 11.5px/1.2 var(--mono);color:var(--ink2)}
+.ctrl label output{color:var(--ink);font-weight:700}
+.ctrl input[type=range]{width:100%;accent-color:var(--sc);cursor:pointer}
+.chart{width:100%;height:auto;display:block;border-radius:14px;background:var(--paper);border:1px solid var(--rule);touch-action:pan-y}
+.chart text{font-family:var(--mono);font-size:11px;fill:var(--ink2)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 2px 0;font:600 12px/1.3 var(--mono);color:var(--ink2)}
+.legend span::before{content:"";display:inline-block;width:14px;height:3px;border-radius:2px;background:var(--c);vertical-align:middle;margin-right:6px}
+.outgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0 0}
+.out{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:9px 12px;min-width:0}
+.out .k{font:600 11px/1.2 var(--mono);color:var(--ink2)}
+.out .v{font:700 18px/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.out.hi{border-color:color-mix(in srgb,var(--use) 45%,transparent);background:color-mix(in srgb,var(--use) 9%,var(--sheet))} .out.hi .v{color:var(--use)}
+
+/* цикл */
+.cycle{display:flex;height:58px;border-radius:14px;overflow:hidden;border:1px solid var(--rule);margin:8px 0 6px}
+.cycle>div{display:grid;place-items:center;min-width:0;font:700 12px/1.2 var(--mono);color:#fff;text-align:center;padding:0 4px;transition:flex-grow .5s cubic-bezier(.2,.8,.2,1);overflow:hidden;white-space:nowrap}
+.cycle .w1{background:var(--use)} .cycle .w2{background:color-mix(in srgb,var(--use) 60%,var(--in))} .cycle .id{background:repeating-linear-gradient(45deg,var(--pc),var(--pc) 8px,color-mix(in srgb,var(--pc) 80%,#fff) 8px,color-mix(in srgb,var(--pc) 80%,#fff) 16px)}
+:root[data-theme="dark"] .cycle>div{color:#111}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cycle>div{color:#111}}
+
+/* передачи */
+.gears svg{width:100%;height:auto;display:block}
+.gears .rot{transform-box:fill-box;transform-origin:center}
+
+/* разбор задач */
+details.sol{border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);margin:12px 0;box-shadow:var(--shadow);transition:border-color .25s,box-shadow .25s}
+details.sol[open]{border-color:color-mix(in srgb,var(--use) 45%,var(--rule));box-shadow:var(--shadow-hi)}
+details.sol>summary{cursor:pointer;list-style:none;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;font-weight:650}
+details.sol>summary::-webkit-details-marker{display:none}
+details.sol>summary::after{content:"+";flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:10px;background:var(--soft);font:600 18px/1 var(--mono);color:var(--ink2);transition:transform .35s cubic-bezier(.3,1.6,.5,1),background .25s,color .25s}
+details.sol[open]>summary::after{transform:rotate(135deg);background:var(--use);color:#fff}
+details.sol>.in{padding:4px 16px 16px;border-top:1px dashed var(--rule)}
+details.sol[open]>.in{animation:open .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ex{margin:30px 0 8px}
+.ex-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:8px}
+.ex-h h3{margin:0}
+.tag{display:inline-flex;align-items:center;gap:5px;font:700 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:99px;color:var(--tc);background:color-mix(in srgb,var(--tc) 14%,transparent)}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.given{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.given span{font:600 12.5px/1 var(--mono);background:var(--soft);border-radius:8px;padding:7px 9px}
+.step{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;margin:14px 0;position:relative}
+.step>b:first-child{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--use);color:#fff;font:800 13px/1 var(--display);box-shadow:0 8px 18px -8px var(--use)}
+.step>div{min-width:0;overflow-x:auto;padding-top:3px}
+.line{font-family:var(--mono);font-size:14px;line-height:1.6;padding:3px 0;white-space:nowrap}
+.ans{font-family:var(--mono);font-weight:700;color:var(--use);white-space:nowrap;padding:1px 6px;border-radius:6px;background:linear-gradient(transparent 55%,color-mix(in srgb,var(--use) 18%,transparent) 55%)}
+.anstbl{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.anstbl>div{padding:8px 13px;border-radius:12px;background:color-mix(in srgb,var(--use) 9%,var(--sheet));border:1px solid color-mix(in srgb,var(--use) 35%,transparent)}
+.anstbl .k{font:600 11px/1.3 var(--mono);color:var(--ink2)} .anstbl .v{font:700 16px/1.3 var(--mono);color:var(--use)}
+
+/* тест */
+.test-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;justify-content:space-between;margin:10px 0 16px}
+.timer{display:flex;align-items:center;gap:10px;font:700 15px/1 var(--mono);background:var(--sheet);border:1px solid var(--rule);border-radius:14px;padding:6px 6px 6px 14px;box-shadow:var(--shadow)}
+.timer b{font:800 22px/1 var(--display);font-variant-numeric:tabular-nums;min-width:4.2ch}
+.timer.low b{color:var(--loss)}
+.btn{appearance:none;cursor:pointer;font:650 13.5px/1 var(--body);border:1px solid var(--use);background:var(--use);color:#fff;border-radius:12px;padding:11px 16px;transition:transform .2s,filter .2s;box-shadow:0 8px 20px -10px var(--use)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule);box-shadow:none}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06)} .btn.ghost:hover{border-color:var(--use);color:var(--use)}
+.btn.sm{padding:8px 12px;font-size:12.5px}
+:root[data-theme="dark"] .btn:not(.ghost){color:#0F1614}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn:not(.ghost){color:#0F1614}}
+.q{position:relative;background:var(--sheet);border:1px solid var(--rule);border-radius:20px;padding:18px;margin:16px 0;box-shadow:var(--shadow)}
+.q-h{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:8px}
+.q-h h4{margin:0;font-family:var(--display);font-weight:800;font-size:17px}
+.q-like{font:600 11.5px/1 var(--mono);color:var(--ink2)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:12px}
+.fld{display:grid;gap:5px}
+.fld label{font:600 12px/1.3 var(--mono);color:var(--ink2)}
+.fld .row{display:flex;align-items:center;gap:6px}
+.fld input{width:100%;font:500 15px/1.2 var(--mono);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:9px 10px;transition:border-color .2s,box-shadow .2s}
+.fld input:focus{border-color:var(--use);outline:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--use) 16%,transparent)}
+.fld .unit{font:500 13px/1 var(--mono);color:var(--ink2);white-space:nowrap}
+.fld .fb{font:600 12px/1.3 var(--mono);min-height:1.1em}
+.fld.ok input{border-color:var(--use);background:color-mix(in srgb,var(--use) 10%,var(--paper))} .fld.ok .fb{color:var(--use)}
+.fld.bad input{border-color:var(--loss);background:color-mix(in srgb,var(--loss) 9%,var(--paper));animation:shake .4s} .fld.bad .fb{color:var(--loss)}
+@keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+.q-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.score{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:20px;margin:18px 0;background:var(--sheet);border:1px solid var(--rule);box-shadow:var(--shadow-hi)}
+.ring{--v:0;width:66px;height:66px;border-radius:50%;flex:none;display:grid;place-items:center;font:800 17px/1 var(--display);
+  background:radial-gradient(closest-side,var(--sheet) 76%,transparent 78%),conic-gradient(var(--use) calc(var(--v)*1%),var(--soft) 0);transition:--v .8s}
+
+/* шпаргалка */
+.cheat{columns:2 300px;column-gap:14px}
+.cs{break-inside:avoid;margin:0 0 14px;padding:14px 16px;border-radius:16px;background:color-mix(in srgb,var(--c) 6%,var(--sheet));border:1px solid color-mix(in srgb,var(--c) 22%,var(--rule))}
+.cs h4{margin:0 0 8px;font:700 11.5px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.cs p{margin:6px 0;font-size:14.5px}
+footer{margin-top:60px;padding:18px 20px;border-radius:var(--r);background:var(--sheet);border:1px solid var(--rule);font:500 12.5px/1.6 var(--mono);color:var(--ink2)}
+
+.rv-on .rv{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv-on .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.rv-on .rv{opacity:1;transform:none;transition:none}.brand i,.kicker::before,.lab-h .ttl::before,.hero h1 .sub,.flow path.dash{animation:none}}
+@media print{.topbar,.scrollbar,.lab,.flow-ctrl,.q-actions,.test-top{display:none!important}body::after{display:none}.rv-on .rv{opacity:1;transform:none}details.sol>.in{display:block}}
+</style>
+</head>
+<body>
+<div class="scrollbar" aria-hidden="true"><i id="scrollBar"></i></div>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><i></i>Ingenium <span>/</span> PS7–8</div>
+    <nav class="nav" id="nav" aria-label="Разделы">
+      <a href="#s1">Словарь</a><a href="#s2">КПД</a><a href="#s3">Потери</a><a href="#s4">Цикл</a><a href="#s5">Передачи</a><a href="#s6">Задачи</a><a href="#s7">Тест</a><a href="#s8">Шпора</a>
+    </nav>
+    <button class="iconbtn" id="themeBtn" aria-label="Переключить тему"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <p class="kicker">BME · Intro ME · Practice 7 и 8</p>
+  <h1>Куда деваются ватты <span class="sub">КПД, нагрузка, потери и передачи</span></h1>
+  <p class="lead">Вся тема держится на одной мысли: <b>энергия на входе = полезная + потери</b>. Всё остальное (коэффициент нагрузки, оптимум, средний КПД, передачи) просто разные способы посчитать эти три куска. Ниже словарь всех обозначений, теория по-человечески, разбор всех семи задач и пробный тест в двух вариантах.</p>
+  <div class="chips"><span class="chip">PS7: 7.1–7.3</span><span class="chip">PS8: 8.1–8.4</span><span class="chip">тест: <b id="cdT">завтра</b></span></div>
+
+  <figure class="flow rv" aria-label="Поток мощности: вход делится на полезную мощность и потери">
+    <svg viewBox="0 0 760 250" id="flowSvg">
+      <defs>
+        <linearGradient id="gIn" x1="0" x2="1"><stop offset="0" stop-color="var(--in)"/><stop offset="1" stop-color="var(--in)" stop-opacity=".85"/></linearGradient>
+      </defs>
+      <path class="stream" id="stIn" stroke="var(--in)"/>
+      <path class="stream" id="stUse" stroke="var(--use)"/>
+      <path class="stream" id="stPc" stroke="var(--pc)"/>
+      <path class="stream" id="stPv" stroke="var(--pv)"/>
+      <path class="dash" id="dsIn"/><path class="dash" id="dsUse"/><path class="dash" id="dsPc"/><path class="dash" id="dsPv"/>
+      <text class="lbl" x="18" y="28" fill="var(--in)">P_in вход</text><text class="val" x="18" y="56" fill="var(--ink)" id="tIn"></text>
+      <text class="lbl" x="742" y="46" text-anchor="end" fill="var(--use)">P_u полезная</text><text class="val" x="742" y="74" text-anchor="end" fill="var(--ink)" id="tUse"></text>
+      <text class="lbl" x="742" y="176" text-anchor="end" fill="var(--pc)">P_c постоянные</text><text class="val" x="742" y="200" text-anchor="end" fill="var(--ink)" id="tPc"></text>
+      <text class="lbl" x="560" y="236" text-anchor="end" fill="var(--pv)">x²·P_v1 переменные</text><text class="val" x="742" y="238" text-anchor="end" fill="var(--ink)" id="tPv"></text>
+      <text class="lbl" x="18" y="236" fill="var(--ink2)">η =</text><text class="val" x="52" y="238" fill="var(--use)" id="tEta"></text>
+    </svg>
+    <div class="flow-ctrl"><span>Нагрузка x</span><input type="range" id="flowX" min="0" max="1.5" step="0.01" value="0.8"><output id="flowXo">0.80</output><span class="muted">мотор 5 кВт, P<sub>c</sub> = 0.42 кВт, P<sub>v1</sub> = 0.656 кВт (это задача 8.2)</span></div>
+  </figure>
+  <p class="small muted">Тащи ползунок. На нуле полезной мощности нет вообще, а мотор всё равно жрёт P<sub>c</sub>, поэтому КПД = 0. На перегрузе раздуваются переменные потери и КПД снова падает. Где-то посередине максимум: о нём раздел 3.</p>
+</section>
+
+<!-- ================= 1. Словарь ================= -->
+<section class="sec" id="s1" style="--sc:var(--in)">
+  <div class="sec-h"><span class="sec-no">01</span><h2>Словарь: буквы и единицы</h2></div>
+  <p>Половина ошибок на таких тестах не от физики, а от того, что путают P<sub>n</sub> с P<sub>in</sub> или подставляют минуты вместо секунд. Вот всё, что встречается в PS7 и PS8. Индексы в задачах английские, я их так и оставил.</p>
+  <div class="dict-filter" id="dictF" role="group" aria-label="Фильтр">
+    <button data-g="all" aria-pressed="true">Все</button><button data-g="p" aria-pressed="false">Мощность и КПД</button><button data-g="w" aria-pressed="false">Работа и время</button><button data-g="m" aria-pressed="false">Вращение и передачи</button><button data-g="e" aria-pressed="false">Электрика и стенд</button>
+  </div>
+  <div class="dict" id="dict">
+    <div class="term" data-g="p" style="--tc:var(--in)"><span class="u">Вт, кВт</span><span class="sym">P<sub>in</sub></span><span class="n">Входная (затраченная) мощность</span><span class="d">Сколько машина берёт: из сети, с вала мотора, от рук рабочих. Input. Иногда пишут P<sub>input</sub>.</span></div>
+    <div class="term" data-g="p" style="--tc:var(--use)"><span class="u">Вт, кВт</span><span class="sym">P<sub>u</sub></span><span class="n">Полезная мощность</span><span class="d">То, ради чего машину купили: мощность на выходном валу, поднятие груза, электричество генератора. Useful.</span></div>
+    <div class="term" data-g="p" style="--tc:var(--use)"><span class="u">Вт, кВт</span><span class="sym">P<sub>n</sub> = P<sub>N</sub></span><span class="n">Номинальная мощность</span><span class="d">Паспортная полезная мощность, на которую машину рассчитали. Это <b>полезная</b> при x = 1, не входная!</span></div>
+    <div class="term" data-g="p" style="--tc:var(--loss)"><span class="u">Вт, кВт</span><span class="sym">P<sub>loss</sub></span><span class="n">Мощность потерь</span><span class="d">P<sub>in</sub> − P<sub>u</sub>. Уходит в тепло, трение, шум.</span></div>
+    <div class="term" data-g="p" style="--tc:var(--pc)"><span class="u">Вт, кВт</span><span class="sym">P<sub>c</sub></span><span class="n">Постоянные потери</span><span class="d">Не зависят от нагрузки: трение в подшипниках, вентилятор, намагничивание. На холостом ходу (x = 0) мотор потребляет ровно P<sub>c</sub>. Constant.</span></div>
+    <div class="term" data-g="p" style="--tc:var(--pv)"><span class="u">Вт, кВт</span><span class="sym">P<sub>v1</sub></span><span class="n">Переменные потери при x = 1</span><span class="d">Сколько «переменных» потерь при номинальной нагрузке. При другой нагрузке они равны xⁿ·P<sub>v1</sub>. Variable, единичка = при полной загрузке.</span></div>
+    <div class="term" data-g="p" style="--tc:var(--in)"><span class="u">безразм.</span><span class="sym">x</span><span class="n">Коэффициент нагрузки</span><span class="d">x = P<sub>u</sub> / P<sub>n</sub>. Насколько загружена машина: 0 = холостой ход, 1 = номинал, 1.2 = перегруз на 20 %.</span></div>
+    <div class="term" data-g="p" style="--tc:var(--use)"><span class="u">безразм., %</span><span class="sym">η</span><span class="n">КПД (эта)</span><span class="d">η = P<sub>u</sub> / P<sub>in</sub>, всегда меньше 1. В формулы подставляй долю: 79 % → 0.79.</span></div>
+    <div class="term" data-g="p" style="--tc:var(--pv)"><span class="u">безразм.</span><span class="sym">n</span><span class="n">Показатель потерь</span><span class="d">Как быстро растут переменные потери: n ≈ 1 механика (блоки), n ≈ 2 электромашины (моторы, генераторы), n ≈ 3 гидравлика (насосы, вентиляторы). Не путай с оборотами n!</span></div>
+    <div class="term" data-g="p" style="--tc:var(--use)"><span class="u">безразм.</span><span class="sym">x<sub>opt</sub>, η<sub>max</sub></span><span class="n">Оптимальная нагрузка и максимальный КПД</span><span class="d">Нагрузка, при которой КПД максимальный, и сам этот максимум.</span></div>
+    <div class="term" data-g="w" style="--tc:var(--in)"><span class="u">Дж, кВт·ч</span><span class="sym">W</span><span class="n">Работа (энергия)</span><span class="d">W = P·t при постоянной мощности. W<sub>in</sub>, W<sub>u</sub>, W<sub>n</sub> как с мощностями. 1 кВт·ч = 3.6 МДж, 1 кВт·мин = 60 кДж.</span></div>
+    <div class="term" data-g="w" style="--tc:var(--in)"><span class="u">с, мин</span><span class="sym">t, T</span><span class="n">Время интервала и цикла</span><span class="d">t<sub>1</sub>, t<sub>2</sub> = интервалы, T = весь цикл. Для средних можно считать в минутах, они сокращаются.</span></div>
+    <div class="term" data-g="w" style="--tc:var(--use)"><span class="u">безразм.</span><span class="sym">η<sub>avg</sub>, x<sub>avg</sub></span><span class="n">Средний КПД и средняя нагрузка</span><span class="d">Считаются через <b>работы</b> за цикл, а не как среднее арифметическое КПД! η<sub>avg</sub> = W<sub>u</sub>/W<sub>in</sub>, x<sub>avg</sub> = W<sub>u</sub>/W<sub>n</sub>.</span></div>
+    <div class="term" data-g="m" style="--tc:var(--pv)"><span class="u">1/мин (RPM)</span><span class="sym">n</span><span class="n">Обороты</span><span class="d">Revolutions per minute. 1440 RPM = 24 об/с. Тут n — это обороты, а не показатель потерь: смотри по контексту.</span></div>
+    <div class="term" data-g="m" style="--tc:var(--pv)"><span class="u">рад/с = 1/с</span><span class="sym">ω</span><span class="n">Угловая скорость</span><span class="d">ω = 2π·n / 60 (n в RPM). 3000 RPM → 314.16 1/с.</span></div>
+    <div class="term" data-g="m" style="--tc:var(--pv)"><span class="u">Н·м</span><span class="sym">M</span><span class="n">Момент (крутящий)</span><span class="d">M = F·r (сила на плече). Мощность вращения P = M·ω.</span></div>
+    <div class="term" data-g="m" style="--tc:var(--pc)"><span class="u">безразм.</span><span class="sym">i</span><span class="n">Передаточное число</span><span class="d">i = ω<sub>1</sub>/ω<sub>2</sub> = n<sub>1</sub>/n<sub>2</sub> = z<sub>2</sub>/z<sub>1</sub>. Во сколько раз выход медленнее входа. Ступени перемножаются: i = i<sub>1</sub>·i<sub>2</sub>.</span></div>
+    <div class="term" data-g="m" style="--tc:var(--pc)"><span class="u">шт.</span><span class="sym">z</span><span class="n">Число зубьев</span><span class="d">z<sub>1</sub> у ведущего, z<sub>2</sub> у ведомого. У червяка z<sub>1</sub> = число заходов (обычно 1).</span></div>
+    <div class="term" data-g="m" style="--tc:var(--in)"><span class="u">м/с</span><span class="sym">v</span><span class="n">Окружная (линейная) скорость</span><span class="d">v = ω·r. Скорость точки на ободе, на ручке ворота, скорость троса и груза.</span></div>
+    <div class="term" data-g="m" style="--tc:var(--in)"><span class="u">м</span><span class="sym">d, r, k</span><span class="n">Диаметр, радиус, плечо</span><span class="d">r = d/2. k — длина рукоятки (плечо силы рабочего или плечо весов). мм → м: делить на 1000!</span></div>
+    <div class="term" data-g="m" style="--tc:var(--loss)"><span class="u">Н</span><span class="sym">F, G</span><span class="n">Сила и вес</span><span class="d">G = m·g, g = 9.81 м/с². 1.5 т = 1500 кг.</span></div>
+    <div class="term" data-g="e" style="--tc:var(--in)"><span class="u">В · А</span><span class="sym">U, I</span><span class="n">Напряжение и ток</span><span class="d">Электрическая входная мощность P<sub>in</sub> = U·I (постоянный ток, как в 7.3).</span></div>
+    <div class="term" data-g="e" style="--tc:var(--pc)"><span class="u">кг</span><span class="sym">m, m<sub>0</sub></span><span class="n">Грузики на весах (балансирная машина)</span><span class="d">m уравновешивает статор под нагрузкой, m<sub>0</sub> на холостом ходу. Полезный момент M = (m − m<sub>0</sub>)·g·k.</span></div>
+  </div>
+  <div class="tblwrap rv"><table class="tbl">
+    <thead><tr><th>Дали</th><th>Перевод</th><th>Пример из PS7–8</th></tr></thead>
+    <tbody>
+      <tr><td>% → доля</td><td>÷ 100</td><td>η = 64 % → 0.64</td></tr>
+      <tr><td>RPM → ω</td><td>ω = 2π·n/60</td><td>1440 RPM → 150.8 1/с · 3000 RPM → 314.16 1/с</td></tr>
+      <tr><td>мм → м</td><td>÷ 1000</td><td>d = 300 мм → r = 0.15 м · k = 400 мм = 0.4 м</td></tr>
+      <tr><td>т → кг</td><td>× 1000</td><td>1.5 т = 1500 кг</td></tr>
+      <tr><td>кВт·мин → кВт·ч</td><td>÷ 60</td><td>296.85 кВт·мин = 4.947 кВт·ч = 17.81 МДж</td></tr>
+      <tr><td>мин → с</td><td>× 60</td><td>1211 с = 20.2 мин</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================= 2. КПД и нагрузка ================= -->
+<section class="sec" id="s2" style="--sc:var(--use)">
+  <div class="sec-h"><span class="sec-no">02</span><h2>КПД и коэффициент нагрузки</h2></div>
+  <p>Представь кофемашину: из розетки она берёт энергию (вход), часть превращается в горячий кофе (полезная), остальное греет кухню (потери). Ничего не исчезает:</p>
+  <div class="formula rv"><span class="f"><i>P</i><sub>in</sub> = <i>P</i><sub>u</sub> + <i>P</i><sub>loss</sub></span><span class="cap">закон сохранения энергии, только в мощностях</span></div>
+  <div class="grid2">
+    <div class="card rv"><h4 style="margin-top:0">КПД, η</h4><p class="f" style="font-size:1.25em"><i>η</i> = <span class="fr"><span><i>P</i><sub>u</sub></span><span><i>P</i><sub>in</sub></span></span></p><p class="small">Какая доля входа стала полезной. Отсюда же <i>P</i><sub>in</sub> = <i>P</i><sub>u</sub>/η и <i>P</i><sub>loss</sub> = <i>P</i><sub>u</sub>(1/η − 1).</p></div>
+    <div class="card rv"><h4 style="margin-top:0">Нагрузка, x</h4><p class="f" style="font-size:1.25em"><i>x</i> = <span class="fr"><span><i>P</i><sub>u</sub></span><span><i>P</i><sub>n</sub></span></span></p><p class="small">Насколько машина загружена относительно паспорта. Значит, <i>P</i><sub>u</sub> = <i>x</i>·<i>P</i><sub>n</sub>: полезную мощность при любой нагрузке получаешь умножением.</p></div>
+  </div>
+  <div class="note trap"><span class="lbl">Ловушка</span><p>Номинальная мощность P<sub>n</sub> это <b>полезная</b> мощность при x = 1, не то, что машина берёт из сети. Мотор на 5 кВт при полной нагрузке выдаёт 5 кВт на вал, а из сети тянет 5/η, больше.</p></div>
+  <div class="note"><span class="lbl">Фишка</span><p>Если P<sub>in</sub> = 1.21·P<sub>u</sub> (как в 8.2), то сразу η = 1/1.21 = 0.826. И потери = 0.21·P<sub>u</sub>.</p></div>
+</section>
+
+<!-- ================= 3. Потери ================= -->
+<section class="sec" id="s3" style="--sc:var(--pv)">
+  <div class="sec-h"><span class="sec-no">03</span><h2>Функция потерь и максимум КПД</h2></div>
+  <p>Потери делятся на два сорта. <b class="c-pc">Постоянные P<sub>c</sub></b> есть всегда, даже когда машина крутится вхолостую: подшипники, вентилятор. <b class="c-pv">Переменные</b> растут с нагрузкой: в моторе это нагрев обмоток током, а ток растёт с нагрузкой, тепло ∝ I², отсюда квадрат.</p>
+  <div class="formula rv"><span class="f"><i>P</i><sub>loss</sub>(<i>x</i>) = <span class="c-pc"><i>P</i><sub>c</sub></span> + <span class="c-pv"><i>x</i><sup><i>n</i></sup>·<i>P</i><sub>v1</sub></span></span><span class="cap">n ≈ 1 механика · n ≈ 2 электромашины · n ≈ 3 насосы и вентиляторы</span></div>
+  <p>Подставляем всё в КПД и получаем КПД как функцию нагрузки (формула 7.0.1 из листка):</p>
+  <div class="formula rv"><span class="f"><i>η</i>(<i>x</i>) = <span class="fr"><span><i>x</i>·<i>P</i><sub>n</sub></span><span><i>x</i>·<i>P</i><sub>n</sub> + <i>P</i><sub>c</sub> + <i>x</i><sup><i>n</i></sup>·<i>P</i><sub>v1</sub></span></span></span></div>
+
+  <h3>Где максимум</h3>
+  <p>Делим числитель и знаменатель на x: η = P<sub>n</sub> / (P<sub>n</sub> + P<sub>c</sub>/x + x<sup>n−1</sup>P<sub>v1</sub>). КПД максимален, когда знаменатель минимален. P<sub>c</sub>/x падает с ростом x, x·P<sub>v1</sub> растёт. Для n = 2 берём производную по x и приравниваем к нулю: −P<sub>c</sub>/x² + P<sub>v1</sub> = 0. Отсюда:</p>
+  <div class="grid2">
+    <div class="formula rv" style="margin:0"><span class="f"><i>n</i> = 2: &nbsp;<i>x</i><sub>opt</sub> = <span class="sq">√<span><span class="fr"><span><i>P</i><sub>c</sub></span><span><i>P</i><sub>v1</sub></span></span></span></span></span><span class="cap">оптимум там, где постоянные = переменным: P<sub>c</sub> = x²P<sub>v1</sub></span></div>
+    <div class="formula rv" style="margin:0"><span class="f"><i>n</i> = 3: &nbsp;<i>x</i><sub>opt</sub> = <span class="sq"><sup>3</sup>√<span><span class="fr"><span><i>P</i><sub>c</sub></span><span>2<i>P</i><sub>v1</sub></span></span></span></span></span><span class="cap">n = 1: максимума нет, η только растёт с x</span></div>
+  </div>
+  <p>И η<sub>max</sub> = x<sub>opt</sub>P<sub>n</sub> / (x<sub>opt</sub>P<sub>n</sub> + 2P<sub>c</sub>) для n = 2, потому что в оптимуме все потери равны 2P<sub>c</sub>.</p>
+
+  <div class="lab rv" style="--sc:var(--pv)">
+    <div class="lab-h"><span class="ttl">Лаборатория · КПД от нагрузки</span><div class="seg" id="nSeg"><button data-n="1" aria-pressed="false">n = 1</button><button data-n="2" aria-pressed="true">n = 2</button><button data-n="3" aria-pressed="false">n = 3</button></div></div>
+    <div class="lab-b">
+      <div class="ctrls">
+        <div class="ctrl"><label for="lPn"><span>P<sub>n</sub>, кВт</span> <output id="oPn"></output></label><input type="range" id="lPn" min="1" max="20" step="0.5" value="5"></div>
+        <div class="ctrl"><label for="lPc"><span>P<sub>c</sub>, кВт</span> <output id="oPc"></output></label><input type="range" id="lPc" min="0.02" max="2" step="0.01" value="0.42"></div>
+        <div class="ctrl"><label for="lPv"><span>P<sub>v1</sub>, кВт</span> <output id="oPv"></output></label><input type="range" id="lPv" min="0.02" max="3" step="0.01" value="0.66"></div>
+      </div>
+      <svg class="chart" id="effChart" viewBox="0 0 640 300" role="img" aria-label="График КПД и потерь от нагрузки"></svg>
+      <div class="legend"><span style="--c:var(--use)">η(x)</span><span style="--c:var(--pc)">P<sub>c</sub></span><span style="--c:var(--pv)">xⁿ·P<sub>v1</sub></span><span style="--c:var(--loss)">P<sub>loss</sub> всего</span></div>
+      <div class="outgrid">
+        <div class="out hi"><div class="k">x_opt</div><div class="v" id="rXo"></div></div>
+        <div class="out hi"><div class="k">η_max</div><div class="v" id="rEm"></div></div>
+        <div class="out"><div class="k">η при x = 1</div><div class="v" id="rE1"></div></div>
+        <div class="out"><div class="k">P_loss при x = 1</div><div class="v" id="rL1"></div></div>
+      </div>
+      <p class="small muted" style="margin:10px 0 0">Посмотри, как пересекаются оранжевая и фиолетовая линии: при n = 2 точка пересечения ровно под пиком КПД.</p>
+    </div>
+  </div>
+
+  <h3>Как найти P<sub>c</sub> и P<sub>v1</sub> из двух измерений</h3>
+  <p>Это главный тип задач (7.3, 8.3). Дают две точки: нагрузку и КПД (или мощности). Рецепт:</p>
+  <div class="step"><b>1</b><div>В каждой точке находишь потери: P<sub>u</sub> = x·P<sub>n</sub>, P<sub>in</sub> = P<sub>u</sub>/η, P<sub>loss</sub> = P<sub>in</sub> − P<sub>u</sub>.</div></div>
+  <div class="step"><b>2</b><div>Пишешь два уравнения: <span class="f">P<sub>loss,1</sub> = P<sub>c</sub> + x<sub>1</sub>²P<sub>v1</sub></span> и <span class="f">P<sub>loss,2</sub> = P<sub>c</sub> + x<sub>2</sub>²P<sub>v1</sub></span>.</div></div>
+  <div class="step"><b>3</b><div>Вычитаешь одно из другого, P<sub>c</sub> уходит: <span class="f">P<sub>v1</sub> = <span class="fr"><span>P<sub>loss,1</sub> − P<sub>loss,2</sub></span><span>x<sub>1</sub>² − x<sub>2</sub>²</span></span></span>. Потом P<sub>c</sub> из любого уравнения.</div></div>
+  <div class="step"><b>4</b><div>x<sub>opt</sub> = √(P<sub>c</sub>/P<sub>v1</sub>), η<sub>max</sub> по формуле выше.</div></div>
+  <div class="note why"><span class="lbl">Почему так</span><p>Если КПД одинаковый при двух нагрузках x<sub>a</sub> и x<sub>b</sub> (как в 8.3: 95 % и 95 %), то максимум ровно посередине «в геометрическом смысле»: x<sub>opt</sub> = √(x<sub>a</sub>·x<sub>b</sub>). Для 8.3: √(1·0.526) = 0.725. Проверка ответа на халяву.</p></div>
+</section>
+
+<!-- ================= 4. Цикл ================= -->
+<section class="sec" id="s4" style="--sc:var(--pc)">
+  <div class="sec-h"><span class="sec-no">04</span><h2>Средний КПД и средняя нагрузка за цикл</h2></div>
+  <p>Машина работает циклами: сначала пашет на полную, потом на половину, потом стоит вхолостую, пока меняют деталь. Спрашивают, какой КПД <b>в среднем</b>. Тут нельзя складывать КПД и делить на количество: интервалы разной длины и разной мощности. Правильно через работу (энергию):</p>
+  <div class="grid2">
+    <div class="formula rv" style="margin:0"><span class="f"><i>η</i><sub>avg</sub> = <span class="fr"><span>Σ <i>P</i><sub>u,i</sub>·<i>t</i><sub>i</sub></span><span>Σ <i>P</i><sub>in,i</sub>·<i>t</i><sub>i</sub></span></span> = <span class="fr"><span><i>W</i><sub>u</sub></span><span><i>W</i><sub>in</sub></span></span></span></div>
+    <div class="formula rv" style="margin:0"><span class="f"><i>x</i><sub>avg</sub> = <span class="fr"><span><i>W</i><sub>u</sub></span><span><i>P</i><sub>n</sub>·<i>T</i></span></span> = <span class="fr"><span>Σ <i>x</i><sub>i</sub>·<i>t</i><sub>i</sub></span><span><i>T</i></span></span></span></div>
+  </div>
+  <div class="note"><span class="lbl">Холостой ход</span><p>На холостом ходу x = 0: полезной работы нет, а вход есть. Для мотора вход на холостом ходу ≈ P<sub>c</sub> (8.4: «constant loss (idle power) P<sub>c</sub> = 0.5 kW»). Этот интервал входит в T и в W<sub>in</sub>, но ничего не добавляет в W<sub>u</sub>. Поэтому долгий холостой ход убивает средний КПД.</p></div>
+
+  <div class="lab rv" style="--sc:var(--pc)">
+    <div class="lab-h"><span class="ttl">Лаборатория · цикл машины (задача 7.2)</span></div>
+    <div class="lab-b">
+      <div class="ctrls">
+        <div class="ctrl"><label for="cT">Цикл T, мин <output id="oT"></output></label><input type="range" id="cT" min="10" max="90" step="1" value="40"></div>
+        <div class="ctrl"><label for="cI">Холостой (смена детали), мин <output id="oI"></output></label><input type="range" id="cI" min="0" max="30" step="0.1" value="10"></div>
+        <div class="ctrl"><label for="cE">η при работе <output id="oE"></output></label><input type="range" id="cE" min="0.5" max="0.98" step="0.01" value="0.79"></div>
+      </div>
+      <div class="cycle" id="cycBar"><div class="w1" id="cbW">работа</div><div class="id" id="cbI">холостой</div></div>
+      <div class="legend"><span style="--c:var(--use)">работа: P<sub>in</sub> = 8 кВт, x = 1</span><span style="--c:var(--pc)">холостой: P<sub>in</sub> = 1.3 кВт, x = 0</span></div>
+      <div class="outgrid">
+        <div class="out"><div class="k">W_in, кВт·мин</div><div class="v" id="cWi"></div></div>
+        <div class="out"><div class="k">W_u, кВт·мин</div><div class="v" id="cWu"></div></div>
+        <div class="out hi"><div class="k">η_avg</div><div class="v" id="cEa"></div></div>
+        <div class="out hi"><div class="k">x_avg</div><div class="v" id="cXa"></div></div>
+      </div>
+      <p class="small muted" style="margin:10px 0 0">Поставь холостой на 9.9 мин: средний КПД ровно 75 %, это ответ 7.2a.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. Передачи ================= -->
+<section class="sec" id="s5" style="--sc:var(--in)">
+  <div class="sec-h"><span class="sec-no">05</span><h2>Передачи, ворот и балансирная машина</h2></div>
+  <p>Передача (зубчатая, червячная) меняет обороты и момент. Мощность при этом только теряется, но не появляется:</p>
+  <div class="grid2">
+    <div class="formula rv" style="margin:0"><span class="f"><i>i</i> = <span class="fr"><span><i>ω</i><sub>1</sub></span><span><i>ω</i><sub>2</sub></span></span> = <span class="fr"><span><i>n</i><sub>1</sub></span><span><i>n</i><sub>2</sub></span></span> = <span class="fr"><span><i>z</i><sub>2</sub></span><span><i>z</i><sub>1</sub></span></span></span><span class="cap">1 = ведущее (мотор), 2 = ведомое (выход)</span></div>
+    <div class="formula rv" style="margin:0"><span class="f"><i>P</i><sub>2</sub> = <i>η</i>·<i>P</i><sub>1</sub> &nbsp;⇒&nbsp; <i>M</i><sub>2</sub> = <i>i</i>·<i>η</i>·<i>M</i><sub>1</sub></span><span class="cap">из P = M·ω: во сколько раз медленнее, во столько (почти) сильнее</span></div>
+  </div>
+  <p>Вывод второй формулы в одну строку: P<sub>2</sub> = η P<sub>1</sub> → M<sub>2</sub>ω<sub>2</sub> = η M<sub>1</sub>ω<sub>1</sub> → M<sub>2</sub>/M<sub>1</sub> = η·ω<sub>1</sub>/ω<sub>2</sub> = η·i. Отсюда в 7.1: отношение моментов 16 = i·0.64 → i = 25.</p>
+
+  <div class="lab gears rv" style="--sc:var(--in)">
+    <div class="lab-h"><span class="ttl">Ворот из 8.1 · крутится по-настоящему</span><div class="seg" id="gSpeed"><button data-s="0" aria-pressed="false">стоп</button><button data-s="1" aria-pressed="true">крутить</button></div></div>
+    <div class="lab-b">
+      <svg viewBox="0 0 640 260" id="gearSvg" aria-label="Схема ворота: рукоятка, две пары шестерён и барабан с грузом">
+        <g id="gDrum" class="rot"><circle cx="150" cy="110" r="64" fill="color-mix(in srgb,var(--in) 10%,var(--sheet))" stroke="var(--in)" stroke-width="2.5"/><circle cx="150" cy="110" r="44" fill="none" stroke="var(--in)" stroke-width="1.5" stroke-dasharray="4 5"/><line x1="150" y1="110" x2="150" y2="50" stroke="var(--in)" stroke-width="2"/><line x1="150" y1="110" x2="202" y2="140" stroke="var(--in)" stroke-width="2"/><line x1="150" y1="110" x2="98" y2="140" stroke="var(--in)" stroke-width="2"/></g>
+        <circle cx="150" cy="110" r="5" fill="var(--ink)"/>
+        <line id="gRope" x1="86" y1="110" x2="86" y2="200" stroke="var(--ink)" stroke-width="2"/>
+        <g id="gLoad"><rect x="66" y="200" width="40" height="34" rx="6" fill="var(--loss)"/><text x="86" y="222" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#fff">1.5 т</text></g>
+        <g id="gMid" class="rot"><circle cx="318" cy="110" r="40" fill="none" stroke="var(--pc)" stroke-width="7" stroke-dasharray="6 5"/><circle cx="318" cy="110" r="14" fill="none" stroke="var(--pc)" stroke-width="5" stroke-dasharray="4 4"/><line x1="318" y1="110" x2="318" y2="76" stroke="var(--pc)" stroke-width="2"/></g>
+        <circle cx="318" cy="110" r="4" fill="var(--ink)"/>
+        <g id="gIn" class="rot"><circle cx="420" cy="110" r="14" fill="none" stroke="var(--pv)" stroke-width="5" stroke-dasharray="4 4"/><line x1="420" y1="110" x2="560" y2="110" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><circle cx="560" cy="110" r="8" fill="var(--use)"/></g>
+        <circle cx="420" cy="110" r="4" fill="var(--ink)"/>
+        <text x="150" y="30" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="var(--in)">барабан d = 300 мм</text>
+        <text x="318" y="30" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="var(--pc)">i₂ = 5.3</text>
+        <text x="420" y="30" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="var(--pv)">i₁ = 5</text>
+        <text x="560" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="var(--use)">F = 300 Н, k = 0.4 м</text>
+        <text x="560" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="var(--use)">v = 0.7 м/с</text>
+        <text x="200" y="250" text-anchor="start" font-family="JetBrains Mono" font-size="12" fill="var(--ink2)" id="gTxt"></text>
+      </svg>
+      <p class="small" style="margin:8px 0 0">Рукоятка крутится со скоростью ω = v/k = 1.75 1/с. Через две ступени (i = 5·5.3 = 26.5) барабан в 26.5 раз медленнее: 0.066 1/с. Груз едет со скоростью барабанного обода: v<sub>G</sub> = ω·r ≈ 9.9 мм/с. Поэтому 12 м поднимаешь 20 минут: выигрыш в силе, проигрыш в скорости.</p>
+    </div>
+  </div>
+
+  <h3>Балансирная машина (7.3)</h3>
+  <p>Статор мотора подвешен так, что может качаться. Мотор крутит вал, а статор по третьему закону Ньютона тянет в обратную сторону с тем же моментом. Этот момент уравновешивают грузиком m на плече k. Получается прямое измерение момента на валу.</p>
+  <div class="formula rv"><span class="f"><i>M</i> = (<i>m</i> − <i>m</i><sub>0</sub>)·<i>g</i>·<i>k</i>, &nbsp; <i>P</i><sub>u</sub> = <i>M</i>·<i>ω</i>, &nbsp; <i>P</i><sub>in</sub> = <i>U</i>·<i>I</i></span><span class="cap">m₀ уравновешивает холостой ход (собственное трение), в полезный момент он не идёт</span></div>
+</section>
+
+<!-- ================= 6. Задачи ================= -->
+<section class="sec" id="s6" style="--sc:var(--use)">
+  <div class="sec-h"><span class="sec-no">06</span><h2>Разбор всех задач PS7 и PS8</h2></div>
+  <p>Сначала попробуй сам, потом открывай. Числа пересчитаны, округляю до 3–4 значащих.</p>
+
+  <div class="ex rv"><div class="ex-h"><span class="tag" style="--tc:var(--in)">передача</span><h3>7.1 · Червячная передача</h3></div>
+    <p>Червяк z<sub>1</sub> = 1, отношение моментов M<sub>2</sub>/M<sub>1</sub> = 16, η = 64 %. a) z<sub>2</sub>; b) i; c) мощность мотора при n<sub>1</sub> = 1440 RPM и M<sub>2</sub> = 800 Н·м.</p>
+    <details class="sol"><summary>Решение</summary><div class="in">
+      <div class="step"><b>a</b><div><div class="line">M₂/M₁ = i·η  →  i = 16 / 0.64 = 25</div><div class="line">z₂ = i·z₁ = 25·1 = <span class="ans">25 зубьев</span></div></div></div>
+      <div class="step"><b>b</b><div><div class="line">i = z₂/z₁ = <span class="ans">25</span></div></div></div>
+      <div class="step"><b>c</b><div><div class="line">n₂ = n₁/i = 1440/25 = 57.6 RPM → ω₂ = 2π·57.6/60 = 6.032 1/с</div><div class="line">P₂ = M₂·ω₂ = 800·6.032 = 4825 Вт</div><div class="line">P₁ = P₂/η = 4825/0.64 = <span class="ans">7540 Вт ≈ 7.54 кВт</span></div><p class="small muted">Проверка: M₁ = 800/16 = 50 Н·м, ω₁ = 150.8 1/с, P₁ = 50·150.8 = 7540 Вт. Сходится.</p></div></div>
+    </div></details></div>
+
+  <div class="ex rv"><div class="ex-h"><span class="tag" style="--tc:var(--pc)">цикл</span><h3>7.2 · КПД электромашины за цикл</h3></div>
+    <p>Цикл 40 мин. Работа: P<sub>in1</sub> = 8 кВт, η<sub>1</sub> = 79 % (полная нагрузка). Холостой: P<sub>in2</sub> = 1.3 кВт. a) Как быстро менять деталь, чтобы η<sub>avg</sub> = 75 %? b) Средняя нагрузка при смене 10 мин.</p>
+    <details class="sol"><summary>Решение</summary><div class="in">
+      <div class="step"><b>a</b><div><div class="line">P_u1 = η₁·P_in1 = 0.79·8 = 6.32 кВт; на холостом P_u = 0</div><div class="line">t₁ = работа, t₂ = 40 − t₁ = смена</div><div class="line">η_avg = 6.32·t₁ / (8·t₁ + 1.3·(40 − t₁)) = 0.75</div><div class="line">6.32·t₁ = 6·t₁ + 0.975·(40 − t₁) → 1.295·t₁ = 39 → t₁ = 30.12 мин</div><div class="line">t₂ = 40 − 30.12 = <span class="ans">9.88 мин</span> (менять не дольше)</div></div></div>
+      <div class="step"><b>b</b><div><div class="line">t₁ = 30 мин при x = 1, t₂ = 10 мин при x = 0</div><div class="line">x_avg = (1·30 + 0·10)/40 = <span class="ans">0.75</span></div></div></div>
+    </div></details></div>
+
+  <div class="ex rv"><div class="ex-h"><span class="tag" style="--tc:var(--pv)">потери</span><h3>7.3 · Балансирная машина</h3></div>
+    <p>n = 3000 RPM, P<sub>N</sub> = 420 Вт, m<sub>0</sub> = 0.02 кг, k = 0.35 м, m = 0.4 кг, U = 220 В, I = 2 А. Вторая точка: x<sub>2</sub> = 0.5, η<sub>2</sub> = 95 %. a) x, η, P<sub>loss</sub> в первой точке; b) P<sub>c</sub>, P<sub>v1</sub>; c) графики; d) x<sub>opt</sub>.</p>
+    <details class="sol"><summary>Решение</summary><div class="in">
+      <div class="step"><b>a</b><div><div class="line">ω = 2π·3000/60 = 314.16 1/с</div><div class="line">M = (m − m₀)·g·k = 0.38·9.81·0.35 = 1.305 Н·м</div><div class="line">P_u = M·ω = 1.305·314.16 = 409.9 Вт;  P_in = U·I = 220·2 = 440 Вт</div><div class="line">x₁ = 409.9/420 = <span class="ans">0.976</span>,  η₁ = 409.9/440 = <span class="ans">0.932</span>,  P_loss1 = 440 − 409.9 = <span class="ans">30.1 Вт</span></div></div></div>
+      <div class="step"><b>b</b><div><div class="line">Точка 2: P_u2 = 0.5·420 = 210 Вт, P_in2 = 210/0.95 = 221.05 Вт, P_loss2 = 11.05 Вт</div><div class="line">Мотор → n = 2:  30.11 = P_c + 0.9524·P_v1;  11.05 = P_c + 0.25·P_v1</div><div class="line">P_v1 = (30.11 − 11.05)/(0.9524 − 0.25) = <span class="ans">27.13 Вт</span></div><div class="line">P_c = 11.05 − 0.25·27.13 = <span class="ans">4.27 Вт</span></div></div></div>
+      <div class="step"><b>c</b><div><p>Потери: парабола от 4.27 Вт при x = 0 вверх (31.4 Вт при x = 1). КПД: от 0 резко вверх, пик около x = 0.4, потом медленно вниз (0.93 при x = 1). Точки для графика: x = 0.25 → η = 0.946; 0.5 → 0.950; 0.75 → 0.942; 1 → 0.930. Можешь подставить P<sub>n</sub> = 0.42, P<sub>c</sub> = 0.004, P<sub>v1</sub> = 0.027 кВт в лабораторию выше.</p></div></div>
+      <div class="step"><b>d</b><div><div class="line">x_opt = √(P_c/P_v1) = √(4.27/27.13) = <span class="ans">0.397</span>,  η_max ≈ 0.951</div></div></div>
+    </div></details></div>
+
+  <div class="ex rv"><div class="ex-h"><span class="tag" style="--tc:var(--in)">ворот</span><h3>8.1 · Ручной подъёмник</h3></div>
+    <p>m = 1.5 т, d = 300 мм, F = 300 Н, k = 400 мм, i = 5·5.3 = 26.5, v = 0.7 м/с, h = 12 м. a) Время подъёма; b) КПД.</p>
+    <details class="sol"><summary>Решение</summary><div class="in">
+      <div class="step"><b>a</b><div><div class="line">ω_рук = v/k = 0.7/0.4 = 1.75 1/с</div><div class="line">ω_бар = ω_рук/i = 1.75/26.5 = 0.06604 1/с</div><div class="line">v_G = ω_бар·r = 0.06604·0.15 = 0.009906 м/с</div><div class="line">t = h/v_G = 12/0.009906 = <span class="ans">1211 с ≈ 20.2 мин</span></div></div></div>
+      <div class="step"><b>b</b><div><div class="line">P_in = F·v = 300·0.7 = 210 Вт</div><div class="line">P_u = m·g·v_G = 1500·9.81·0.009906 = 145.8 Вт</div><div class="line">η = 145.8/210 = <span class="ans">0.694 (69.4 %)</span></div><p class="small muted">Через моменты: M_рук = 300·0.4 = 120 Н·м, M_бар = 14715·0.15 = 2207 Н·м, η = M_бар/(i·M_рук) = 2207/(26.5·120) = 0.694. Сходится.</p></div></div>
+    </div></details></div>
+
+  <div class="ex rv"><div class="ex-h"><span class="tag" style="--tc:var(--pv)">потери</span><h3>8.2 · КПД электромашины</h3></div>
+    <p>P<sub>N</sub> = 5 кВт, максимум КПД при x<sub>opt</sub> = 0.8, там P<sub>in</sub> = 1.21·P<sub>u</sub>. a) P<sub>c</sub>, P<sub>v1</sub>; b) η<sub>max</sub>; c) η при x = 1.</p>
+    <details class="sol"><summary>Решение</summary><div class="in">
+      <div class="step"><b>a</b><div><div class="line">В оптимуме P_c = x_opt²·P_v1 = 0.64·P_v1, а все потери = 2·P_c</div><div class="line">P_u = 0.8·5 = 4 кВт, P_loss = 0.21·4 = 0.84 кВт = 2·P_c</div><div class="line">P_c = <span class="ans">0.42 кВт</span>,  P_v1 = 0.42/0.64 = <span class="ans">0.656 кВт</span></div></div></div>
+      <div class="step"><b>b</b><div><div class="line">η_max = P_u/P_in = 1/1.21 = <span class="ans">0.826</span></div></div></div>
+      <div class="step"><b>c</b><div><div class="line">η(1) = 5/(5 + 0.42 + 0.656) = 5/6.076 = <span class="ans">0.823</span></div><p class="small muted">Чуть меньше максимума, так и должно быть: x = 1 правее оптимума 0.8.</p></div></div>
+    </div></details></div>
+
+  <div class="ex rv"><div class="ex-h"><span class="tag" style="--tc:var(--pv)">потери</span><h3>8.3 · Генератор</h3></div>
+    <p>P<sub>N</sub> = P<sub>u1</sub> = 380 кВт, η<sub>1</sub> = 95 % (x = 1); P<sub>u2</sub> = 200 кВт, η<sub>2</sub> = 95 %. a) P<sub>c</sub>, P<sub>v1</sub>; b) η<sub>max</sub>.</p>
+    <details class="sol"><summary>Решение</summary><div class="in">
+      <div class="step"><b>a</b><div><div class="line">P_loss1 = 380/0.95 − 380 = 20 кВт</div><div class="line">x₂ = 200/380 = 0.5263, P_loss2 = 200/0.95 − 200 = 10.53 кВт</div><div class="line">P_v1 = (20 − 10.53)/(1 − 0.277) = <span class="ans">13.10 кВт</span>,  P_c = 20 − 13.10 = <span class="ans">6.90 кВт</span></div></div></div>
+      <div class="step"><b>b</b><div><div class="line">x_opt = √(6.90/13.10) = 0.7255 (= √(1·0.5263), фишка из раздела 3)</div><div class="line">P_u = 0.7255·380 = 275.7 кВт;  η_max = 275.7/(275.7 + 2·6.90) = <span class="ans">0.952</span></div></div></div>
+    </div></details></div>
+
+  <div class="ex rv"><div class="ex-h"><span class="tag" style="--tc:var(--pc)">цикл</span><h3>8.4 · Средняя нагрузка машины</h3></div>
+    <p>P<sub>N</sub> = 10 кВт. t<sub>1</sub> = 15.1 мин при x = 1, η<sub>1</sub> = 90.8 %; t<sub>2</sub> = 21.1 мин при x = 0.5, η<sub>2</sub> = 88.9 %; дальше холостой, на него 4 % всей входной работы; P<sub>c</sub> = 0.5 кВт. a) W<sub>in</sub> всего и на холостом; b) время холостого и цикла; c) x<sub>avg</sub>, η<sub>avg</sub>.</p>
+    <details class="sol"><summary>Решение</summary><div class="in">
+      <div class="step"><b>a</b><div><div class="line">P_in1 = 10/0.908 = 11.013 кВт → W₁ = 11.013·15.1 = 166.30 кВт·мин</div><div class="line">P_in2 = 5/0.889 = 5.624 кВт → W₂ = 5.624·21.1 = 118.67 кВт·мин</div><div class="line">W₁ + W₂ = 96 % всего → W_in = 284.97/0.96 = <span class="ans">296.85 кВт·мин = 4.95 кВт·ч = 17.8 МДж</span></div><div class="line">W_idle = 0.04·296.85 = <span class="ans">11.87 кВт·мин = 0.198 кВт·ч = 0.712 МДж</span></div></div></div>
+      <div class="step"><b>b</b><div><div class="line">t_idle = W_idle/P_c = 11.87/0.5 = <span class="ans">23.7 мин</span></div><div class="line">T = 15.1 + 21.1 + 23.7 = <span class="ans">59.9 мин ≈ 1 час</span></div></div></div>
+      <div class="step"><b>c</b><div><div class="line">W_u = 10·15.1 + 5·21.1 = 256.5 кВт·мин</div><div class="line">x_avg = W_u/(P_N·T) = 256.5/(10·59.95) = <span class="ans">0.428</span></div><div class="line">η_avg = W_u/W_in = 256.5/296.85 = <span class="ans">0.864</span></div></div></div>
+    </div></details></div>
+</section>
+
+<!-- ================= 7. Тест ================= -->
+<section class="sec" id="s7" style="--sc:var(--loss)">
+  <div class="sec-h"><span class="sec-no">07</span><h2>Пробный тест · 2 варианта</h2></div>
+  <p>Ты сам заметил, что препод берёт задачи с конца листка. Поэтому в каждом варианте три задачи по образцу последних: <b>цикл со средним КПД</b> (как 8.4 / 7.2), <b>функция потерь из двух точек</b> (как 7.3 / 8.3 / 8.2) и <b>передача</b> (как 8.1 / 7.1). Числа новые. Решай на бумаге, вбивай ответы, проверка с допуском 2 %. Таймер на 45 минут, если хочешь по-честному.</p>
+  <div class="test-top">
+    <div class="seg" id="varSeg"><button data-v="A" aria-pressed="true">Вариант A</button><button data-v="B" aria-pressed="false">Вариант B</button></div>
+    <div class="timer" id="timer"><span>⏱</span><b id="tmT">45:00</b><button class="btn sm" id="tmBtn">Старт</button><button class="btn ghost sm" id="tmReset">Сброс</button></div>
+  </div>
+  <div id="testBox"></div>
+  <div class="score" id="scoreBox"><div class="ring" id="ring">0%</div><div><b id="scoreT">0 из 0 полей верно</b><div class="small muted">Счёт по текущему варианту. Жми «Проверить» в каждой задаче.</div></div></div>
+</section>
+
+<!-- ================= 8. Шпора ================= -->
+<section class="sec" id="s8" style="--sc:var(--use)">
+  <div class="sec-h"><span class="sec-no">08</span><h2>Шпора на одну страницу</h2></div>
+  <div class="cheat">
+    <div class="cs" style="--c:var(--use)"><h4>Основа</h4><p><span class="f">P<sub>in</sub> = P<sub>u</sub> + P<sub>loss</sub></span></p><p><span class="f">η = P<sub>u</sub>/P<sub>in</sub></span> · <span class="f">x = P<sub>u</sub>/P<sub>n</sub></span></p><p><span class="f">W = P·t</span> · 1 кВт·ч = 3.6 МДж</p></div>
+    <div class="cs" style="--c:var(--pv)"><h4>Потери</h4><p><span class="f">P<sub>loss</sub> = P<sub>c</sub> + xⁿP<sub>v1</sub></span></p><p>n: 1 механика · 2 электро · 3 насосы</p><p><span class="f">η(x) = xP<sub>n</sub>/(xP<sub>n</sub> + P<sub>c</sub> + xⁿP<sub>v1</sub>)</span></p></div>
+    <div class="cs" style="--c:var(--pc)"><h4>Оптимум</h4><p>n = 2: <span class="f">x<sub>opt</sub> = √(P<sub>c</sub>/P<sub>v1</sub>)</span>, там P<sub>loss</sub> = 2P<sub>c</sub></p><p>n = 3: <span class="f">x<sub>opt</sub> = ∛(P<sub>c</sub>/2P<sub>v1</sub>)</span></p><p>одинаковый η при x<sub>a</sub>, x<sub>b</sub> → <span class="f">x<sub>opt</sub> = √(x<sub>a</sub>x<sub>b</sub>)</span></p></div>
+    <div class="cs" style="--c:var(--loss)"><h4>Две точки → P<sub>c</sub>, P<sub>v1</sub></h4><p>P<sub>loss</sub> = P<sub>u</sub>/η − P<sub>u</sub> в каждой</p><p><span class="f">P<sub>v1</sub> = (L<sub>1</sub> − L<sub>2</sub>)/(x<sub>1</sub>² − x<sub>2</sub>²)</span>, P<sub>c</sub> = L<sub>2</sub> − x<sub>2</sub>²P<sub>v1</sub></p></div>
+    <div class="cs" style="--c:var(--pc)"><h4>Цикл</h4><p><span class="f">η<sub>avg</sub> = ΣP<sub>u</sub>t / ΣP<sub>in</sub>t</span></p><p><span class="f">x<sub>avg</sub> = Σx<sub>i</sub>t<sub>i</sub> / T</span></p><p>холостой: x = 0, вход ≈ P<sub>c</sub></p></div>
+    <div class="cs" style="--c:var(--in)"><h4>Передачи и вращение</h4><p><span class="f">ω = 2πn/60</span> · <span class="f">P = Mω</span> · <span class="f">v = ωr</span></p><p><span class="f">i = ω<sub>1</sub>/ω<sub>2</sub> = z<sub>2</sub>/z<sub>1</sub></span>, ступени: i = i<sub>1</sub>i<sub>2</sub></p><p><span class="f">M<sub>2</sub> = iηM<sub>1</sub></span> · <span class="f">P<sub>2</sub> = ηP<sub>1</sub></span></p></div>
+    <div class="cs" style="--c:var(--in)"><h4>Балансирная машина</h4><p><span class="f">M = (m − m<sub>0</sub>)gk</span> · <span class="f">P<sub>in</sub> = UI</span></p></div>
+    <div class="cs" style="--c:var(--loss)"><h4>Не облажайся</h4><p>P<sub>n</sub> = полезная, не входная · проценты в доли · мм в м · RPM в 1/с · средний КПД только через работу</p></div>
+  </div>
+</section>
+
+<footer>Собрано по Practice 7 и Practice 8 (Introduction to Mechanical Engineering, BME). Все ответы пересчитаны. В 7.3 полезный момент взят как (m − m₀)·g·k: без вычета m₀ КПД получается 98 %, что для такого мотора нереально.<div style="margin-top:10px;font:800 13px/1 var(--display);color:var(--ink)">Ingenium <span style="font:500 12px/1 var(--mono);color:var(--ink2)">· конспекты Егора · BME</span></div></footer>
+</main>
+
+<script>
+(function(){
+'use strict';
+var $ = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+var root = document.documentElement;
+var store = { get:function(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set:function(k,v){ try { localStorage.setItem(k,v); } catch(e){} } };
+var reduce = false; try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+function fmt(x, s){ if (!isFinite(x)) return '–'; s = s || 4; if (Math.abs(x) >= 1000) return String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g,' '); return String(parseFloat(x.toPrecision(s))); }
+
+/* тема */
+var saved = store.get('ps78-theme'); if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+function isDark(){ var t = root.getAttribute('data-theme'); if (t) return t === 'dark'; try { return matchMedia('(prefers-color-scheme: dark)').matches; } catch(e){ return false; } }
+$('#themeBtn').addEventListener('click', function(){ var n = isDark() ? 'light' : 'dark'; root.setAttribute('data-theme', n); store.set('ps78-theme', n); });
+
+/* отсчёт */
+(function(){ var now = new Date(), a = new Date(now.getFullYear(), now.getMonth(), now.getDate()), b = new Date(2026, 9, 28), d = Math.round((b - a)/86400000);
+  $('#cdT').textContent = d > 1 ? 'через ' + d + ' дн.' : d === 1 ? 'завтра' : d === 0 ? 'сегодня!' : 'уже был'; })();
+
+/* прокрутка, подсветка меню, появление */
+var bar = $('#scrollBar');
+function onScroll(){ var h = root.scrollHeight - root.clientHeight; bar.parentNode.style.setProperty('--p', h > 0 ? Math.min(1, root.scrollTop/h) : 0); }
+addEventListener('scroll', onScroll, { passive:true }); onScroll();
+if ('IntersectionObserver' in window) {
+  var navLinks = {}; $$('#nav a').forEach(function(a){ navLinks[a.getAttribute('href').slice(1)] = a; });
+  var spy = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) { $$('#nav a').forEach(function(a){ a.classList.remove('cur'); }); var l = navLinks[e.target.id]; if (l) l.classList.add('cur'); } }); }, { rootMargin:'-45% 0px -50% 0px' });
+  $$('.sec').forEach(function(s){ spy.observe(s); });
+  if (!reduce) {
+    root.classList.add('rv-on');
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin:'0px 0px -8% 0px' });
+    $$('.rv, .term, .step, details.sol, .cs, .q').forEach(function(el){ var r = el.getBoundingClientRect(); el.classList.add('rv'); if (r.top < innerHeight) el.classList.add('in'); else io.observe(el); });
+  }
+}
+
+/* поток энергии */
+(function(){
+  var Pn = 5, Pc = 0.42, Pv = 0.65625, S = 36; // S: пикселей на кВт
+  function band(id, d, w){ var p = $('#' + id); p.setAttribute('d', d); p.setAttribute('stroke-width', Math.max(w, 0.5)); var q = $('#' + id.replace('st','ds')); q.setAttribute('d', d); q.setAttribute('stroke-width', Math.max(w*0.35, 0.5)); }
+  function draw(){
+    var x = parseFloat($('#flowX').value); $('#flowXo').textContent = x.toFixed(2);
+    var Pu = x*Pn, Lv = x*x*Pv, Pin = Pu + Pc + Lv;
+    var wIn = Pin*S/2.2, wU = Pu*S/2.2, wC = Pc*S/2.2, wV = Lv*S/2.2;
+    var top = 120 - wIn/2;
+    var yU = top + wU/2, yC = top + wU + wC/2, yV = top + wU + wC + wV/2;
+    band('stIn', 'M10 120 H250', wIn);
+    band('stUse', 'M250 ' + yU + ' C 420 ' + yU + ', 460 60, 640 60', wU);
+    band('stPc', 'M250 ' + yC + ' C 400 ' + yC + ', 460 168, 600 168', wC);
+    band('stPv', 'M250 ' + yV + ' C 380 ' + yV + ', 440 222, 580 222', wV);
+    $('#tIn').textContent = fmt(Pin,3) + ' кВт'; $('#tUse').textContent = fmt(Pu,3) + ' кВт';
+    $('#tPc').textContent = fmt(Pc,3) + ' кВт'; $('#tPv').textContent = fmt(Lv,3) + ' кВт';
+    $('#tEta').textContent = Pin > 0 ? (Pu/Pin*100).toFixed(1) + ' %' : '–';
+  }
+  $('#flowX').addEventListener('input', draw); draw();
+})();
+
+/* лаборатория η(x) */
+(function(){
+  var svg = $('#effChart'), n = 2, W = 640, H = 300, L = 46, R = 46, T = 16, B = 34, xmax = 1.5;
+  function sx(x){ return L + x/xmax*(W - L - R); }
+  function el(tag, a){ var e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (var k in a) e.setAttribute(k, a[k]); return e; }
+  function draw(){
+    var Pn = +$('#lPn').value, Pc = +$('#lPc').value, Pv = +$('#lPv').value;
+    $('#oPn').textContent = Pn; $('#oPc').textContent = Pc.toFixed(2); $('#oPv').textContent = Pv.toFixed(2);
+    var eta = function(x){ return x <= 0 ? 0 : x*Pn/(x*Pn + Pc + Math.pow(x,n)*Pv); };
+    var Lmax = Pc + Math.pow(xmax,n)*Pv;
+    var syE = function(e){ return T + (1 - e)*(H - T - B); }, syL = function(p){ return T + (1 - p/Lmax)*(H - T - B); };
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    for (var g = 0; g <= 1.5001; g += 0.25) { svg.appendChild(el('line', { x1:sx(g), x2:sx(g), y1:T, y2:H-B, stroke:'var(--rule)', 'stroke-width':1 })); var t = el('text', { x:sx(g), y:H-B+18, 'text-anchor':'middle' }); t.textContent = g.toFixed(2).replace(/0$/,''); svg.appendChild(t); }
+    for (var e = 0; e <= 1.0001; e += 0.25) { svg.appendChild(el('line', { x1:L, x2:W-R, y1:syE(e), y2:syE(e), stroke:'var(--rule)', 'stroke-width':1, 'stroke-dasharray':'2 4' })); var te = el('text', { x:L-8, y:syE(e)+4, 'text-anchor':'end' }); te.textContent = Math.round(e*100) + '%'; svg.appendChild(te); }
+    var tl = el('text', { x:W-R+8, y:T+10 }); tl.textContent = fmt(Lmax,2); svg.appendChild(tl);
+    var tx = el('text', { x:W-R, y:H-4, 'text-anchor':'end' }); tx.textContent = 'x'; svg.appendChild(tx);
+    function path(f, sy){ var d = ''; for (var i = 0; i <= 150; i++) { var x = i/150*xmax; d += (i ? 'L' : 'M') + sx(x).toFixed(1) + ' ' + sy(f(x)).toFixed(1); } return d; }
+    svg.appendChild(el('path', { d:path(function(){ return Pc; }, syL), fill:'none', stroke:'var(--pc)', 'stroke-width':2, 'stroke-dasharray':'6 4' }));
+    svg.appendChild(el('path', { d:path(function(x){ return Math.pow(x,n)*Pv; }, syL), fill:'none', stroke:'var(--pv)', 'stroke-width':2, 'stroke-dasharray':'6 4' }));
+    svg.appendChild(el('path', { d:path(function(x){ return Pc + Math.pow(x,n)*Pv; }, syL), fill:'none', stroke:'var(--loss)', 'stroke-width':2 }));
+    svg.appendChild(el('path', { d:path(eta, syE), fill:'none', stroke:'var(--use)', 'stroke-width':3.2, 'stroke-linecap':'round' }));
+    var xo = n === 2 ? Math.sqrt(Pc/Pv) : n === 3 ? Math.cbrt(Pc/(2*Pv)) : Infinity;
+    if (isFinite(xo) && xo <= xmax) {
+      svg.appendChild(el('line', { x1:sx(xo), x2:sx(xo), y1:T, y2:H-B, stroke:'var(--use)', 'stroke-width':1.5, 'stroke-dasharray':'3 3' }));
+      svg.appendChild(el('circle', { cx:sx(xo), cy:syE(eta(xo)), r:6, fill:'var(--use)', stroke:'var(--sheet)', 'stroke-width':2 }));
+      var lab = el('text', { x:sx(xo)+8, y:syE(eta(xo))-10, fill:'var(--use)', 'font-weight':'700' }); lab.textContent = 'max ' + (eta(xo)*100).toFixed(1) + '%'; svg.appendChild(lab);
+    }
+    $('#rXo').textContent = isFinite(xo) ? fmt(xo,3) : '∞ (нет)';
+    $('#rEm').textContent = isFinite(xo) ? (eta(xo)*100).toFixed(1) + ' %' : '→ ' + (Pn/(Pn+Pv)*100).toFixed(1) + ' %';
+    $('#rE1').textContent = (eta(1)*100).toFixed(1) + ' %';
+    $('#rL1').textContent = fmt(Pc + Pv, 3) + ' кВт';
+  }
+  ['#lPn','#lPc','#lPv'].forEach(function(s){ $(s).addEventListener('input', draw); });
+  $$('#nSeg button').forEach(function(b){ b.addEventListener('click', function(){ n = +b.dataset.n; $$('#nSeg button').forEach(function(o){ o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); }); draw(); }); });
+  draw();
+})();
+
+/* лаборатория цикла */
+(function(){
+  function draw(){
+    var T = +$('#cT').value, ti = Math.min(+$('#cI').value, T), e = +$('#cE').value, tw = T - ti;
+    $('#oT').textContent = T; $('#oI').textContent = ti.toFixed(1); $('#oE').textContent = Math.round(e*100) + '%';
+    var Win = 8*tw + 1.3*ti, Wu = 8*e*tw;
+    $('#cbW').style.flexGrow = tw; $('#cbI').style.flexGrow = ti;
+    $('#cbW').textContent = tw > 3 ? 'работа ' + fmt(tw,3) + ' мин' : ''; $('#cbI').textContent = ti > 3 ? 'холостой ' + fmt(ti,3) + ' мин' : '';
+    $('#cWi').textContent = fmt(Win,4); $('#cWu').textContent = fmt(Wu,4);
+    $('#cEa').textContent = (Wu/Win*100).toFixed(1) + ' %'; $('#cXa').textContent = fmt(tw/T,3);
+  }
+  ['#cT','#cI','#cE'].forEach(function(s){ $(s).addEventListener('input', draw); }); draw();
+})();
+
+/* шестерни */
+(function(){
+  var on = !reduce, t0 = null, a = 0, h = 0;
+  var wc = 1.75, i1 = 5, i2 = 5.3; // крутим в 6 раз быстрее реального, иначе барабан почти стоит
+  function frame(ts){
+    if (t0 === null) t0 = ts; var dt = Math.min((ts - t0)/1000, 0.05); t0 = ts;
+    if (on) { a += wc*dt*6; h = (h + 0.009906*dt*6*60) % 12; }
+    var deg = a*180/Math.PI;
+    $('#gIn').style.transform = 'rotate(' + deg + 'deg)';
+    $('#gMid').style.transform = 'rotate(' + (-deg/i1) + 'deg)';
+    $('#gDrum').style.transform = 'rotate(' + (deg/(i1*i2)) + 'deg)';
+    var lift = (h/12)*22;
+    $('#gLoad').setAttribute('transform', 'translate(0 ' + (-lift).toFixed(1) + ')');
+    $('#gRope').setAttribute('y2', (200 - lift).toFixed(1));
+    $('#gTxt').textContent = 'груз поднят на ' + h.toFixed(1) + ' м из 12 (время ускорено)';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  $$('#gSpeed button').forEach(function(b){ b.setAttribute('aria-pressed', (b.dataset.s === '1') === on ? 'true' : 'false');
+    b.addEventListener('click', function(){ on = b.dataset.s === '1'; $$('#gSpeed button').forEach(function(o){ o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); }); }); });
+})();
+
+/* словарь: фильтр */
+$$('#dictF button').forEach(function(b){ b.addEventListener('click', function(){
+  $$('#dictF button').forEach(function(o){ o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+  $$('#dict .term').forEach(function(t){ t.hidden = !(b.dataset.g === 'all' || t.dataset.g === b.dataset.g); });
+}); });
+
+/* тест */
+var TESTS = {
+  A: [
+    { like:'как 8.4', tag:'цикл', c:'var(--pc)', title:'Задача 1 · Станок с циклом',
+      q:'Машина с номинальной мощностью P<sub>N</sub> = 8 кВт работает t<sub>1</sub> = 12 мин на полной нагрузке (x<sub>1</sub> = 1) с КПД η<sub>1</sub> = 90 %, затем t<sub>2</sub> = 18 мин при x<sub>2</sub> = 0.6 с КПД η<sub>2</sub> = 88 %. Остаток цикла холостой ход, на него приходится 5 % всей входной работы цикла. Постоянные потери (мощность холостого хода) P<sub>c</sub> = 0.4 кВт. Найди: a) полную входную работу цикла; b) время холостого хода и всего цикла; c) среднюю нагрузку и средний КПД.',
+      f:[['a) W<sub>in</sub> всего','кВт·ч',3.594],['b) t<sub>idle</sub>','мин',26.95],['b) T цикла','мин',56.95],['c) x<sub>avg</sub>','',0.4003],['c) η<sub>avg</sub>','доля',0.8459]],
+      s:'<div class="line">P_in1 = 8/0.9 = 8.889 кВт → W₁ = 8.889·12/60 = 1.778 кВт·ч</div><div class="line">P_in2 = 0.6·8/0.88 = 5.455 кВт → W₂ = 5.455·18/60 = 1.636 кВт·ч</div><div class="line">W_in = (1.778 + 1.636)/0.95 = 3.594 кВт·ч (12.94 МДж); W_idle = 0.05·3.594 = 0.1797 кВт·ч</div><div class="line">t_idle = 0.1797/0.4 = 0.4492 ч = 26.95 мин; T = 12 + 18 + 26.95 = 56.95 мин</div><div class="line">x_avg = (1·12 + 0.6·18)/56.95 = 22.8/56.95 = 0.400</div><div class="line">W_u = (8·12 + 4.8·18)/60 = 3.04 кВт·ч; η_avg = 3.04/3.594 = 0.846</div>' },
+    { like:'как 7.3', tag:'потери', c:'var(--pv)', title:'Задача 2 · Балансирная машина',
+      q:'Мотор на балансирной машине: n = 1500 RPM, P<sub>N</sub> = 750 Вт, на холостом ходу уравновешивающий груз m<sub>0</sub> = 0.05 кг, плечо k = 0.5 м. В первой точке груз m = 1.0 кг, U = 230 В, I = 3.6 А. Во второй точке x<sub>2</sub> = 0.4 и η<sub>2</sub> = 88 %. Найди: a) x<sub>1</sub>, η<sub>1</sub> и P<sub>loss</sub> в первой точке; b) P<sub>c</sub> и P<sub>v1</sub> (электромашина, n = 2); c) x<sub>opt</sub> и η<sub>max</sub>.',
+      f:[['a) x<sub>1</sub>','',0.976],['a) η<sub>1</sub>','доля',0.884],['a) P<sub>loss,1</sub>','Вт',96.05],['b) P<sub>c</sub>','Вт',29.78],['b) P<sub>v1</sub>','Вт',69.58],['c) x<sub>opt</sub>','',0.654],['c) η<sub>max</sub>','доля',0.8918]],
+      s:'<div class="line">ω = 2π·1500/60 = 157.08 1/с; M = (1.0 − 0.05)·9.81·0.5 = 4.660 Н·м</div><div class="line">P_u1 = 4.660·157.08 = 731.95 Вт; P_in1 = 230·3.6 = 828 Вт</div><div class="line">x₁ = 731.95/750 = 0.976; η₁ = 731.95/828 = 0.884; P_loss1 = 96.05 Вт</div><div class="line">Точка 2: P_u2 = 0.4·750 = 300 Вт, P_in2 = 300/0.88 = 340.9 Вт, P_loss2 = 40.91 Вт</div><div class="line">P_v1 = (96.05 − 40.91)/(0.9525 − 0.16) = 69.58 Вт; P_c = 40.91 − 0.16·69.58 = 29.78 Вт</div><div class="line">x_opt = √(29.78/69.58) = 0.654; η_max = 0.654·750/(0.654·750 + 2·29.78) = 0.892</div>' },
+    { like:'как 7.1', tag:'передача', c:'var(--in)', title:'Задача 3 · Червячная передача',
+      q:'Червяк с двумя заходами (z<sub>1</sub> = 2) крутит колесо. Отношение моментов ведомого и ведущего M<sub>2</sub>/M<sub>1</sub> = 15, КПД передачи η = 60 %. Найди: a) передаточное число i и число зубьев колеса z<sub>2</sub>; b) мощность мотора, если n<sub>1</sub> = 960 RPM, а момент на колесе M<sub>2</sub> = 500 Н·м.',
+      f:[['a) i','',25],['a) z<sub>2</sub>','зуб.',50],['b) P<sub>1</sub>','Вт',3351]],
+      s:'<div class="line">M₂/M₁ = i·η → i = 15/0.6 = 25; z₂ = i·z₁ = 25·2 = 50</div><div class="line">n₂ = 960/25 = 38.4 RPM → ω₂ = 4.021 1/с; P₂ = 500·4.021 = 2011 Вт</div><div class="line">P₁ = P₂/η = 2011/0.6 = 3351 Вт ≈ 3.35 кВт</div>' }
+  ],
+  B: [
+    { like:'как 8.4', tag:'цикл', c:'var(--pc)', title:'Задача 1 · Насосная установка с мотором',
+      q:'Электромашина P<sub>N</sub> = 12 кВт работает t<sub>1</sub> = 10 мин при x<sub>1</sub> = 1 с η<sub>1</sub> = 92 %, затем t<sub>2</sub> = 25 мин при x<sub>2</sub> = 0.75 с η<sub>2</sub> = 91 %. Остаток цикла холостой ход, на него 3 % всей входной работы; P<sub>c</sub> = 0.6 кВт. Найди: a) полную входную работу цикла; b) время холостого хода и всего цикла; c) x<sub>avg</sub> и η<sub>avg</sub>.',
+      f:[['a) W<sub>in</sub> всего','кВт·ч',6.489],['b) t<sub>idle</sub>','мин',19.47],['b) T цикла','мин',54.47],['c) x<sub>avg</sub>','',0.5278],['c) η<sub>avg</sub>','доля',0.886]],
+      s:'<div class="line">P_in1 = 12/0.92 = 13.04 кВт → W₁ = 13.04·10/60 = 2.174 кВт·ч</div><div class="line">P_in2 = 9/0.91 = 9.890 кВт → W₂ = 9.890·25/60 = 4.121 кВт·ч</div><div class="line">W_in = (2.174 + 4.121)/0.97 = 6.489 кВт·ч (23.4 МДж); W_idle = 0.1947 кВт·ч</div><div class="line">t_idle = 0.1947/0.6 = 0.3245 ч = 19.47 мин; T = 10 + 25 + 19.47 = 54.47 мин</div><div class="line">x_avg = (10 + 0.75·25)/54.47 = 28.75/54.47 = 0.528</div><div class="line">W_u = (12·10 + 9·25)/60 = 5.75 кВт·ч; η_avg = 5.75/6.489 = 0.886</div>' },
+    { like:'как 8.3', tag:'потери', c:'var(--pv)', title:'Задача 2 · Генератор',
+      q:'КПД генератора измерили в двух точках. При полной нагрузке (x = 1) полезная мощность P<sub>N</sub> = 250 кВт, η<sub>1</sub> = 94 %. При P<sub>u,2</sub> = 150 кВт η<sub>2</sub> = 95 %. Найди: a) постоянные потери P<sub>c</sub> и переменные при полной нагрузке P<sub>v1</sub> (n = 2); b) оптимальную нагрузку x<sub>opt</sub> и максимальный КПД η<sub>max</sub>.',
+      f:[['a) P<sub>c</sub>','кВт',3.359],['a) P<sub>v1</sub>','кВт',12.60],['b) x<sub>opt</sub>','',0.5164],['b) η<sub>max</sub>','доля',0.9505]],
+      s:'<div class="line">P_loss1 = 250/0.94 − 250 = 15.96 кВт</div><div class="line">x₂ = 150/250 = 0.6; P_loss2 = 150/0.95 − 150 = 7.895 кВт</div><div class="line">P_v1 = (15.96 − 7.895)/(1 − 0.36) = 12.60 кВт; P_c = 15.96 − 12.60 = 3.359 кВт</div><div class="line">x_opt = √(3.359/12.60) = 0.516; P_u = 129.1 кВт</div><div class="line">η_max = 129.1/(129.1 + 2·3.359) = 0.9505</div>' },
+    { like:'как 8.1', tag:'ворот', c:'var(--in)', title:'Задача 3 · Ручная лебёдка',
+      q:'Лебёдка с двумя парами шестерён (i = 5·5 = 25) поднимает груз m = 1.2 т. Диаметр барабана d = 320 мм. Рабочие давят на рукоятку длиной k = 360 мм с силой F = 250 Н, окружная скорость рукоятки v = 0.6 м/с. Найди: a) скорость подъёма груза и время подъёма на h = 10 м; b) КПД лебёдки.',
+      f:[['a) v<sub>G</sub>','мм/с',10.67],['a) t','с',937.5],['b) η','доля',0.8371]],
+      s:'<div class="line">ω_рук = 0.6/0.36 = 1.667 1/с; ω_бар = 1.667/25 = 0.0667 1/с</div><div class="line">v_G = 0.0667·0.16 = 0.01067 м/с = 10.67 мм/с; t = 10/0.01067 = 937.5 с ≈ 15.6 мин</div><div class="line">P_in = 250·0.6 = 150 Вт; P_u = 1200·9.81·0.01067 = 125.6 Вт</div><div class="line">η = 125.6/150 = 0.837</div>' }
+  ]
+};
+var cur = 'A', results = {};
+function parse(v){ v = String(v).replace(',', '.').replace(/\s/g,'').replace('%',''); var x = parseFloat(v); return isFinite(x) ? x : NaN; }
+function render(){
+  var box = $('#testBox'); box.innerHTML = ''; results = {};
+  TESTS[cur].forEach(function(t, qi){
+    var d = document.createElement('div'); d.className = 'q';
+    d.innerHTML = '<div class="q-h"><span class="tag" style="--tc:' + t.c + '">' + t.tag + '</span><h4>' + t.title + '</h4><span class="q-like">' + t.like + '</span></div><p>' + t.q + '</p>' +
+      '<div class="fields">' + t.f.map(function(f, fi){ var id = 'in' + cur + qi + '_' + fi; return '<div class="fld" data-fi="' + fi + '"><label for="' + id + '">' + f[0] + '</label><div class="row"><input id="' + id + '" type="text" inputmode="decimal" autocomplete="off"><span class="unit">' + f[1] + '</span></div><div class="fb"></div></div>'; }).join('') + '</div>' +
+      '<div class="q-actions"><button class="btn sm" data-a="check">Проверить</button><button class="btn ghost sm" data-a="sol">Решение</button></div><div class="sol-box" hidden style="margin-top:12px;padding-top:10px;border-top:1px dashed var(--rule);overflow-x:auto">' + t.s + '</div>';
+    d.querySelector('[data-a="check"]').addEventListener('click', function(){
+      $$('#testBox .q')[qi].querySelectorAll('.fld').forEach(function(fl){
+        var f = t.f[+fl.dataset.fi], raw = fl.querySelector('input').value.trim();
+        if (!raw) { fl.classList.remove('ok','bad'); fl.querySelector('.fb').textContent = ''; delete results[cur + qi + '_' + fl.dataset.fi]; return; }
+        var v = parse(raw), ok = isFinite(v) && Math.abs(v - f[2]) <= Math.abs(f[2])*0.02;
+        if (f[1] === 'доля' && isFinite(v) && v > 1.5) ok = Math.abs(v/100 - f[2]) <= Math.abs(f[2])*0.02; // ввели в процентах
+        fl.classList.remove('ok','bad'); void fl.offsetWidth; fl.classList.add(ok ? 'ok' : 'bad');
+        fl.querySelector('.fb').textContent = ok ? 'верно ✓' : (isFinite(v) ? 'мимо, пересчитай' : 'это не число');
+        results[cur + qi + '_' + fl.dataset.fi] = ok;
+      });
+      score();
+    });
+    d.querySelector('[data-a="sol"]').addEventListener('click', function(){ var s = d.querySelector('.sol-box'); s.hidden = !s.hidden; });
+    box.appendChild(d);
+  });
+  score();
+}
+function score(){
+  var tot = TESTS[cur].reduce(function(s, t){ return s + t.f.length; }, 0), ok = 0;
+  for (var k in results) if (results[k]) ok++;
+  var p = tot ? Math.round(ok/tot*100) : 0;
+  $('#ring').style.setProperty('--v', p); $('#ring').textContent = p + '%';
+  $('#scoreT').textContent = ok + ' из ' + tot + ' полей верно' + (p === 100 ? ' · ты готов, порви их' : p >= 70 ? ' · почти, добей' : '');
+}
+$$('#varSeg button').forEach(function(b){ b.addEventListener('click', function(){ cur = b.dataset.v; $$('#varSeg button').forEach(function(o){ o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); }); render(); }); });
+render();
+
+/* таймер */
+(function(){
+  var left = 45*60, run = false, iv = null;
+  function show(){ $('#tmT').textContent = String(Math.floor(left/60)).padStart(2,'0') + ':' + String(left%60).padStart(2,'0'); $('#timer').classList.toggle('low', left <= 300); }
+  $('#tmBtn').addEventListener('click', function(){
+    run = !run; this.textContent = run ? 'Пауза' : 'Старт';
+    if (run) iv = setInterval(function(){ if (left > 0) { left--; show(); } if (!left) { clearInterval(iv); run = false; $('#tmBtn').textContent = 'Старт'; } }, 1000); else clearInterval(iv);
+  });
+  $('#tmReset').addEventListener('click', function(){ clearInterval(iv); run = false; left = 45*60; $('#tmBtn').textContent = 'Старт'; show(); });
+  show();
+})();
+})();
+</script>
+</body>
+</html>
