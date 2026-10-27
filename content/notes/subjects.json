@@ -3,6 +3,7 @@
   { "slug": "linear-algebra", "nameRu": "Линейная алгебра", "nameEn": "Linear algebra" },
   { "slug": "differential-equations", "nameRu": "Дифференциальные уравнения", "nameEn": "Differential equations" },
   { "slug": "probability", "nameRu": "Теория вероятностей и статистика", "nameEn": "Probability and statistics" },
+  { "slug": "intro-me", "nameRu": "Введение в машиностроение", "nameEn": "Introduction to Mechanical Engineering" },
   { "slug": "statics", "nameRu": "Статика", "nameEn": "Statics" },
   { "slug": "dynamics", "nameRu": "Кинематика и динамика", "nameEn": "Kinematics and dynamics" },
   { "slug": "strength", "nameRu": "Сопротивление материалов", "nameEn": "Strength of materials" },
