@@ -2,7 +2,7 @@
 // Layout: content/notes/<subject-slug>/<material-slug>.<locale>.md, subjects listed in content/notes/subjects.json.
 // Each file starts with a front matter block (title, excerpt; tags and date go in the Russian file). Idempotent: subjects and materials
 // that already exist (matched by slug) are left alone, so edits made in the admin are never overwritten.
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { eq } from "drizzle-orm";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
@@ -112,4 +112,74 @@ export async function seedLibrary(db: PgDatabase<PgQueryResultHKT, typeof schema
     }
   });
   console.log(`Library: ${notes.length} notes on disk, ${added} added.`);
+  await seedDocs(db);
+}
+
+type BundledDoc = {
+  slug: string;
+  subject: string;
+  date: string;
+  tags: string[];
+  file: { path: string; name: string };
+  text: Partial<Record<"ru" | "en", { title: string; excerpt: string; body: string }>>;
+};
+
+// HTML documents that ship with the code: content/docs/docs.json lists them, the files sit next to it and are
+// served by /api/files/[id] from disk ("bundle:<file>"). Same rule as the notes: added once, never overwritten.
+// Preview builds share the production database, so they leave it alone: a new document appears only once it is on main.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function seedDocs(db: PgDatabase<PgQueryResultHKT, typeof schema, any>) {
+  if (process.env.VERCEL_ENV === "preview") return;
+  const docs: BundledDoc[] = JSON.parse(readFileSync("content/docs/docs.json", "utf8"));
+  const subjectRows = await db.select({ id: schema.subjects.id, slug: schema.subjects.slug }).from(schema.subjects);
+  const subjectIds = new Map(subjectRows.map((r) => [r.slug, r.id]));
+  let added = 0;
+  await db.transaction(async (tx) => {
+    for (const doc of docs) {
+      const exists = await tx
+        .select({ id: schema.materials.id })
+        .from(schema.materials)
+        .where(eq(schema.materials.slug, doc.slug))
+        .limit(1);
+      if (exists.length) continue;
+
+      const subjectId = subjectIds.get(doc.subject);
+      if (!subjectId) throw new Error(`${doc.slug}: unknown subject ${doc.subject}`);
+      const date = new Date(doc.date);
+      const [m] = await tx
+        .insert(schema.materials)
+        .values({
+          slug: doc.slug,
+          type: "doc",
+          lang: doc.text.ru ? "ru" : "en",
+          subjectId,
+          status: "published",
+          createdAt: date,
+          updatedAt: date,
+        })
+        .returning({ id: schema.materials.id });
+
+      await tx.insert(schema.materialTexts).values(
+        Object.entries(doc.text).map(([locale, t]) => ({ materialId: m.id, locale, ...t })),
+      );
+      await tx.insert(schema.materialFiles).values({
+        materialId: m.id,
+        url: `bundle:${doc.file.path}`,
+        name: doc.file.name,
+        kind: "html",
+        size: statSync(join("content/docs", doc.file.path)).size,
+      });
+
+      for (const name of new Set(doc.tags.map((t) => t.toLowerCase()))) {
+        const [tag] = await tx
+          .insert(schema.tags)
+          .values({ name })
+          .onConflictDoUpdate({ target: schema.tags.name, set: { name } })
+          .returning();
+        await tx.insert(schema.materialTags).values({ materialId: m.id, tagId: tag.id });
+      }
+      added++;
+    }
+  });
+  console.log(`Documents: ${docs.length} on disk, ${added} added.`);
 }

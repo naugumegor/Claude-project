@@ -1,0 +1,21 @@
+[
+  {
+    "slug": "midterm-1-intro-me",
+    "subject": "intro-me",
+    "date": "2026-10-27",
+    "tags": ["мидтерм", "BME", "полиспаст", "пружины", "КПД"],
+    "file": { "path": "midterm1-intro-me.html", "name": "Мидтерм 1 Intro ME" },
+    "text": {
+      "ru": {
+        "title": "Мидтерм 1 Intro ME: разбор до последнего винтика",
+        "excerpt": "Подготовка к первому мидтерму Introduction to Mechanical Engineering (BME): теория по шагам, интерактивные стенды, разбор мидтермов 2023–2025, тренажёр с рандомными цифрами и читшит.",
+        "body": ""
+      },
+      "en": {
+        "title": "Intro ME midterm 1: every bolt explained",
+        "excerpt": "Prep for the first Introduction to Mechanical Engineering midterm at BME: step-by-step theory, interactive stands, the 2023–2025 midterms solved, a trainer with random numbers and a cheat sheet. The page itself is in Russian.",
+        "body": ""
+      }
+    }
+  }
+]
