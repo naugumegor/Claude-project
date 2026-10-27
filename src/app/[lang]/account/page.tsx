@@ -2,12 +2,12 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { LogOut, Settings2 } from "lucide-react";
 import { getDictionary, getLocale, type Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { db } from "@/db";
-import { favorites, userDocuments, users } from "@/db/schema";
+import { favorites, pastes, shortLinks, userDocuments, users } from "@/db/schema";
 import { getMaterials } from "@/lib/materials";
 import { cardLabels, formatDate } from "@/lib/format";
 import { getAdmin, getUser } from "@/lib/session";
@@ -20,6 +20,7 @@ import { MyDocuments } from "@/components/account/my-documents";
 import { StudyTracker } from "@/components/account/study-tracker";
 import { getStudyDays, getStudyTotals } from "@/db/study";
 import { addDays } from "@/lib/streaks";
+import { MyShares } from "@/components/share/my-shares";
 import { signOut } from "./actions";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -64,6 +65,33 @@ async function Account({
     db.select().from(userDocuments).where(eq(userDocuments.userId, session.id)).orderBy(desc(userDocuments.createdAt)),
     getStudyDays(session.id, since),
     getStudyTotals(session.id),
+  ]);
+
+  // Links and pastes: the reader's own, or everyone's for the admin (to clean up abuse).
+  const [linkRows, pasteRows] = await Promise.all([
+    db
+      .select({ link: shortLinks, author: users.name })
+      .from(shortLinks)
+      .innerJoin(users, eq(shortLinks.userId, users.id))
+      .where(admin ? undefined : eq(shortLinks.userId, session.id))
+      .orderBy(desc(shortLinks.createdAt))
+      .limit(200),
+    db
+      .select({
+        id: pastes.id,
+        title: pastes.title,
+        language: pastes.language,
+        size: sql<number>`octet_length(${pastes.body})`,
+        createdAt: pastes.createdAt,
+        expiresAt: pastes.expiresAt,
+        userId: pastes.userId,
+        author: users.name,
+      })
+      .from(pastes)
+      .innerJoin(users, eq(pastes.userId, users.id))
+      .where(admin ? undefined : eq(pastes.userId, session.id))
+      .orderBy(desc(pastes.createdAt))
+      .limit(200),
   ]);
 
   const logout = (
@@ -176,6 +204,36 @@ async function Account({
               label: dict.tracker.tab,
               count: studyTotals.count,
               content: <StudyTracker days={studyDays} totals={studyTotals} labels={dict.tracker} locale={locale} />,
+            },
+            {
+              id: "share",
+              label: dict.share.tab,
+              count: linkRows.length + pasteRows.length,
+              content: (
+                <MyShares
+                  links={linkRows.map(({ link, author }) => ({
+                    id: link.id,
+                    code: link.code,
+                    url: link.url,
+                    clicks: link.clicks,
+                    createdAt: link.createdAt.toISOString(),
+                    author: admin && link.userId !== session.id ? author : undefined,
+                  }))}
+                  pastes={pasteRows.map((p) => ({
+                    id: p.id,
+                    title: p.title,
+                    language: p.language,
+                    size: Number(p.size),
+                    createdAt: p.createdAt.toISOString(),
+                    expiresAt: p.expiresAt?.toISOString() ?? null,
+                    author: admin && p.userId !== session.id ? p.author : undefined,
+                  }))}
+                  labels={dict.share}
+                  clicks={dict.plurals.clicks}
+                  locale={locale}
+                  everyone={Boolean(admin)}
+                />
+              ),
             },
           ]}
         />
