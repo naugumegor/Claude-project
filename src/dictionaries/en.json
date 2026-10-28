@@ -261,7 +261,9 @@
     "deleteTitle": "Delete account",
     "deleteLead": "We will erase your profile, favorites and uploaded documents. This cannot be undone. Type \"delete\" to confirm.",
     "deleteWord": "delete",
-    "deleteButton": "Delete forever"
+    "deleteButton": "Delete forever",
+    "logoutAll": "Sign out everywhere",
+    "logoutAllHint": "If you think someone else is signed in as you: this signs out every device, and you sign in again. Changing the password does the same for your other devices."
   },
   "study": {
     "minutes": "min read",

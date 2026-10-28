@@ -1,10 +1,16 @@
 import "server-only";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
+import { eq, sql } from "drizzle-orm";
+import { db } from "@/db";
+import { users } from "@/db/schema";
 
 // Everyone who signs in (customers and the site owner) gets the same signed cookie.
 // The owner is recognised by their numeric GitHub account id, which only GitHub can vouch for
 // and which, unlike the login, never changes or passes to somebody else.
+// Each cookie also carries the account's session version: bumping it (password change, reset,
+// "sign out everywhere", a deleted account) makes every older cookie worthless at once.
 
 export const ADMIN_LOGIN = (process.env.ADMIN_GITHUB_LOGIN ?? "naugumegor").toLowerCase();
 export const ADMIN_GITHUB_ID = process.env.ADMIN_GITHUB_ID ?? "326945319";
@@ -27,7 +33,8 @@ function secret() {
 }
 
 export async function createSession(user: SessionUser) {
-  const token = await new SignJWT({ uid: user.id, name: user.name, login: user.login, gid: user.githubId })
+  const sv = (await sessionVersion(user.id)) ?? 0;
+  const token = await new SignJWT({ uid: user.id, name: user.name, login: user.login, gid: user.githubId, sv })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE}s`)
@@ -45,22 +52,46 @@ export async function destroySession() {
   (await cookies()).delete(COOKIE);
 }
 
-async function readSession() {
+/** The account's current session version, or null when the account no longer exists. */
+async function sessionVersion(userId: number) {
+  const [row] = await db
+    .select({ v: users.sessionVersion })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  return row ? row.v : null;
+}
+
+/** Signs the account out on every device; the caller may then issue a fresh cookie. */
+export async function revokeSessions(userId: number) {
+  await db
+    .update(users)
+    .set({ sessionVersion: sql`${users.sessionVersion} + 1` })
+    .where(eq(users.id, userId));
+}
+
+// Once per request, however many components ask who is signed in.
+const readSession = cache(async () => {
   const token = (await cookies()).get(COOKIE)?.value;
   if (!token) return null;
+  let payload;
   try {
-    return (await jwtVerify(token, secret())).payload;
+    payload = (await jwtVerify(token, secret())).payload;
   } catch {
     return null;
   }
-}
+  if (typeof payload.uid !== "number") return null;
+  // Cookies issued before session versions existed carry none and count as version 0.
+  const sv = typeof payload.sv === "number" ? payload.sv : 0;
+  return sv === (await sessionVersion(payload.uid)) ? payload : null;
+});
 
 /** The signed-in user, or null. */
 export async function getUser(): Promise<SessionUser | null> {
   const payload = await readSession();
-  if (typeof payload?.uid !== "number") return null;
+  if (!payload) return null;
   return {
-    id: payload.uid,
+    id: payload.uid as number,
     name: String(payload.name ?? ""),
     login: typeof payload.login === "string" ? payload.login : undefined,
     githubId: typeof payload.gid === "string" ? payload.gid : undefined,

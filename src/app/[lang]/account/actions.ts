@@ -17,6 +17,7 @@ import {
   getAdmin,
   getUser,
   requireUser,
+  revokeSessions,
   safeNext,
 } from "@/lib/session";
 
@@ -184,6 +185,8 @@ export async function resetPassword(_prev: FormState, form: FormData): Promise<F
 
   // Clears the lockout, so the owner of the address can sign in straight away.
   if (user.email) await db.delete(authFailures).where(eq(authFailures.key, `email:${user.email}`));
+  // Whoever knew the old password is signed out everywhere; this browser gets a fresh cookie.
+  await revokeSessions(user.id);
   await createSession({ id: user.id, name: user.name });
   redirect(`/${locale}/account`);
 }
@@ -191,6 +194,15 @@ export async function resetPassword(_prev: FormState, form: FormData): Promise<F
 export async function signOut(form: FormData) {
   await destroySession();
   redirect(safeNext(field(form, "next"), "/"));
+}
+
+/** Signs the account out on every device, this one included. */
+export async function signOutEverywhere(form: FormData) {
+  const session = await requireUser();
+  await revokeSessions(session.id);
+  await destroySession();
+  const lang = field(form, "lang");
+  redirect(`/${hasLocale(lang) ? lang : "ru"}/login`);
 }
 
 export async function updateProfile(_prev: FormState, form: FormData): Promise<FormState> {
@@ -233,6 +245,9 @@ export async function changePassword(_prev: FormState, form: FormData): Promise<
   }
 
   await db.update(users).set(patch).where(eq(users.id, user.id));
+  // Other devices are signed out; this one keeps going with a fresh cookie.
+  await revokeSessions(user.id);
+  await createSession(session);
   return { ok: "changed" };
 }
 

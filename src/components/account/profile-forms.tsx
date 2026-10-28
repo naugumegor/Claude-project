@@ -2,10 +2,16 @@
 
 import { useActionState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, KeyRound, Loader2, Trash2, UserRound } from "lucide-react";
+import { Check, KeyRound, Loader2, MonitorSmartphone, Trash2, UserRound } from "lucide-react";
 import type { Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
-import { changePassword, deleteAccount, updateProfile, type FormState } from "@/app/[lang]/account/actions";
+import {
+  changePassword,
+  deleteAccount,
+  signOutEverywhere,
+  updateProfile,
+  type FormState,
+} from "@/app/[lang]/account/actions";
 
 export function ProfileForms({
   dict,
@@ -84,6 +90,23 @@ export function ProfileForms({
           <Status message={say(password)} />
         </form>
       </Card>
+
+      <details className="rounded-2xl border border-line bg-surface p-5">
+        <summary className="flex cursor-pointer list-none items-center gap-2 text-sm text-muted transition-colors hover:text-accent">
+          <MonitorSmartphone size={15} />
+          {dict.logoutAll}
+        </summary>
+        <form action={signOutEverywhere} className="mt-4 grid gap-3">
+          <p className="text-sm leading-relaxed text-muted">{dict.logoutAllHint}</p>
+          <input type="hidden" name="lang" value={locale} />
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-line px-4 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+          >
+            {dict.logoutAll}
+          </motion.button>
+        </form>
+      </details>
 
       {canDelete && (
         <details className="group/del rounded-2xl border border-line bg-surface p-5">

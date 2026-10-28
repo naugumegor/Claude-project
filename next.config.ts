@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
-// Content Security Policy, for now in report-only mode: the browser logs what it would block
-// (DevTools → Console) without breaking anything. Once the console stays quiet, switch the
-// header name to "Content-Security-Policy".
+// Content Security Policy: what the site's own pages may load and run. If a new feature needs
+// another host (a CDN, an embed), add it here, or the browser blocks it (DevTools → Console).
 const csp = [
   "default-src 'self'",
   // Next.js inline bootstrap scripts; Pyodide and sql.js from jsdelivr need WebAssembly.
@@ -26,14 +25,21 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
-  { key: "Content-Security-Policy-Report-Only", value: csp },
 ];
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Stored documents (/api/files, /api/user-files) send their own sandbox CSP instead: an HTML
+      // page there runs in an opaque origin and may load whatever fonts or scripts it was made with.
+      {
+        source: "/((?!api/files/|api/user-files/).*)",
+        headers: [{ key: "Content-Security-Policy", value: csp }],
+      },
+    ];
   },
   // PGlite (local dev database) loads its WASM from disk, so it must not be bundled.
   serverExternalPackages: ["@electric-sql/pglite"],
