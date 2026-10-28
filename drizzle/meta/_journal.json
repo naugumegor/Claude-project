@@ -78,6 +78,13 @@
       "when": 1793109568935,
       "tag": "0010_links_and_pastes",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793191682288,
+      "tag": "0011_session_version",
+      "breakpoints": true
     }
   ]
 }

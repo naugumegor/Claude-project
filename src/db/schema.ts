@@ -122,6 +122,8 @@ export const users = pgTable("users", {
   passwordHash: text("password_hash"),
   githubId: text("github_id").unique(),
   githubLogin: text("github_login"),
+  /** Bumped to sign the account out everywhere: older session cookies stop working. */
+  sessionVersion: integer("session_version").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
