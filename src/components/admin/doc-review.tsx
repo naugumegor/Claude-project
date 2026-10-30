@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { Check, ExternalLink, Undo2, X } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import { reviewUserDocument } from "@/app/[lang]/account/doc-actions";
+import { kindLabel, type DocumentKind } from "@/lib/documents";
 
-type Row = { id: number; name: string; description: string; author: string; kind: string; status: string };
+type Row = { id: number; name: string; description: string; author: string; kind: DocumentKind; status: string };
 
 /** Readers' documents waiting for (or past) review, with approve / decline buttons. */
 export function DocReview({
@@ -33,7 +34,7 @@ export function DocReview({
           <span className="min-w-0 flex-1">
             <span className="block truncate font-medium">{d.name}</span>
             <span className="block truncate text-xs text-muted">
-              {d.author} · {d.kind === "model" ? "3D" : d.kind.toUpperCase()}
+              {d.author} · {kindLabel(d.kind, locale)}
               {d.description && ` · ${d.description}`}
             </span>
           </span>

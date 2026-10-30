@@ -4,7 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { upload } from "@vercel/blob/client";
-import { Box, Check, FileCode, FileText, FileUp, ImagePlus, Loader2, Trash2, Wand2, X } from "lucide-react";
+import { Box, Check, FileCode, FileText, FileUp, ImageIcon, ImagePlus, Loader2, Trash2, Wand2, X } from "lucide-react";
 import type { Dictionary } from "@/dictionaries";
 import { locales, type Locale } from "@/lib/i18n";
 import type { Material, MaterialFile, MaterialImage, MaterialText, MaterialType } from "@/lib/content";
@@ -20,7 +20,8 @@ import { Markdown } from "@/components/markdown";
 import { typeMeta } from "@/components/type-meta";
 import { sectionMeta } from "@/components/section-icon";
 import { SECTIONS, type SectionSlug } from "@/lib/taxonomy";
-import { DOCUMENT_ACCEPT, DOCUMENT_KINDS, documentKind } from "@/lib/documents";
+import { DOCUMENT_ACCEPT, documentKind, fileFormat, stripExt } from "@/lib/documents";
+import { normalizeUpload } from "@/lib/heic";
 
 type Dict = Dictionary["admin"];
 type UploadingImage = MaterialImage & { key: string; uploading?: boolean };
@@ -157,29 +158,32 @@ export function MaterialForm({
         continue;
       }
       const key = crypto.randomUUID();
-      const name = file.name.replace(/\.(pdf|html?|glb)$/i, "");
+      const name = stripExt(file.name);
       setFiles((prev) => [...prev, { key, url: "", name, kind, size: file.size, progress: 0 }]);
       const setProgress = (progress: number) =>
         setFiles((prev) => prev.map((x) => (x.key === key ? { ...x, progress } : x)));
       try {
+        // iPhone photos (HEIC) become JPEG first, so every browser can show them.
+        const ready = await normalizeUpload(file);
+        const format = fileFormat(kind, ready);
         let url: string;
         if (directUpload) {
-          const blob = await upload(`documents/${slugify(name) || "document"}.${DOCUMENT_KINDS[kind].ext}`, file, {
+          const blob = await upload(`documents/${slugify(name) || "document"}.${format.ext}`, ready, {
             access: "public",
             handleUploadUrl: "/api/upload",
-            contentType: DOCUMENT_KINDS[kind].type,
-            multipart: file.size > 8 * 1024 * 1024,
+            contentType: format.type,
+            multipart: ready.size > 8 * 1024 * 1024,
             onUploadProgress: ({ percentage }) => setProgress(percentage),
           });
           url = blob.url;
         } else {
           const form = new FormData();
-          form.append("file", file);
+          form.append("file", ready);
           const res = await uploadDocumentLocal(form);
           if (!res.ok) throw new Error(message(res.error));
           url = res.data.url;
         }
-        setFiles((prev) => prev.map((x) => (x.key === key ? { ...x, url, progress: undefined } : x)));
+        setFiles((prev) => prev.map((x) => (x.key === key ? { ...x, url, size: ready.size, progress: undefined } : x)));
       } catch (e) {
         setFiles((prev) => prev.filter((x) => x.key !== key));
         setError(e instanceof Error ? e.message : String(e));
@@ -613,7 +617,7 @@ export function MaterialForm({
             <motion.ul layout className="mt-3 grid gap-2">
               <AnimatePresence>
                 {files.map((doc) => {
-                  const Icon = doc.kind === "pdf" ? FileText : doc.kind === "model" ? Box : FileCode;
+                  const Icon = doc.kind === "pdf" ? FileText : doc.kind === "model" ? Box : doc.kind === "image" ? ImageIcon : FileCode;
                   return (
                     <motion.li
                       key={doc.key}
@@ -636,7 +640,9 @@ export function MaterialForm({
                             ? "bg-rose-soft text-rose"
                             : doc.kind === "model"
                               ? "bg-accent-soft text-accent"
-                              : "bg-plum-soft text-plum"
+                              : doc.kind === "image"
+                                ? "bg-ochre-soft text-ochre"
+                                : "bg-plum-soft text-plum"
                         }`}
                       >
                         <Icon size={18} />
