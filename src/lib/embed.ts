@@ -27,3 +27,26 @@ export function parseModelBlock(raw: string) {
   }
   return /^(https:\/\/|\/)/.test(src) ? { src, title } : null;
 }
+
+/** A YouTube watch, short or youtu.be link → its 11-character video id. */
+export function youtubeId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+/**
+ * A ```video block: one YouTube link per line, optionally followed by " | title".
+ *
+ *   ```video
+ *   https://www.youtube.com/watch?v=aTpZqCwSjas | First angle projection
+ *   ```
+ */
+export function parseVideoBlock(raw: string) {
+  const videos: { id: string; title: string }[] = [];
+  for (const line of raw.split("\n").map((l) => l.trim()).filter(Boolean)) {
+    const [url, ...rest] = line.split("|");
+    const id = youtubeId(url.trim());
+    if (id) videos.push({ id, title: rest.join("|").trim() });
+  }
+  return videos;
+}

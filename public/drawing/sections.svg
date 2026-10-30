@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 590 235" width="590" height="235" role="img" aria-label="View with hidden lines, full section and half view–half section of a flanged bushing">
+<title>View with hidden lines, full section and half view–half section of a flanged bushing</title>
+<defs>
+<pattern id="h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="590" height="235" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40,80 L60,80 L60,100 L150,100 L150,160 L60,160 L60,180 L40,180 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="40.0" y1="115.0" x2="150.0" y2="115.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="40.0" y1="145.0" x2="150.0" y2="145.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="28.0" y1="130.0" x2="162.0" y2="130.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="95" y="40" font-size="12" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="600">View: inside = dashed</text>
+<text x="95" y="215" font-size="11" fill="#C4573A" stroke="none" text-anchor="middle" font-weight="500">hard to read</text>
+<path d="M230,115 L230,80 L250,80 L250,100 L340,100 L340,115 Z" stroke="#23262B" stroke-width="2.4" fill="url(#h45)"/>
+<path d="M230,145 L230,180 L250,180 L250,160 L340,160 L340,145 Z" stroke="#23262B" stroke-width="2.4" fill="url(#h45)"/>
+<line x1="230.0" y1="115.0" x2="340.0" y2="115.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="230.0" y1="145.0" x2="340.0" y2="145.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="218.0" y1="130.0" x2="352.0" y2="130.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="285" y="40" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">Full section</text>
+<text x="285" y="215" font-size="11" fill="#2F7D6D" stroke="none" text-anchor="middle" font-weight="500">hatch 45°, thick borders</text>
+<path d="M420,130 L420,80 L440,80 L440,100 L530,100 L530,130" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<path d="M420,145 L420,180 L440,180 L440,160 L530,160 L530,145 Z" stroke="#23262B" stroke-width="2.4" fill="url(#h45)"/>
+<line x1="420.0" y1="145.0" x2="530.0" y2="145.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="440.0" y1="100.0" x2="440.0" y2="130.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="408.0" y1="130.0" x2="542.0" y2="130.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="475" y="40" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">Half view – half section</text>
+<text x="475" y="215" font-size="11" fill="#2F7D6D" stroke="none" text-anchor="middle" font-weight="500">lower half = section</text>
+</g>
+</svg>

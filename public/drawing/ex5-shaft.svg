@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" width="760" height="370" role="img" aria-label="Test 1 exercise 5 practice: shaft part drawing with dimensions and removed cut">
+<title>Test 1 exercise 5 practice: shaft part drawing with dimensions and removed cut</title>
+<defs>
+<pattern id="h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="760" height="370" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M70.0,119.0 L79.0,110.0 L190.0,110.0 L190.0,95.0 L220.0,95.0 L220.0,110.0 L379.0,110.0 L385.0,116.0 L385.0,131.0 L400.0,131.0 L400.0,125.0 L469.0,125.0 L475.0,131.0 L475.0,209.0 L469.0,215.0 L400.0,215.0 L400.0,209.0 L385.0,209.0 L385.0,224.0 L379.0,230.0 L220.0,230.0 L220.0,245.0 L190.0,245.0 L190.0,230.0 L79.0,230.0 L70.0,221.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="79.0" y1="110.0" x2="79.0" y2="230.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="190.0" y1="110.0" x2="190.0" y2="230.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="220.0" y1="110.0" x2="220.0" y2="230.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="385.0" y1="131.0" x2="385.0" y2="209.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="400.0" y1="131.0" x2="400.0" y2="209.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="469.0" y1="131.0" x2="469.0" y2="209.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="190.0" y1="95.0" x2="190.0" y2="245.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="220.0" y1="95.0" x2="220.0" y2="245.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="79.0" y1="110.0" x2="190.0" y2="230.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="79.0" y1="230.0" x2="190.0" y2="110.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="400.0" y1="132.5" x2="475.0" y2="132.5" stroke="#23262B" stroke-width="1.0"/>
+<line x1="400.0" y1="207.5" x2="475.0" y2="207.5" stroke="#23262B" stroke-width="1.0"/>
+<path d="M274,152 L340,152 A18,18 0 0 1 340,188 L274,188 A18,18 0 0 1 274,152 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="70.0" y1="146.0" x2="136.0" y2="146.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="70.0" y1="194.0" x2="136.0" y2="194.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="70.0" y1="149.0" x2="148.0" y2="149.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="70.0" y1="191.0" x2="148.0" y2="191.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<path d="M148,149 L160,170 L148,191" stroke="#23262B" stroke-width="1.0" fill="none" stroke-dasharray="6 4"/>
+<line x1="136.0" y1="146.0" x2="136.0" y2="194.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="56.0" y1="170.0" x2="489.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="310.0" y1="81.0" x2="310.0" y2="93.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="310.0" y1="247.0" x2="310.0" y2="259.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="316" y="89" font-size="13" fill="#23262B" stroke="none" text-anchor="start" font-weight="700">A</text>
+<text x="316" y="263" font-size="13" fill="#23262B" stroke="none" text-anchor="start" font-weight="700">A</text>
+<line x1="190.0" y1="234.0" x2="190.0" y2="279.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="275.0" x2="190.0" y2="275.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="130.0" y="270.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">40</text>
+<line x1="220.0" y1="249.0" x2="220.0" y2="299.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="295.0" x2="220.0" y2="295.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="145.0" y="290.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">50</text>
+<line x1="385.0" y1="234.0" x2="385.0" y2="319.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="315.0" x2="385.0" y2="315.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="227.5" y="310.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">105</text>
+<line x1="475.0" y1="234.0" x2="475.0" y2="339.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="335.0" x2="475.0" y2="335.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="272.5" y="330.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">135</text>
+<line x1="70.0" y1="225.0" x2="70.0" y2="339.0" stroke="#23262B" stroke-width="1.0"/>
+<text x="66" y="357" font-size="11" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">datum</text>
+<line x1="256.0" y1="152.0" x2="256.0" y2="67.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="358.0" y1="152.0" x2="358.0" y2="67.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="220.0" y1="93.0" x2="220.0" y2="67.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="220.0" y1="71.0" x2="256.0" y2="71.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="238.0" y="66.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">12</text>
+<line x1="256.0" y1="71.0" x2="358.0" y2="71.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="307.0" y="66.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">34</text>
+<line x1="205.0" y1="95.0" x2="205.0" y2="245.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="200.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 200.0 170.0)">Ø50</text>
+<line x1="295.0" y1="110.0" x2="295.0" y2="230.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="290.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 290.0 170.0)">Ø40</text>
+<line x1="436.0" y1="125.0" x2="436.0" y2="215.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="431.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 431.0 170.0)">M30</text>
+<line x1="130.0" y1="110.0" x2="130.0" y2="230.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="125.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 125.0 170.0)">□40</text>
+<text x="392.5" y="225" font-size="10" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">groove</text>
+<text x="392.5" y="237" font-size="10" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">Ø26×5</text>
+<text x="485" y="123" font-size="11" fill="#23262B" stroke="none" text-anchor="start" font-weight="500">2×45°</text>
+<text x="20" y="111" font-size="11" fill="#23262B" stroke="none" text-anchor="start" font-weight="500">2×45°</text>
+<line x1="100.0" y1="194.0" x2="50.0" y2="218.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<text x="48" y="232" font-size="11" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">M16×22</text>
+<text x="615" y="92" font-size="14" fill="#23262B" stroke="none" text-anchor="middle" font-weight="700">A–A</text>
+<path d="M633.0,112.8 A60,60 0 1 1 597.0,112.8 L597.0,125.0 L633.0,125.0 Z" stroke="#23262B" stroke-width="2.4" fill="url(#h45)"/>
+<line x1="543.0" y1="170.0" x2="687.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="615.0" y1="102.0" x2="615.0" y2="242.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="597.0" y1="125.0" x2="569.0" y2="125.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="555.0" y1="230.0" x2="527.0" y2="230.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="535.0" y1="125.0" x2="535.0" y2="230.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ar)" marker-end="url(#ar)"/><text x="530.0" y="177.5" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 530.0 177.5)">35</text>
+<line x1="597.0" y1="112.8" x2="597.0" y2="84.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="633.0" y1="112.8" x2="633.0" y2="84.0" stroke="#23262B" stroke-width="1.0"/>
+<text x="615" y="256" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">keyseat 12P9</text>
+</g>
+</svg>

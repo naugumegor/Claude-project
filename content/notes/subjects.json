@@ -12,6 +12,7 @@
   { "slug": "fluids", "nameRu": "Гидрогазодинамика", "nameEn": "Fluid mechanics" },
   { "slug": "tmm", "nameRu": "Теория машин и механизмов", "nameEn": "Theory of machines and mechanisms" },
   { "slug": "machine-design", "nameRu": "Детали машин", "nameEn": "Machine design" },
+  { "slug": "me-drawing", "nameRu": "Черчение (BME)", "nameEn": "Mechanical engineering drawing (BME)" },
   { "slug": "drafting", "nameRu": "Инженерная графика и ГОСТ", "nameEn": "Engineering drawing and standards" },
   { "slug": "cad-cae", "nameRu": "САПР и инженерный анализ", "nameEn": "CAD and CAE" },
   { "slug": "engineering-python", "nameRu": "Инженерный Python", "nameEn": "Engineering Python" },
