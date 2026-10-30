@@ -37,6 +37,16 @@ export const texts = {
     draftEmpty: "Пустое сообщение, нечего сохранять.",
     badFile: "Такой файл не возьму: только PDF, HTML и картинки до 20 МБ.",
     drafts: "<b>Черновики</b>",
+    commentPending: "💬 <b>Коммент ждёт проверки</b>",
+    commentNew: "💬 <b>Новый коммент</b>",
+    reason_new: "новичок",
+    reason_words: "стоп-слова",
+    reason_reports: "жалобы",
+    reason_all: "проверка всех",
+    approve: "✅ Одобрить",
+    hide: "🙈 Скрыть",
+    approved: "Одобрено ✅",
+    hidden: "Скрыто 🙈",
   },
   en: {
     welcome:
@@ -72,6 +82,16 @@ export const texts = {
     draftEmpty: "Empty message, nothing to save.",
     badFile: "Can't take that file: only PDF, HTML and images up to 20 MB.",
     drafts: "<b>Drafts</b>",
+    commentPending: "💬 <b>A comment waits for review</b>",
+    commentNew: "💬 <b>New comment</b>",
+    reason_new: "new author",
+    reason_words: "stop words",
+    reason_reports: "reports",
+    reason_all: "review all",
+    approve: "✅ Approve",
+    hide: "🙈 Hide",
+    approved: "Approved ✅",
+    hidden: "Hidden 🙈",
   },
 } satisfies Record<Locale, Record<string, string>>;
 

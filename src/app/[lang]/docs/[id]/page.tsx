@@ -11,6 +11,7 @@ import { userDocuments, users } from "@/db/schema";
 import { getAdmin, getUser } from "@/lib/session";
 import { formatDate } from "@/lib/format";
 import { DocumentViewer } from "@/components/document-viewer";
+import { Discussion } from "@/components/discussion/discussion";
 
 // One reader's document: public once approved for the home page, otherwise only its owner
 // (and the admin reviewing it) can open it.
@@ -75,6 +76,11 @@ async function Doc({ params, dict, locale }: { params: Promise<{ id: string }>; 
           base="/api/user-files/"
         />
       </div>
+      {doc.status === "published" && (
+        <div className="mx-auto max-w-3xl">
+          <Discussion target={{ type: "doc", id: doc.id }} path={`/${locale}/docs/${doc.id}`} locale={locale} dict={dict.discussion} />
+        </div>
+      )}
     </>
   );
 }

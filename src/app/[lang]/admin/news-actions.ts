@@ -8,6 +8,7 @@ import { news } from "@/db/schema";
 import { slugify } from "@/lib/slug";
 import { requireAdmin } from "@/lib/session";
 import { announceNews } from "@/lib/telegram-notify";
+import { deleteDiscussion } from "@/lib/discussion";
 
 type Result<T = null> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -65,6 +66,8 @@ export async function saveNews(input: NewsInput): Promise<Result<{ id: number; s
 export async function deleteNews(id: number): Promise<Result> {
   await requireAdmin();
   await db.delete(news).where(eq(news.id, id));
+  await deleteDiscussion({ type: "news", id });
   updateTag("news");
+  updateTag("comments");
   return { ok: true, data: null };
 }

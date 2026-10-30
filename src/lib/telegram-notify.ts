@@ -1,12 +1,14 @@
 import "server-only";
 import { and, eq, isNull, ne, or } from "drizzle-orm";
 import { db } from "@/db";
-import { materials, news, telegramChats } from "@/db/schema";
+import { comments, materials, news, telegramChats, users } from "@/db/schema";
 import { loadMaterials } from "@/db/queries";
 import { getMaterials } from "@/lib/materials";
 import { hasLocale, type Locale } from "@/lib/i18n";
 import { localize } from "@/lib/content";
 import { siteUrl } from "@/lib/site";
+import { targetPath } from "@/lib/discussion";
+import type { TargetType } from "@/lib/discussion-shared";
 import { parseCards } from "@/lib/study";
 import { botToken, clip, escapeHtml, tgRaw } from "@/lib/telegram";
 import { texts } from "@/lib/telegram-texts";
@@ -155,4 +157,39 @@ export async function sendReminders() {
     await new Promise((r) => setTimeout(r, 50));
   }
   return { chats: chats.length, sent };
+}
+
+/**
+ * Tells the owner's chat about a reader's comment. One that waits for review comes with
+ * Approve / Hide buttons; a published one only with Hide, in case it slipped through.
+ */
+export async function notifyOwnerComment(id: number) {
+  if (!botToken()) return;
+  const [owner] = await db.select().from(telegramChats).where(eq(telegramChats.isOwner, true)).limit(1);
+  if (!owner) return;
+  const [row] = await db
+    .select({ c: comments, author: users.name })
+    .from(comments)
+    .innerJoin(users, eq(comments.userId, users.id))
+    .where(eq(comments.id, id))
+    .limit(1);
+  if (!row || (row.c.status !== "pending" && row.c.status !== "published")) return;
+  const locale = chatLocale(owner);
+  const t = texts[locale];
+  const path = await targetPath({ type: row.c.targetType as TargetType, id: row.c.targetId }, locale);
+  const pending = row.c.status === "pending";
+  const reason = row.c.reason ? t[`reason_${row.c.reason}` as keyof typeof t] : null;
+  const lines = [
+    pending ? t.commentPending : t.commentNew,
+    `<b>${escapeHtml(row.author || "—")}</b>${reason ? ` <i>· ${escapeHtml(reason)}</i>` : ""}`,
+    escapeHtml(clip(row.c.body, 600)),
+  ];
+  if (path) lines.push(`\n<a href="${siteUrl}${path}#comment-${id}">${t.open}</a>`);
+  const buttons = pending
+    ? [{ text: t.approve, callback_data: `cm:approve:${id}` }, { text: t.hide, callback_data: `cm:hide:${id}` }]
+    : [{ text: t.hide, callback_data: `cm:hide:${id}` }];
+  await send(owner.chatId, lines.join("\n"), {
+    link_preview_options: { is_disabled: true },
+    reply_markup: { inline_keyboard: [buttons] },
+  });
 }
