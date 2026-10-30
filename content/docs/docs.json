@@ -83,5 +83,33 @@
         "body": ""
       }
     }
+  },
+  {
+    "slug": "python-midterm-1",
+    "subject": "python-bme",
+    "date": "2026-10-30",
+    "tags": [
+      "Python",
+      "BME",
+      "мидтерм",
+      "списки",
+      "циклы"
+    ],
+    "file": {
+      "path": "python-midterm-1.html",
+      "name": "Python: мидтерм 1"
+    },
+    "text": {
+      "ru": {
+        "title": "Python: подготовка к мидтерму 1",
+        "excerpt": "Programming in the Python Language (BME), мидтерм 1 по практикам 1–8: типы, math, ввод/вывод, условия и match, while, random, списки, срезы, распаковка, матрицы. Всё на пальцах, код с настоящим выводом, 30 «угадай вывод» со счётом, 16 задач в стиле практик с решениями, теория с лекций, проверенные ресурсы и видео.",
+        "body": ""
+      },
+      "en": {
+        "title": "Python: midterm 1 prep",
+        "excerpt": "Programming in the Python Language (BME), midterm 1 on practicals 1–8: types, math, input/output, conditions and match, while, random, lists, slicing, unpacking, matrices. Plain explanations, code with real output, 30 guess-the-output cards with a score, 16 practical-style tasks with solutions, lecture theory, checked resources and videos. The page itself is in Russian.",
+        "body": ""
+      }
+    }
   }
 ]

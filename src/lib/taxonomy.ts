@@ -72,7 +72,7 @@ export const SECTIONS: Section[] = [
     slug: "programming",
     profiles: ["engineering", "business"],
     name: { ru: "Программирование", en: "Programming" },
-    subjects: ["engineering-python", "programming"],
+    subjects: ["python-bme", "engineering-python", "programming"],
   },
   {
     slug: "science",
