@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { shortLinks, users } from "@/db/schema";
-import { ADMIN_GITHUB_ID, devBypass } from "@/lib/session";
+import { isAdminGithubId } from "@/lib/session";
 import { matchLocale } from "@/lib/i18n";
 import { checkLinkUrl } from "@/lib/share";
 
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest, ctx: RouteContext<"/s/[code]">) 
   if (!row) return leave; // the page there says the link doesn't exist
 
   const [owner] = await db.select({ githubId: users.githubId }).from(users).where(eq(users.id, row.userId)).limit(1);
-  const trusted = owner?.githubId === ADMIN_GITHUB_ID || (devBypass && owner?.githubId === "dev");
+  const trusted = isAdminGithubId(owner?.githubId);
   // Checked again on the way out, whatever ended up in the database.
   const checked = checkLinkUrl(row.url);
   if (!trusted || "error" in checked) return leave;

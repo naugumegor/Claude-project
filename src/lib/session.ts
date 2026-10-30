@@ -14,6 +14,15 @@ import { users } from "@/db/schema";
 
 export const ADMIN_LOGIN = (process.env.ADMIN_GITHUB_LOGIN ?? "naugumegor").toLowerCase();
 export const ADMIN_GITHUB_ID = process.env.ADMIN_GITHUB_ID ?? "326945319";
+const ADMIN_GITHUB_IDS = new Set([
+  ADMIN_GITHUB_ID,
+  ...(process.env.ADMIN_GITHUB_IDS ?? "").split(",").map((id) => id.trim()).filter((id) => /^\d+$/.test(id)),
+]);
+
+/** Whether this GitHub account id belongs to an admin (the owner or anyone in ADMIN_GITHUB_IDS). */
+export function isAdminGithubId(gid: string | null | undefined) {
+  return !!gid && (ADMIN_GITHUB_IDS.has(gid) || (devBypass && gid === "dev"));
+}
 const COOKIE = "ingenium_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
@@ -110,8 +119,7 @@ export async function getAdmin(): Promise<string | null> {
   const payload = await readSession();
   const login = String(payload?.login ?? "").toLowerCase();
   const gid = String(payload?.gid ?? "");
-  const owner = gid === ADMIN_GITHUB_ID || (devBypass && gid === "dev");
-  return owner ? login || ADMIN_LOGIN : null;
+  return isAdminGithubId(gid) ? login || ADMIN_LOGIN : null;
 }
 
 /** Use at the top of every Server Action that changes materials. */
