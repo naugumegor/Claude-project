@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 300" width="560" height="300" role="img" aria-label="Cross-section through a shaft, hub and feather key">
+<title>Cross-section through a shaft, hub and feather key</title>
+<defs>
+<pattern id="h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="560" height="300" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M75,150 A95,95 0 1 1 265,150 A95,95 0 1 1 75,150 Z" stroke="#23262B" stroke-width="2.4" fill="url(#h135)"/>
+<circle cx="170" cy="150" r="55" stroke="#23262B" stroke-width="2.4" fill="#FFFDF9"/>
+<circle cx="170" cy="150" r="55" stroke="#23262B" stroke-width="2.4" fill="url(#h45)"/>
+<rect x="154.0" y="82" width="32" height="31" stroke="#23262B" stroke-width="2.4" fill="#FFFDF9"/>
+<rect x="154.0" y="82" width="32" height="31" stroke="#23262B" stroke-width="2.4" fill="url(#h45w)"/>
+<line x1="154.0" y1="80.0" x2="186.0" y2="80.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="63.0" y1="150.0" x2="277.0" y2="150.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="170.0" y1="43.0" x2="170.0" y2="257.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="285" y="80" font-size="12" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">hub (keyway)</text>
+<text x="285" y="100" font-size="12" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">key: sides = tight fit (P9 / N9 / Js9)</text>
+<text x="285" y="120" font-size="12" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">top of key: small gap to the hub</text>
+<text x="285" y="160" font-size="12" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">shaft (keyseat)</text>
+<text x="285" y="180" font-size="12" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">different hatching on each part</text>
+<line x1="188.0" y1="90.0" x2="281.0" y2="96.0" stroke="#2F6FA8" stroke-width="0.8"/>
+</g>
+</svg>

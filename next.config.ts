@@ -11,7 +11,7 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "connect-src 'self' https://cdn.jsdelivr.net https://*.public.blob.vercel-storage.com https://vercel.com https://vitals.vercel-insights.com",
-  "frame-src 'self' https://sketchfab.com https://www.tinkercad.com",
+  "frame-src 'self' https://sketchfab.com https://www.tinkercad.com https://www.youtube-nocookie.com",
   "media-src 'self' blob: https://*.public.blob.vercel-storage.com",
   "object-src 'none'",
   "base-uri 'self'",

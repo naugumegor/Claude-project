@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 285" width="720" height="285" role="img" aria-label="Clearance, transition and interference fit in the hole-basis system">
+<title>Clearance, transition and interference fit in the hole-basis system</title>
+<defs>
+<pattern id="h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="720" height="285" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<line x1="30.0" y1="140.0" x2="230.0" y2="140.0" stroke="#23262B" stroke-width="1.0"/>
+<text x="30" y="154" font-size="10" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">0 line</text>
+<rect x="60" y="95" width="56" height="45" stroke="#2F6FA8" stroke-width="1.4" fill="#DCE8F4"/><text x="88" y="121.5" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">H hole</text>
+<rect x="140" y="160" width="56" height="40" stroke="#2F7D6D" stroke-width="1.4" fill="#E3F0EC"/><text x="168" y="184.0" font-size="12" fill="#2F7D6D" stroke="none" text-anchor="middle" font-weight="700">shaft</text>
+<text x="130" y="40" font-size="13" fill="#2F7D6D" stroke="none" text-anchor="middle" font-weight="700">CLEARANCE</text>
+<line x1="260.0" y1="140.0" x2="460.0" y2="140.0" stroke="#23262B" stroke-width="1.0"/>
+<text x="260" y="154" font-size="10" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">0 line</text>
+<rect x="290" y="95" width="56" height="45" stroke="#2F6FA8" stroke-width="1.4" fill="#DCE8F4"/><text x="318" y="121.5" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">H hole</text>
+<rect x="370" y="110" width="56" height="45" stroke="#B07A2E" stroke-width="1.4" fill="#F6EBDC"/><text x="398" y="136.5" font-size="12" fill="#B07A2E" stroke="none" text-anchor="middle" font-weight="700">shaft</text>
+<text x="360" y="40" font-size="13" fill="#B07A2E" stroke="none" text-anchor="middle" font-weight="700">TRANSITION</text>
+<line x1="490.0" y1="140.0" x2="690.0" y2="140.0" stroke="#23262B" stroke-width="1.0"/>
+<text x="490" y="154" font-size="10" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">0 line</text>
+<rect x="520" y="95" width="56" height="45" stroke="#2F6FA8" stroke-width="1.4" fill="#DCE8F4"/><text x="548" y="121.5" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">H hole</text>
+<rect x="600" y="60" width="56" height="40" stroke="#C4573A" stroke-width="1.4" fill="#F7E1DA"/><text x="628" y="84.0" font-size="12" fill="#C4573A" stroke="none" text-anchor="middle" font-weight="700">shaft</text>
+<text x="590" y="40" font-size="13" fill="#C4573A" stroke="none" text-anchor="middle" font-weight="700">INTERFERENCE</text>
+<text x="60" y="250" font-size="12" fill="#23262B" stroke="none" text-anchor="start" font-weight="500">Hole zone sits above zero (H: lower deviation = 0). The shaft zone decides the fit:</text>
+<text x="60" y="268" font-size="12" fill="#23262B" stroke="none" text-anchor="start" font-weight="500">below the hole → always a gap; overlapping → either; above → always pressed in.</text>
+</g>
+</svg>

@@ -54,5 +54,34 @@
         "body": ""
       }
     }
+  },
+  {
+    "slug": "med-midterm-1",
+    "subject": "me-drawing",
+    "date": "2026-10-30",
+    "tags": [
+      "черчение",
+      "BME",
+      "тест 1",
+      "мидтерм",
+      "недостающий вид",
+      "резьба"
+    ],
+    "file": {
+      "path": "med-midterm-1.html",
+      "name": "Черчение: тест 1"
+    },
+    "text": {
+      "ru": {
+        "title": "Черчение: подготовка к тесту 1 (мидтерм)",
+        "excerpt": "Тест 1 по Mechanical Engineering Drawing (BME), 9-я неделя. Сначала обзор: пять заданий, баллы, правила, план на 60 минут. Потом разбор каждого задания с примерами и ответами: недостающие виды призмы и цилиндра, три вида по изометрии, резьбовые соединения, чертёж вала с размерами. Шпаргалка и самопроверка. Страница на русском и английском.",
+        "body": ""
+      },
+      "en": {
+        "title": "Drawing: test 1 (midterm) prep",
+        "excerpt": "Test 1 of Mechanical Engineering Drawing (BME), week 9. First an overview: five exercises, points, rules, a 60-minute plan. Then each exercise worked through with examples and answers: missing views of a prism and a cylinder, three views from an isometric, threaded joints, a shaft drawing with dimensions. Cheat sheet and self-check. The page switches between Russian and English.",
+        "body": ""
+      }
+    }
   }
 ]

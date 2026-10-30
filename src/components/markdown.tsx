@@ -13,7 +13,7 @@ import { findSteel } from "@/lib/reference-data";
 import { Calc } from "./study/calc";
 import { PythonRunner } from "./study/python-runner";
 import { ModelViewer } from "./model-viewer";
-import { embedUrl, parseModelBlock } from "@/lib/embed";
+import { embedUrl, parseModelBlock, parseVideoBlock } from "@/lib/embed";
 import { FitTip, SteelTip } from "./study/ref-tip";
 import { Flashcards } from "./study/flashcards";
 import { Quiz } from "./study/quiz";
@@ -30,7 +30,8 @@ import { Gantt } from "./business/gantt";
 /**
  * Renders a note's Markdown body: tables, $math$, highlighted code, and the study blocks
  * ```cards (flip cards), ```quiz (mini test) and ```calc (live formula with sliders), plus the
- * business blocks ```tool, ```canvas, ```case, ```process, ```gantt and ```sql, and [[glossary]] terms.
+ * business blocks ```tool, ```canvas, ```case, ```process, ```gantt and ```sql, ```video (YouTube embeds),
+ * figures from ![alt](src "caption") and [[glossary]] terms.
  * h2/h3 get ids for the table of contents.
  */
 export function Markdown({ children, locale = "ru" }: { children: string; locale?: Locale }) {
@@ -46,6 +47,15 @@ export function Markdown({ children, locale = "ru" }: { children: string; locale
   const components: Components = {
     h2: ({ children }) => <h2 id={headingId(children)}>{children}</h2>,
     h3: ({ children }) => <h3 id={headingId(children)}>{children}</h3>,
+    // Drawings and diagrams: never wider than the text, with the title as a caption.
+    img: ({ src, alt, title }) =>
+      typeof src === "string" ? (
+        <span className="not-prose my-6 block overflow-hidden rounded-2xl border border-line bg-surface">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static SVGs from /public, any size */}
+          <img src={src} alt={alt ?? ""} loading="lazy" className="block h-auto w-full" />
+          {title && <span className="block px-4 py-2 text-xs font-medium text-muted">{title}</span>}
+        </span>
+      ) : null,
     // Inline `H7/p6`, `Ø25 H7/p6` or a steel grade like `40Х` gets a reference tooltip.
     code: ({ children, className, ...props }) => {
       const value = typeof children === "string" ? children : null;
@@ -125,6 +135,35 @@ export function Markdown({ children, locale = "ru" }: { children: string; locale
         }
         if (model) return <ModelViewer src={model.src} title={model.title} locale={locale} />;
       }
+      if (lang === "video") {
+        const videos = parseVideoBlock(raw);
+        if (videos.length) {
+          return (
+            <div className={`not-prose my-8 grid gap-4 ${videos.length > 1 ? "sm:grid-cols-2" : ""}`}>
+              {videos.map((v) => (
+                <figure key={v.id} className="overflow-hidden rounded-2xl border border-line bg-surface">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${v.id}?rel=0`}
+                    title={v.title || "YouTube"}
+                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    className="block aspect-video w-full"
+                  />
+                  {v.title && (
+                    <figcaption className="px-4 py-2 text-xs font-medium">
+                      <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer">
+                        {v.title}
+                      </a>
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          );
+        }
+      }
       if (lang === "tool") {
         const tool = parseTool(raw);
         if (tool) return <BusinessTool name={tool.name} params={tool.params} locale={locale} />;
@@ -195,7 +234,7 @@ export function Markdown({ children, locale = "ru" }: { children: string; locale
 }
 
 // Blocks we render ourselves: the highlighter must leave their text alone.
-const PLAIN = ["cards", "quiz", "calc", "3d", "tool", "canvas", "case", "process", "gantt", "sql"];
+const PLAIN = ["cards", "quiz", "calc", "3d", "video", "tool", "canvas", "case", "process", "gantt", "sql"];
 
 /** One line of Markdown (bold, `code`, $math$) without the wrapping paragraph. */
 function Inline({ children }: { children: string }) {

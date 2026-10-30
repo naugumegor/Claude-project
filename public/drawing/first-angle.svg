@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 310" width="700" height="310" role="img" aria-label="First-angle projection: where the views go">
+<title>First-angle projection: where the views go</title>
+<defs>
+<pattern id="h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="700" height="310" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M210,60 L250,60 L250,100 L330,100 L330,140 L210,140 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<text x="270" y="50" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">FRONT VIEW</text>
+<rect x="210" y="180" width="120" height="70" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="250.0" y1="180.0" x2="250.0" y2="250.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="270" y="272" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">TOP VIEW — below the front</text>
+<rect x="380" y="60" width="70" height="80" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<text x="415.0" y="50" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">LEFT VIEW</text>
+<text x="415.0" y="162" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">drawn on the RIGHT</text>
+<rect x="90" y="60" width="70" height="80" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="90.0" y1="100.0" x2="160.0" y2="100.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="125.0" y="50" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">RIGHT VIEW</text>
+<text x="125.0" y="162" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">drawn on the LEFT</text>
+<line x1="164.0" y1="60.0" x2="206.0" y2="60.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="334.0" y1="60.0" x2="376.0" y2="60.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="164.0" y1="100.0" x2="206.0" y2="100.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="334.0" y1="100.0" x2="376.0" y2="100.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="164.0" y1="140.0" x2="206.0" y2="140.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="334.0" y1="140.0" x2="376.0" y2="140.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="210.0" y1="144.0" x2="210.0" y2="176.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="250.0" y1="144.0" x2="250.0" y2="176.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="330.0" y1="144.0" x2="330.0" y2="176.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<path d="M560,240 L600,230 L600,270 L560,260 Z" stroke="#23262B" stroke-width="1.6" fill="none"/>
+<line x1="552.0" y1="250.0" x2="608.0" y2="250.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<circle cx="640" cy="250" r="20" stroke="#23262B" stroke-width="1.6" fill="none"/>
+<circle cx="640" cy="250" r="10" stroke="#23262B" stroke-width="1.6" fill="none"/>
+<line x1="612.0" y1="250.0" x2="668.0" y2="250.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="640.0" y1="222.0" x2="640.0" y2="278.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="610" y="298" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">first-angle symbol (ISO E)</text>
+</g>
+</svg>

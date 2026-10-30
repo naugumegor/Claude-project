@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="ru" data-lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Drawing test 1 · Ingenium</title>
+<meta name="description" content="Подготовка к первому тесту Mechanical Engineering Drawing (BME): обзор пяти заданий и подробный разбор с примерами. RU + EN.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Manrope:wght@700;800&display=swap">
+<style>
+:root{--paper:#F7F4EE;--sheet:#FFFDF9;--soft:#F1ECE3;--ink:#23262B;--ink2:#6B6F76;--rule:#E6E0D6;
+ --blue:#2F6FA8;--green:#2F7D6D;--red:#C4573A;--ochre:#B07A2E;
+ --shadow:0 1px 2px rgba(35,38,43,.05),0 12px 32px -18px rgba(35,38,43,.28);
+ --display:"Manrope","Inter",system-ui,sans-serif;--body:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#17191D;--sheet:#1F2227;--soft:#282C32;--ink:#E9E5DD;--ink2:#9DA1A8;--rule:#34383F;--blue:#79AEE0;--green:#5DB3A0;--red:#EE8A6C;--ochre:#E2AB62;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#17191D;--sheet:#1F2227;--soft:#282C32;--ink:#E9E5DD;--ink2:#9DA1A8;--rule:#34383F;--blue:#79AEE0;--green:#5DB3A0;--red:#EE8A6C;--ochre:#E2AB62;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6);color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+html[data-lang="ru"] .en,html[data-lang="en"] .ru{display:none!important}
+a{color:var(--blue)}
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.topbar-in{display:flex;align-items:center;gap:10px;height:56px;max-width:960px;margin:0 auto;padding:0 16px}
+.brand{font:800 15px/1 var(--display);margin-right:auto;display:flex;gap:8px;align-items:center}
+.brand i{width:20px;height:20px;border-radius:6px;background:conic-gradient(from 200deg,var(--blue),var(--green),var(--ochre),var(--red),var(--blue));animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav a{font:600 13px/1 var(--body);color:var(--ink2);text-decoration:none;padding:8px 10px;border-radius:9px;white-space:nowrap}
+.nav a:hover{background:var(--soft);color:var(--ink)}
+@media (max-width:760px){.nav{display:none}}
+.lang{display:flex;border:1px solid var(--rule);border-radius:10px;overflow:hidden;flex:none}
+.lang button{appearance:none;border:0;background:var(--sheet);color:var(--ink2);font:700 12px/1 var(--mono);padding:9px 11px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+main{max-width:900px;margin:0 auto;padding:0 16px 80px}
+.hero{padding:40px 0 10px}
+.kicker{display:inline-block;font:600 11.5px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green);border:1px solid color-mix(in srgb,var(--green) 30%,transparent);border-radius:99px;padding:6px 12px;margin-bottom:18px}
+h1{font:800 clamp(34px,7vw,56px)/1.05 var(--display);margin:0;letter-spacing:-.02em}
+h1 .sub{display:block;font-size:.42em;margin-top:12px;background:linear-gradient(90deg,var(--blue),var(--green),var(--ochre),var(--red));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font:800 26px/1.2 var(--display);margin:0}
+h3{font:700 20px/1.3 var(--display);margin:28px 0 10px}
+h4{font:700 15px/1.3 var(--body);margin:20px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.chip{font:600 12.5px/1 var(--mono);border:1px solid var(--rule);background:var(--sheet);border-radius:99px;padding:9px 13px}
+.chip b{color:var(--red)}
+.sec{padding-top:56px}
+.sec-h{display:flex;align-items:center;gap:14px;padding-bottom:14px;margin-bottom:18px;border-bottom:2px solid var(--rule)}
+.sec-no{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;font:800 18px/1 var(--display);color:var(--green);background:color-mix(in srgb,var(--green) 12%,var(--sheet));border:1px solid color-mix(in srgb,var(--green) 30%,transparent);flex:none}
+.table{overflow-x:auto;border:1px solid var(--rule);border-radius:16px;background:var(--sheet);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:10px 14px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font:600 12px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+tr:last-child td{border-bottom:0}
+td.num{font:700 15px/1.4 var(--mono);color:var(--red);white-space:nowrap}
+ul,ol{padding-left:1.3em}li{margin:.35em 0}li::marker{color:var(--green)}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);min-width:0}
+.card h4{margin-top:4px}.card.ok{border-top:3px solid var(--green)}.card.no{border-top:3px solid var(--red)}
+.card.mini b{display:block;margin-bottom:6px;color:var(--blue)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px;margin:16px 0;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;margin:16px 0}
+.cheat{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px}
+.plan{display:flex;gap:4px;margin:10px 0}
+.step{flex:var(--w);min-width:0;background:color-mix(in srgb,var(--blue) 12%,var(--sheet));border:1px solid color-mix(in srgb,var(--blue) 30%,transparent);border-radius:10px;padding:8px 6px;font-size:12px;text-align:center;overflow:hidden}
+.step b{display:block;font:800 16px/1.2 var(--mono);color:var(--blue)}
+.step:last-child{background:color-mix(in srgb,var(--green) 12%,var(--sheet));border-color:color-mix(in srgb,var(--green) 30%,transparent)}
+.ex{margin:34px 0;padding:6px 0 10px}
+.ex>h3{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tag{font:700 12px/1 var(--mono);color:var(--paper);background:var(--ink);border-radius:8px;padding:7px 9px}
+.fig{margin:14px 0;border:1px solid var(--rule);border-radius:16px;overflow:hidden;background:#FFFDF9;box-shadow:var(--shadow)}
+.fig svg{display:block;width:100%;height:auto}
+.reveal{margin:12px 0;border:1px solid var(--rule);border-radius:14px;background:var(--sheet)}
+.reveal>summary{cursor:pointer;list-style:none;padding:12px 16px;font-weight:650;display:flex;gap:10px;align-items:center}
+.reveal>summary::-webkit-details-marker{display:none}
+.reveal>summary::before{content:"+";display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--soft);font:700 14px/1 var(--mono);color:var(--green);flex:none;transition:transform .25s}
+.reveal[open]>summary::before{transform:rotate(45deg)}
+.reveal>div{padding:0 16px 12px;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}}
+.warn,.tip{border-radius:12px;padding:12px 16px;margin:14px 0;font-size:15px}
+.warn{background:color-mix(in srgb,var(--red) 10%,var(--sheet));border-left:3px solid var(--red)}
+.tip{background:color-mix(in srgb,var(--ochre) 12%,var(--sheet));border-left:3px solid var(--ochre)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.links a{font:600 13px/1.2 var(--body);text-decoration:none;border:1px solid var(--rule);background:var(--sheet);border-radius:10px;padding:9px 12px;color:var(--ink);transition:border-color .2s,transform .2s}
+.links a:hover{border-color:var(--green);transform:translateY(-1px)}
+.links a.yt i{font-style:normal;color:var(--red);margin-right:6px}
+.qs .reveal>div{color:var(--green);font-weight:600}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in"><div class="brand"><i></i>Ingenium · <span class="ru">Тест 1</span><span class="en">Test 1</span></div><nav class="nav"><a href="#overview"><span class="ru">Обзор</span><span class="en">Overview</span></a><a href="#ex1"><span class="ru">1</span><span class="en">1</span></a><a href="#ex2"><span class="ru">2</span><span class="en">2</span></a><a href="#ex3"><span class="ru">3</span><span class="en">3</span></a><a href="#ex4"><span class="ru">4</span><span class="en">4</span></a><a href="#ex5"><span class="ru">5</span><span class="en">5</span></a><a href="#cheat"><span class="ru">Шпаргалка</span><span class="en">Cheat sheet</span></a><a href="#check"><span class="ru">Проверка</span><span class="en">Self-check</span></a></nav>
+<div class="lang" role="group" aria-label="Language"><button type="button" data-l="ru" aria-pressed="true">RU</button><button type="button" data-l="en" aria-pressed="false">EN</button></div></div></div>
+<main>
+
+<header class="hero">
+  <div class="kicker"><span class="ru">Mechanical Engineering Drawing · BME GT3</span><span class="en">Mechanical Engineering Drawing · BME GT3</span></div>
+  <h1><span class="ru">Тест 1 по черчению</span><span class="en">Drawing test 1</span><span class="sub"><span class="ru">всё, чтобы сдать с первого раза</span><span class="en">everything to pass it first time</span></span></h1>
+  <p class="ru">Подготовка по лекциям 1–8 и семинарам 1–8. Сначала обзор: что дадут, сколько баллов, что проверяют. Потом разбор каждого из пяти заданий на примерах с ответами. В конце шпаргалка на последний вечер и самопроверка.</p><p class="en">Prep built from lectures 1–8 and seminars 1–8. First an overview: what you get, how many points, what's checked. Then each of the five exercises worked through with examples and answers. At the end, a last-evening cheat sheet and a self-check.</p>
+  <div class="chips">
+    <span class="chip"><span class="ru">9-я неделя, время лекции</span><span class="en">Week 9, lecture slot</span></span>
+    <span class="chip"><span class="ru">60 минут</span><span class="en">60 minutes</span></span>
+    <span class="chip"><span class="ru">5 заданий</span><span class="en">5 exercises</span></span>
+    <span class="chip"><span class="ru"><b>15</b> баллов, проходной <b>6</b></span><span class="en"><b>15</b> points, pass mark <b>6</b></span></span>
+  </div>
+</header>
+<section class="sec" id="overview"><div class="sec-h"><span class="sec-no">1</span><h2><span class="ru">Обзор: что будет на тесте</span><span class="en">Overview: what the test contains</span></h2></div><p class="ru">Тест пишут в 9-ю неделю вместо лекции, в 10:30 или в 12:00, по коду Neptun. Места рассаживают заранее, приходи к 10:15 или 11:45. Пять заданий, 60 минут, рисуешь карандашом, лучше от руки.</p><p class="en">The test is in week 9 in the lecture slot, at 10:30 or 12:00 depending on your Neptun code. Seats are assigned in advance; be there by 10:15 or 11:45. Five exercises, 60 minutes, pencil, freehand recommended.</p><div class="table"><table><thead><tr><th>#</th><th><span class="ru">Задание</span><span class="en">Exercise</span></th><th><span class="ru">Баллы</span><span class="en">Points</span></th><th><span class="ru">Учить</span><span class="en">Study</span></th></tr></thead><tbody><tr><td><b>1</b></td><td><span class="ru">Достроить вид призматической детали (срезанный брусок)</span><span class="en">Complete the views of a cut prismatic part</span></td><td class="num">1.5</td><td><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-03-missing-views" target="_blank" rel="noopener">тема 03</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-03-missing-views" target="_blank" rel="noopener">topic 03</a></td></tr><tr><td><b>2</b></td><td><span class="ru">Достроить вид цилиндрической детали (срезы, пазы, лыски)</span><span class="en">Complete the views of a cut cylindrical part</span></td><td class="num">2.5</td><td><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-03-missing-views" target="_blank" rel="noopener">тема 03</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-03-missing-views" target="_blank" rel="noopener">topic 03</a></td></tr><tr><td><b>3</b></td><td><span class="ru">Три вида по аксонометрии: главный, сверху, слева</span><span class="en">Three views from an isometric: front, top, left</span></td><td class="num">3</td><td><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-02-projections" target="_blank" rel="noopener">тема 02</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-02-projections" target="_blank" rel="noopener">topic 02</a></td></tr><tr><td><b>4</b></td><td><span class="ru">Дорисовать резьбовое соединение (болт, шпилька, корончатая гайка, гайка подшипника, накидная гайка)</span><span class="en">Complete a threaded joint (bolt, stud, castle nut, bearing nut, union fitting)</span></td><td class="num">3</td><td><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-08-threaded-joints" target="_blank" rel="noopener">темы 07–08</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-08-threaded-joints" target="_blank" rel="noopener">topics 07–08</a></td></tr><tr><td><b>5</b></td><td><span class="ru">Чертёж детали (вал) по 3D-картинке с размерами</span><span class="en">Part drawing of a shaft from a 3D picture, with dimensions</span></td><td class="num">3 + 2</td><td><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-06-dimensioning" target="_blank" rel="noopener">темы 04–06</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-06-dimensioning" target="_blank" rel="noopener">topics 04–06</a></td></tr></tbody></table></div><h3><span class="ru">Правила, которые решают баллы</span><span class="en">Rules that decide your points</span></h3><ul><li><span class="ru"><b>Ошибка в контуре = 0 баллов</b> за всё задание. Лишняя или пропущенная видимая линия стоит дороже всего остального.</span><span class="en"><b>An outline mistake = 0 points</b> for that whole exercise. A missing or extra visible line costs more than anything else.</span></li><li><span class="ru"><b>Толщина линий важнее, чем раньше.</b> Толстая, тонкая и линии построения должны отличаться с первого взгляда.</span><span class="en"><b>Line weight matters more than before.</b> Wide, narrow and construction lines must differ at a glance.</span></li><li><span class="ru"><b>Невидимые линии нужны только в заданиях 1 и 2.</b> В 3, 4 и 5 их можно не рисовать.</span><span class="en"><b>Hidden lines are needed only in exercises 1 and 2.</b> In 3, 4 and 5 you can leave them out.</span></li><li><span class="ru">Линии построения <b>стирать не нужно</b>, но они должны быть очень тонкими и светлыми.</span><span class="en">You <b>don't need to erase</b> construction lines, but they must be very thin and light.</span></li><li><span class="ru">Линейку можно, но только чтобы линии были ровнее. Циркуль можно, но времени мало: лучше от руки.</span><span class="en">A ruler is allowed, only to keep lines straight. A compass is allowed, but time is short: freehand is better.</span></li><li><span class="ru">В задании 5 <b>числа размеров не пишут</b>, только знаки (Ø, □, M, R) и правильная расстановка. Допуски и шероховатость не нужны.</span><span class="en">In exercise 5 you <b>write no numbers</b>, just the symbols (Ø, □, M, R) and correct placement. No tolerances or roughness needed.</span></li><li><span class="ru">Каждый тест можно пересдать один раз бесплатно, но второй раз пересдать можно только один из двух тестов.</span><span class="en">Each test can be retaken once for free, but only one of the two tests can be retaken a second time.</span></li></ul><h3><span class="ru">План на 60 минут</span><span class="en">A 60-minute plan</span></h3><div class="plan"><div class="step" style="--w:8"><b>8′</b><span class="ru">Задание 1</span><span class="en">Ex. 1</span></div><div class="step" style="--w:12"><b>12′</b><span class="ru">Задание 2</span><span class="en">Ex. 2</span></div><div class="step" style="--w:12"><b>12′</b><span class="ru">Задание 3</span><span class="en">Ex. 3</span></div><div class="step" style="--w:12"><b>12′</b><span class="ru">Задание 4</span><span class="en">Ex. 4</span></div><div class="step" style="--w:12"><b>12′</b><span class="ru">Задание 5</span><span class="en">Ex. 5</span></div><div class="step" style="--w:4"><b>4′</b><span class="ru">Проверка</span><span class="en">Check</span></div></div><p class="ru">Начни с того, что умеешь лучше всего. Но к заданию 5 (5 баллов, самое дорогое) приходи минимум с 12 минутами.</p><p class="en">Start with what you're best at. But get to exercise 5 (5 points, the most valuable) with at least 12 minutes left.</p><div class="grid2"><div class="card ok"><h4><span class="ru">Можно и нужно</span><span class="en">Allowed and required</span></h4><ul><li><span class="ru"><b>Документ с фото</b> (паспорт, ID) на столе. Без него к тесту не пустят.</span><span class="en"><b>Photo ID</b> (passport, ID card) on the desk. No ID, no test.</span></li><li><span class="ru">Карандаши, ластик, линейка, циркуль, своя чертёжная доска.</span><span class="en">Pencils, eraser, ruler, compass, your own drawing board.</span></li><li><span class="ru">Еда, вода, талисман.</span><span class="en">Food, drinks, a lucky charm.</span></li></ul></div><div class="card no"><h4><span class="ru">Нельзя</span><span class="en">Forbidden</span></h4><ul><li><span class="ru">Разговаривать, подсказывать и принимать подсказки.</span><span class="en">Talking, giving or accepting help.</span></li><li><span class="ru">Шпаргалки, калькулятор, телефон, планшет.</span><span class="en">Cheat sheets, calculator, phone, tablet.</span></li><li><span class="ru">Нарушение = дисциплинарка и, в первый раз, незачёт без права пересдачи в этом семестре.</span><span class="en">Breaking the rules = disciplinary procedure and, the first time, failing the subject with no retake this semester.</span></li></ul></div></div><h3><span class="ru">Как считается оценка за семестр</span><span class="en">How the semester grade works</span></h3><p class="ru">Тест 1 даёт до 15 баллов из 100, тест 2 до 25, четыре домашки до 60. Все тесты надо сдать, все домашки надо сдать. 40+ это зачёт, 85+ это отлично.</p><p class="en">Test 1 gives up to 15 of 100 points, test 2 up to 25, the four homeworks up to 60. Every test must be passed and every homework handed in. 40+ passes, 85+ is excellent.</p></section><section class="sec" id="walk"><div class="sec-h"><span class="sec-no">2</span><h2><span class="ru">Разбор по заданиям</span><span class="en">Exercise by exercise</span></h2></div><article class="ex" id="ex1"><h3><span class="tag">1 · 1.5</span><span class="ru">Недостающий вид призматической детали</span><span class="en">Missing view of a prismatic part</span></h3><p class="ru">Дают два вида бруска, от которого что-то отпилили (ступеньки, пазы, скосы). Нарисуй третий вид, <b>с невидимыми линиями</b>.</p><p class="en">You get two views of a block with bits cut away (steps, slots, slopes). Draw the third view, <b>including hidden lines</b>.</p><h4><span class="ru">Метод за 4 шага</span><span class="en">Method in 4 steps</span></h4><ol><li><span class="ru"><b>Габарит.</b> Начерти тонкий прямоугольник третьего вида: высоту бери с главного вида, глубину с вида сверху. В первом угле <b>зад детали</b> на виде сверху находится <b>вверху</b> (ближе к главному виду), а на виде слева <b>слева</b>.</span><span class="en"><b>Bounding box.</b> Draw a light rectangle for the third view: height from the front view, depth from the top view. In first angle the <b>back of the part</b> is at the <b>top</b> of the top view (next to the front view) and on the <b>left</b> of the left view.</span></li><li><span class="ru"><b>Где нет материала.</b> Каждая линия на одном виде это либо кромка, либо грань, видимая ребром. Найди её пару на другом виде по линии связи.</span><span class="en"><b>Where's the missing material?</b> Every line in one view is either an edge or a face seen edge-on. Find its partner in the other view along a projection line.</span></li><li><span class="ru"><b>Отпили.</b> Убери из габарита эти куски. Если сомневаешься, набросай изометрию на полях: минута, которая спасает задание.</span><span class="en"><b>Saw it off.</b> Remove those pieces from the box. If unsure, sketch an isometric in the margin: one minute that saves the exercise.</span></li><li><span class="ru"><b>Видно или нет.</b> Каждую новую линию проверь: она закрыта материалом? Тогда штриховая.</span><span class="en"><b>Visible or not.</b> Check each new line: is material in front of it? Then it's dashed.</span></li></ol><h4><span class="ru">Пример</span><span class="en">Example</span></h4><p class="ru">Брусок 80×50×50. Спереди срезана ступенька на половину высоты, сзади сквозной паз. Главный вид и вид сверху даны, нужен вид слева.</p><p class="en">An 80×50×50 block. A half-height step is cut at the front, a through slot at the back. Front and top views given; draw the left view.</p><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 330" role="img" aria-label="Test 1 exercise 1 practice: prismatic block, draw the left view">
+<title>Test 1 exercise 1 practice: prismatic block, draw the left view</title>
+<defs>
+<pattern id="ex1task-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex1task-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex1task-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ex1task-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="ex1task-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="540" height="330" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<text x="150" y="34" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">FRONT</text>
+<rect x="70" y="50" width="160" height="100" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="70.0" y1="100.0" x2="230.0" y2="100.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="130.0" y1="50.0" x2="130.0" y2="150.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="170.0" y1="50.0" x2="170.0" y2="150.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<path d="M70.0,190.0 L130.0,190.0 L130.0,220.0 L170.0,220.0 L170.0,190.0 L230.0,190.0 L230.0,290.0 L70.0,290.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="70.0" y1="250.0" x2="230.0" y2="250.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="150" y="312" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">TOP</text>
+<rect x="280" y="50" width="100" height="100" stroke="#B9BCC2" stroke-width="1.2" fill="none"/>
+<text x="330" y="105" font-size="34" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="700">?</text>
+<text x="330" y="34" font-size="12" fill="#C4573A" stroke="none" text-anchor="middle" font-weight="700">LEFT VIEW = ?</text>
+</g>
+</svg>
+</figure><details class="reveal"><summary><span class="ru">Показать ответ и почему так</span><span class="en">Show the answer and why</span></summary><div><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 330" role="img" aria-label="Test 1 exercise 1 practice: prismatic block, draw the left view">
+<title>Test 1 exercise 1 practice: prismatic block, draw the left view</title>
+<defs>
+<pattern id="ex1answer-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex1answer-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex1answer-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ex1answer-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="ex1answer-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="540" height="330" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<text x="150" y="34" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">FRONT</text>
+<rect x="70" y="50" width="160" height="100" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="70.0" y1="100.0" x2="230.0" y2="100.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="130.0" y1="50.0" x2="130.0" y2="150.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="170.0" y1="50.0" x2="170.0" y2="150.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<path d="M70.0,190.0 L130.0,190.0 L130.0,220.0 L170.0,220.0 L170.0,190.0 L230.0,190.0 L230.0,290.0 L70.0,290.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="70.0" y1="250.0" x2="230.0" y2="250.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="150" y="312" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">TOP</text>
+<path d="M280.0,50.0 L340.0,50.0 L340.0,100.0 L380.0,100.0 L380.0,150.0 L280.0,150.0 Z" stroke="#2F7D6D" stroke-width="2.4" fill="none"/>
+<line x1="310.0" y1="50.0" x2="310.0" y2="150.0" stroke="#2F7D6D" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="234.0" y1="50.0" x2="276.0" y2="50.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="234.0" y1="100.0" x2="276.0" y2="100.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="234.0" y1="150.0" x2="276.0" y2="150.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<text x="280" y="172" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">depth: take it from the TOP view</text>
+<text x="330" y="34" font-size="12" fill="#2F7D6D" stroke="none" text-anchor="middle" font-weight="700">LEFT VIEW (answer)</text>
+<text x="400" y="90" font-size="11" fill="#2F7D6D" stroke="none" text-anchor="start" font-weight="500">dashed = back slot</text>
+<text x="400" y="106" font-size="11" fill="#2F7D6D" stroke="none" text-anchor="start" font-weight="500">(hidden from the left)</text>
+</g>
+</svg>
+</figure><ul><li><span class="ru">Ступенька видна слева сбоку как <b>буква L</b>: высокая часть сзади (слева на виде), низкая спереди (справа).</span><span class="en">From the left the step shows as an <b>L</b>: the tall part is at the back (left in the view), the low part at the front (right).</span></li><li><span class="ru">Паз сзади из сбоку не виден, его дно (грань на глубине 35) это <b>штриховая</b> вертикаль.</span><span class="en">The back slot can't be seen from the side; its bottom face (at depth 35) is a <b>dashed</b> vertical.</span></li><li><span class="ru">На главном виде паз тоже штриховой: две вертикали. Линия на высоте 25 видимая, это кромка ступеньки.</span><span class="en">In the front view the slot is dashed too: two verticals. The line at height 25 is visible, it's the edge of the step.</span></li></ul></div></details><div class="warn"><span class="ru"><b>Частые ошибки:</b> перевернуть вид сверху (перепутать перед и зад), забыть штриховые линии, нарисовать лишнюю видимую линию там, где грань плоская и сплошная.</span><span class="en"><b>Common mistakes:</b> flipping the top view (front and back swapped), forgetting hidden lines, adding a visible line where the face is flat and continuous.</span></div><div class="links"><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-03-missing-views" target="_blank" rel="noopener">Тема 03: недостающие виды</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-03-missing-views" target="_blank" rel="noopener">Topic 03: missing views</a><a class="yt" href="https://www.youtube.com/watch?v=ztP0LWyE_Jg" target="_blank" rel="noopener"><i>▶</i>Missing views: think in 3D</a><a class="yt" href="https://www.youtube.com/watch?v=Wa9N6PE0h5k" target="_blank" rel="noopener"><i>▶</i>How to draw a missing view</a></div></article><article class="ex" id="ex2"><h3><span class="tag">2 · 2.5</span><span class="ru">Недостающий вид цилиндрической детали</span><span class="en">Missing view of a cylindrical part</span></h3><p class="ru">Цилиндр (или ступенчатый вал), у которого срезаны лыски, прорезаны пазы, сделан наклонный срез. Дорисовать вид, <b>с невидимыми линиями</b>. Это задание дороже первого, потому что здесь появляются хорды и эллипсы.</p><p class="en">A cylinder (or stepped shaft) with flats, slots or an oblique cut. Complete the view, <b>with hidden lines</b>. Worth more than exercise 1 because chords and ellipses come in.</p><div class="grid3"><div class="card mini"><b><span class="ru">Плоскость ∥ оси</span><span class="en">Plane ∥ axis</span></b><span class="ru">Вдоль оси это <b>хорда</b>. Ширина лыски на виде сверху = длина хорды: 2√(R² − h²), где h это расстояние от оси.</span><span class="en">Along the axis it's a <b>chord</b>. The flat's width in the top view = chord length: 2√(R² − h²), h being its distance from the axis.</span></div><div class="card mini"><b><span class="ru">Плоскость ⊥ оси</span><span class="en">Plane ⊥ axis</span></b><span class="ru">Просто торец или уступ: на виде вдоль оси <b>окружность</b> или её дуга.</span><span class="en">Just an end face or shoulder: a <b>circle</b> or an arc of it in the view along the axis.</span></div><div class="card mini"><b><span class="ru">Наклонная плоскость</span><span class="en">Oblique plane</span></b><span class="ru"><b>Эллипс</b>: одна полуось = R, другая = половина высоты среза. При 45° это круг.</span><span class="en">An <b>ellipse</b>: one half-axis = R, the other = half the cut height. At 45° it's a circle.</span></div></div><h4><span class="ru">Метод</span><span class="en">Method</span></h4><ol><li><span class="ru">Сначала <b>оси</b> на всех видах: тонкий штрихпунктир. Без оси деталь вращения считается ошибкой.</span><span class="en">First the <b>centre lines</b> in every view: narrow long-dash dotted. A turned part without them is a mistake.</span></li><li><span class="ru">Нарисуй целый цилиндр: прямоугольник и круг.</span><span class="en">Draw the whole cylinder: a rectangle and a circle.</span></li><li><span class="ru">На виде вдоль оси (круг) каждый срез это <b>прямая</b> (хорда). Перенеси её концы по линиям связи на другие виды.</span><span class="en">In the view along the axis (the circle), every cut is a <b>straight line</b> (a chord). Carry its ends across to the other views.</span></li><li><span class="ru">Для наклонного среза пронумеруй 8 точек на круге, перенеси высоты и соедини плавной кривой.</span><span class="en">For an oblique cut, number 8 points on the circle, carry the heights across and join them with a smooth curve.</span></li><li><span class="ru">Проверь видимость: паз на дальнем конце виден штриховыми.</span><span class="en">Check visibility: a slot at the far end shows dashed.</span></li></ol><h4><span class="ru">Пример</span><span class="en">Example</span></h4><p class="ru">Цилиндр Ø60×100. На левом конце лыска на высоте 20 от оси длиной 40, на правом конце сквозной паз шириной 20 и длиной 30. Нужен вид слева.</p><p class="en">A Ø60×100 cylinder. At the left end a flat 20 above the axis, 40 long; at the right end a through slot 20 wide and 30 long. Draw the left view.</p><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 370" role="img" aria-label="Test 1 exercise 2 practice: cylinder with a flat and a slot, draw the left view">
+<title>Test 1 exercise 2 practice: cylinder with a flat and a slot, draw the left view</title>
+<defs>
+<pattern id="ex2task-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex2task-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex2task-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ex2task-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="ex2task-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="520" height="370" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<text x="160" y="34" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">FRONT</text>
+<path d="M60.0,70.0 L140.0,70.0 L140.0,50.0 L260.0,50.0 L260.0,170.0 L60.0,170.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="200.0" y1="50.0" x2="200.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="48.0" y1="110.0" x2="272.0" y2="110.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<path d="M60.0,210.0 L260.0,210.0 L260.0,250.0 L200.0,250.0 L200.0,290.0 L260.0,290.0 L260.0,330.0 L60.0,330.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="60.0" y1="225.3" x2="140.0" y2="225.3" stroke="#23262B" stroke-width="2.4"/>
+<line x1="60.0" y1="314.7" x2="140.0" y2="314.7" stroke="#23262B" stroke-width="2.4"/>
+<line x1="140.0" y1="225.3" x2="140.0" y2="314.7" stroke="#23262B" stroke-width="2.4"/>
+<line x1="48.0" y1="270.0" x2="272.0" y2="270.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="160" y="352" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">TOP</text>
+<rect x="310" y="50" width="120" height="120" stroke="#B9BCC2" stroke-width="1.2" fill="none"/>
+<text x="370" y="122" font-size="34" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="700">?</text>
+<text x="370" y="34" font-size="12" fill="#C4573A" stroke="none" text-anchor="middle" font-weight="700">LEFT VIEW = ?</text>
+</g>
+</svg>
+</figure><details class="reveal"><summary><span class="ru">Показать ответ и почему так</span><span class="en">Show the answer and why</span></summary><div><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 370" role="img" aria-label="Test 1 exercise 2 practice: cylinder with a flat and a slot, draw the left view">
+<title>Test 1 exercise 2 practice: cylinder with a flat and a slot, draw the left view</title>
+<defs>
+<pattern id="ex2answer-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex2answer-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex2answer-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ex2answer-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="ex2answer-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="520" height="370" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<text x="160" y="34" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">FRONT</text>
+<path d="M60.0,70.0 L140.0,70.0 L140.0,50.0 L260.0,50.0 L260.0,170.0 L60.0,170.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="200.0" y1="50.0" x2="200.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="48.0" y1="110.0" x2="272.0" y2="110.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<path d="M60.0,210.0 L260.0,210.0 L260.0,250.0 L200.0,250.0 L200.0,290.0 L260.0,290.0 L260.0,330.0 L60.0,330.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="60.0" y1="225.3" x2="140.0" y2="225.3" stroke="#23262B" stroke-width="2.4"/>
+<line x1="60.0" y1="314.7" x2="140.0" y2="314.7" stroke="#23262B" stroke-width="2.4"/>
+<line x1="140.0" y1="225.3" x2="140.0" y2="314.7" stroke="#23262B" stroke-width="2.4"/>
+<line x1="48.0" y1="270.0" x2="272.0" y2="270.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="160" y="352" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">TOP</text>
+<circle cx="370" cy="110" r="60" stroke="#2F7D6D" stroke-width="2.4" fill="none"/>
+<line x1="325.3" y1="70.0" x2="414.7" y2="70.0" stroke="#2F7D6D" stroke-width="2.4"/>
+<line x1="350.0" y1="53.4" x2="350.0" y2="166.6" stroke="#2F7D6D" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="390.0" y1="53.4" x2="390.0" y2="166.6" stroke="#2F7D6D" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="298.0" y1="110.0" x2="442.0" y2="110.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="370.0" y1="38.0" x2="370.0" y2="182.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="370" y="34" font-size="12" fill="#2F7D6D" stroke="none" text-anchor="middle" font-weight="700">LEFT VIEW (answer)</text>
+<text x="295" y="202" font-size="11" fill="#2F7D6D" stroke="none" text-anchor="start" font-weight="500">chord = the flat (visible)</text>
+<text x="295" y="218" font-size="11" fill="#2F7D6D" stroke="none" text-anchor="start" font-weight="500">dashed = the slot at the far end</text>
+<line x1="264.0" y1="50.0" x2="306.0" y2="50.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="264.0" y1="70.0" x2="306.0" y2="70.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="264.0" y1="170.0" x2="306.0" y2="170.0" stroke="#B9BCC2" stroke-width="0.7"/>
+</g>
+</svg>
+</figure><ul><li><span class="ru">Слева видна <b>полная окружность</b>: за лыской цилиндр снова целый.</span><span class="en">From the left you see the <b>full circle</b>: past the flat the cylinder is whole again.</span></li><li><span class="ru">Лыска это <b>видимая хорда</b> на высоте 20. Её длина 2√(30² − 20²) ≈ 44.7, та же, что ширина лыски на виде сверху.</span><span class="en">The flat is a <b>visible chord</b> 20 up. Its length 2√(30² − 20²) ≈ 44.7, the same as the flat's width in the top view.</span></li><li><span class="ru">Паз на дальнем конце закрыт телом цилиндра, его стенки это <b>две штриховые вертикали</b> на ±10 от оси.</span><span class="en">The slot at the far end is hidden by the cylinder body; its walls are <b>two dashed verticals</b> at ±10 from the axis.</span></li></ul></div></details><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" role="img" aria-label="Cylinder cut by an oblique plane: the cut becomes an ellipse in the side view">
+<title>Cylinder cut by an oblique plane: the cut becomes an ellipse in the side view</title>
+<defs>
+<pattern id="cylindercut-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="cylindercut-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="cylindercut-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="cylindercut-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="cylindercut-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="680" height="400" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M200,190 L200,140.0 L300,80.0 L300,190 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="250.0" y1="20.0" x2="250.0" y2="202.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="250" y="12" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">FRONT</text>
+<circle cx="250" cy="280" r="50" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="188.0" y1="280.0" x2="312.0" y2="280.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="250.0" y1="218.0" x2="250.0" y2="342.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="250" y="358" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">TOP: the cut face lies on the circle</text>
+<path d="M370,190 L370,110 M470,190 L470,110 M370,190 L470,190" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<path d="M420.0,80.0 L424.4,80.1 L428.7,80.5 L432.9,81.0 L437.1,81.8 L441.1,82.8 L445.0,84.0 L448.7,85.4 L452.1,87.0 L455.4,88.8 L458.3,90.7 L461.0,92.8 L463.3,95.0 L465.3,97.3 L467.0,99.7 L468.3,102.2 L469.2,104.8 L469.8,107.4 L470.0,110.0 L469.8,112.6 L469.2,115.2 L468.3,117.8 L467.0,120.3 L465.3,122.7 L463.3,125.0 L461.0,127.2 L458.3,129.3 L455.4,131.2 L452.1,133.0 L448.7,134.6 L445.0,136.0 L441.1,137.2 L437.1,138.2 L432.9,139.0 L428.7,139.5 L424.4,139.9 L420.0,140.0 L415.6,139.9 L411.3,139.5 L407.1,139.0 L402.9,138.2 L398.9,137.2 L395.0,136.0 L391.3,134.6 L387.9,133.0 L384.6,131.2 L381.7,129.3 L379.0,127.2 L376.7,125.0 L374.7,122.7 L373.0,120.3 L371.7,117.8 L370.8,115.2 L370.2,112.6 L370.0,110.0 L370.2,107.4 L370.8,104.8 L371.7,102.2 L373.0,99.7 L374.7,97.3 L376.7,95.0 L379.0,92.8 L381.7,90.7 L384.6,88.8 L387.9,87.0 L391.3,85.4 L395.0,84.0 L398.9,82.8 L402.9,81.8 L407.1,81.0 L411.3,80.5 L415.6,80.1 L420.0,80.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="420.0" y1="20.0" x2="420.0" y2="202.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="420" y="12" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">LEFT VIEW → ellipse</text>
+<circle cx="200.0" cy="140.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="200.0" cy="280.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="420.0" cy="140.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<line x1="200.0" y1="140.0" x2="420.0" y2="140.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<line x1="200.0" y1="140.0" x2="200.0" y2="280.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<text x="186.0" y="134.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">1</text>
+<text x="425.0" y="134.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">1</text>
+<circle cx="250.0" cy="110.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="250.0" cy="230.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="470.0" cy="110.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<line x1="250.0" y1="110.0" x2="470.0" y2="110.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<line x1="250.0" y1="110.0" x2="250.0" y2="230.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<text x="256.0" y="104.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">2</text>
+<text x="475.0" y="104.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">2</text>
+<circle cx="300.0" cy="80.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="300.0" cy="280.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="420.0" cy="80.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<line x1="300.0" y1="80.0" x2="420.0" y2="80.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<line x1="300.0" y1="80.0" x2="300.0" y2="280.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<text x="306.0" y="74.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">3</text>
+<text x="425.0" y="74.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">3</text>
+<circle cx="250.0" cy="110.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="250.0" cy="330.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<circle cx="370.0" cy="110.0" r="3" stroke="#C4573A" stroke-width="1" fill="#C4573A"/>
+<line x1="250.0" y1="110.0" x2="370.0" y2="110.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<line x1="250.0" y1="110.0" x2="250.0" y2="330.0" stroke="#E3A08C" stroke-width="0.7" stroke-dasharray="4 3"/>
+<text x="236.0" y="104.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">4</text>
+<text x="375.0" y="104.0" font-size="11" fill="#C4573A" stroke="none" text-anchor="start" font-weight="500">4</text>
+<text x="482" y="76.0" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">half-axis = half the cut height</text>
+<text x="482" y="124" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">half-axis = R</text>
+<text x="30" y="60" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">α &lt; 45° → ellipse lies flat</text>
+<text x="30" y="78" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">α = 45° → it is a circle</text>
+<text x="30" y="96" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">α &gt; 45° → ellipse stands up</text>
+</g>
+</svg>
+</figure><p class="ru">Наклонный срез из семинара 3: на виде сверху срез лежит на окружности, на боковом получается эллипс. Точки 1–4 перенесены линиями связи.</p><p class="en">The oblique cut from seminar 3: in the top view the cut lies on the circle, in the side view it becomes an ellipse. Points 1–4 are carried across.</p><div class="links"><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-03-missing-views" target="_blank" rel="noopener">Тема 03: срезы цилиндра</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-03-missing-views" target="_blank" rel="noopener">Topic 03: cut cylinders</a><a class="yt" href="https://www.youtube.com/watch?v=5Dgd7jiT00w" target="_blank" rel="noopener"><i>▶</i>Draw the missing orthogonal views</a></div></article><article class="ex" id="ex3"><h3><span class="tag">3 · 3</span><span class="ru">Три вида по аксонометрии</span><span class="en">Three views from an isometric</span></h3><p class="ru">Дают объёмную картинку и стрелку «вид спереди». Нарисовать главный вид, вид сверху и вид слева <b>по первому углу</b>. Невидимые линии здесь не обязательны.</p><p class="en">You get a 3D picture and a "front view" arrow. Draw the front, top and left views <b>in first angle</b>. Hidden lines are optional here.</p><h4><span class="ru">Метод</span><span class="en">Method</span></h4><ol><li><span class="ru">Посмотри по стрелке и нарисуй <b>главный вид</b>: это контур, который увидишь, глядя ровно по стрелке.</span><span class="en">Look along the arrow and draw the <b>front view</b>: the outline you'd see looking straight along it.</span></li><li><span class="ru"><b>Вид сверху под ним</b>, той же ширины. Перед детали снизу, зад сверху.</span><span class="en"><b>Top view below it</b>, same width. The front of the part at the bottom, the back at the top.</span></li><li><span class="ru"><b>Вид слева справа от главного</b>, той же высоты. Это то, что видно, если смотреть с левой стороны детали.</span><span class="en"><b>Left view to the right of the front view</b>, same height. It's what you see looking at the part's left side.</span></li><li><span class="ru">Размеры бери по осям изометрии: всё, что идёт вдоль осей, в изометрии натуральное.</span><span class="en">Take sizes along the isometric axes: anything along an axis is true length in an isometric.</span></li><li><span class="ru">Отверстия и пазы: на виде, где они круглые, рисуй окружность с крестом осей, на остальных две линии и ось.</span><span class="en">Holes and slots: where they're round draw a circle with crossed centre lines, elsewhere two lines and an axis.</span></li></ol><div class="grid2"><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" role="img" aria-label="Test 1 exercise 3 practice: isometric of an L-block">
+<title>Test 1 exercise 3 practice: isometric of an L-block</title>
+<defs>
+<pattern id="ex3iso-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex3iso-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex3iso-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ex3iso-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="ex3iso-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="360" height="300" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M196.8,169.0 L290.3,115.0 L208.5,67.8 L114.9,121.8 Z" stroke="#23262B" stroke-width="2.4" fill="#FFFDF9"/>
+<path d="M150.0,142.0 L196.8,115.0 L114.9,67.8 L68.2,94.8 Z" stroke="#23262B" stroke-width="2.4" fill="#FFFDF9"/>
+<path d="M150.0,250.0 L68.2,202.8 L68.2,94.8 L150.0,142.0 Z" stroke="#23262B" stroke-width="2.4" fill="#FFFDF9"/>
+<path d="M150.0,250.0 L290.3,169.0 L290.3,115.0 L196.8,169.0 L196.8,115.0 L150.0,142.0 Z" stroke="#23262B" stroke-width="2.4" fill="#FFFDF9"/>
+<line x1="296.1" y1="199.4" x2="249.4" y2="172.4" stroke="#2F6FA8" stroke-width="1.6" marker-end="url(#ex3iso-arb)"/>
+<text x="290.14178688862404" y="215.375" font-size="11" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">front view direction</text>
+<text x="20" y="24" font-size="12" fill="#23262B" stroke="none" text-anchor="start" font-weight="600">Draw front, top and left view (first angle)</text>
+</g>
+</svg>
+</figure><div><details class="reveal"><summary><span class="ru">Показать ответ</span><span class="en">Show the answer</span></summary><div><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 310" role="img" aria-label="First-angle projection: where the views go">
+<title>First-angle projection: where the views go</title>
+<defs>
+<pattern id="firstangle-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="firstangle-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="firstangle-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="firstangle-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="firstangle-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="700" height="310" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M210,60 L250,60 L250,100 L330,100 L330,140 L210,140 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<text x="270" y="50" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">FRONT VIEW</text>
+<rect x="210" y="180" width="120" height="70" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="250.0" y1="180.0" x2="250.0" y2="250.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="270" y="272" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">TOP VIEW — below the front</text>
+<rect x="380" y="60" width="70" height="80" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<text x="415.0" y="50" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">LEFT VIEW</text>
+<text x="415.0" y="162" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">drawn on the RIGHT</text>
+<rect x="90" y="60" width="70" height="80" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="90.0" y1="100.0" x2="160.0" y2="100.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="125.0" y="50" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">RIGHT VIEW</text>
+<text x="125.0" y="162" font-size="12" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">drawn on the LEFT</text>
+<line x1="164.0" y1="60.0" x2="206.0" y2="60.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="334.0" y1="60.0" x2="376.0" y2="60.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="164.0" y1="100.0" x2="206.0" y2="100.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="334.0" y1="100.0" x2="376.0" y2="100.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="164.0" y1="140.0" x2="206.0" y2="140.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="334.0" y1="140.0" x2="376.0" y2="140.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="210.0" y1="144.0" x2="210.0" y2="176.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="250.0" y1="144.0" x2="250.0" y2="176.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<line x1="330.0" y1="144.0" x2="330.0" y2="176.0" stroke="#B9BCC2" stroke-width="0.7"/>
+<path d="M560,240 L600,230 L600,270 L560,260 Z" stroke="#23262B" stroke-width="1.6" fill="none"/>
+<line x1="552.0" y1="250.0" x2="608.0" y2="250.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<circle cx="640" cy="250" r="20" stroke="#23262B" stroke-width="1.6" fill="none"/>
+<circle cx="640" cy="250" r="10" stroke="#23262B" stroke-width="1.6" fill="none"/>
+<line x1="612.0" y1="250.0" x2="668.0" y2="250.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="640.0" y1="222.0" x2="640.0" y2="278.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="610" y="298" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">first-angle symbol (ISO E)</text>
+</g>
+</svg>
+</figure><p class="ru">Главный вид это буква L. Вид сверху под ним с линией ступеньки. Вид слева справа и это простой прямоугольник: с левой стороны видна только высокая стенка. Вид справа (слева от главного) показывает линию ступеньки.</p><p class="en">The front view is an L. The top view below it shows the step line. The left view goes on the right and is a plain rectangle: from the left you only see the tall wall. The right view (left of the front view) shows the step line.</p></div></details></div></div><div class="warn"><span class="ru"><b>Главная ошибка:</b> поставить вид слева слева (это американский третий угол). В Европе вид слева справа, вид сверху снизу.</span><span class="en"><b>The big mistake:</b> putting the left view on the left (that's US third angle). In Europe the left view goes on the right, the top view below.</span></div><div class="links"><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-02-projections" target="_blank" rel="noopener">Тема 02: проекции</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-02-projections" target="_blank" rel="noopener">Topic 02: projections</a><a class="yt" href="https://www.youtube.com/watch?v=heIobpUVZqc" target="_blank" rel="noopener"><i>▶</i>First vs third angle animation</a><a class="yt" href="https://www.youtube.com/watch?v=eOfLr2z-kL8" target="_blank" rel="noopener"><i>▶</i>Isometric ↔ orthographic, first angle</a></div></article><article class="ex" id="ex4"><h3><span class="tag">4 · 3</span><span class="ru">Резьбовое соединение</span><span class="en">Threaded joint</span></h3><p class="ru">Дают детали и задание вроде «скрепи две пластины болтом с пружинной шайбой и гайкой» или «поставь шпильку с гайкой в глухое резьбовое отверстие». Ещё бывают корончатая гайка со шплинтом, гайка подшипника со стопорной шайбой и накидная гайка (union fitting).</p><p class="en">You get the parts and a task like "fix the two plates with a hex bolt, spring washer and nut" or "fit a stud and nut into a blind tapped hole". Castle nut with cotter pin, bearing locknut with lockwasher and a union fitting also come up.</p><div class="grid2"><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 205" role="img" aria-label="How external and internal threads are drawn">
+<title>How external and internal threads are drawn</title>
+<defs>
+<pattern id="threads-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="threads-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="threads-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="threads-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="threads-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="790" height="205" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40,80 L255,80 L260,85 L260,135 L255,140 L40,140" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="40.0" y1="80.0" x2="40.0" y2="140.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="5 3"/>
+<line x1="130.0" y1="85.0" x2="260.0" y2="85.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="130.0" y1="135.0" x2="260.0" y2="135.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="130.0" y1="80.0" x2="130.0" y2="140.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="30.0" y1="110.0" x2="272.0" y2="110.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="150" y="26" font-size="13" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">EXTERNAL (bolt)</text>
+<text x="195" y="74" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">thin = root (minor Ø)</text>
+<text x="130" y="162" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">thick line = end of full thread</text>
+<circle cx="330" cy="110" r="30" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<path d="M327.8,85.1 A25,25 0 1 0 354.9,107.8" stroke="#23262B" stroke-width="1.0" fill="none"/>
+<line x1="290.0" y1="110.0" x2="370.0" y2="110.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="330.0" y1="70.0" x2="330.0" y2="150.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="330" y="162" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">thick circle = major Ø</text>
+<text x="330" y="176" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">thin ¾ circle = minor Ø</text>
+<path d="M430,50 L640,50 L640,170 L430,170 L430,135 L540,135 L570,130 L590,110 L570,90 L540,85 L430,85 Z" stroke="#23262B" stroke-width="2.4" fill="url(#threads-h45)"/>
+<line x1="540.0" y1="85.0" x2="540.0" y2="135.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="430.0" y1="80.0" x2="540.0" y2="80.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="430.0" y1="140.0" x2="540.0" y2="140.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="420.0" y1="110.0" x2="650.0" y2="110.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="535" y="26" font-size="13" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">INTERNAL (tapped hole) in section</text>
+<text x="430" y="186" font-size="11" fill="#2F7D6D" stroke="none" text-anchor="start" font-weight="500">hatching runs to the THICK line</text>
+<circle cx="720" cy="110" r="25" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<path d="M717.4,80.1 A30,30 0 1 0 749.9,107.4" stroke="#23262B" stroke-width="1.0" fill="none"/>
+<line x1="680.0" y1="110.0" x2="760.0" y2="110.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="720.0" y1="70.0" x2="720.0" y2="150.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<text x="720" y="162" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">thick = minor Ø (hole)</text>
+<text x="720" y="176" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">thin ¾ = major Ø</text>
+</g>
+</svg>
+</figure><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" role="img" aria-label="Hexagon bolt, washer and nut through two plates, in section">
+<title>Hexagon bolt, washer and nut through two plates, in section</title>
+<defs>
+<pattern id="boltedjoint-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="boltedjoint-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="boltedjoint-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="boltedjoint-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="boltedjoint-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="800" height="300" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M60,80 L213.0,80 L213.0,130 L60,130" stroke="#23262B" stroke-width="2.4" fill="url(#boltedjoint-h45)"/>
+<path d="M420,80 L247.0,80 L247.0,130 L420,130" stroke="#23262B" stroke-width="2.4" fill="url(#boltedjoint-h45)"/>
+<line x1="60.0" y1="80.0" x2="60.0" y2="130.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="5 3"/>
+<line x1="420.0" y1="80.0" x2="420.0" y2="130.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="5 3"/>
+<path d="M60,130 L213.0,130 L213.0,170 L60,170" stroke="#23262B" stroke-width="2.4" fill="url(#boltedjoint-h135)"/>
+<path d="M420,130 L247.0,130 L247.0,170 L420,170" stroke="#23262B" stroke-width="2.4" fill="url(#boltedjoint-h135)"/>
+<line x1="60.0" y1="130.0" x2="60.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="5 3"/>
+<line x1="420.0" y1="130.0" x2="420.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="5 3"/>
+<path d="M218.0,80 L218.0,218 L221.0,221 L239.0,221 L242.0,218 L242.0,80" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="220.5" y1="160.0" x2="220.5" y2="221.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="239.5" y1="160.0" x2="239.5" y2="221.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="218.0" y1="160.0" x2="242.0" y2="160.0" stroke="#23262B" stroke-width="2.4"/>
+<path d="M208.4,80 L208.4,64 L251.6,64 L251.6,80 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="222.8" y1="80.0" x2="222.8" y2="64.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="237.2" y1="80.0" x2="237.2" y2="64.0" stroke="#23262B" stroke-width="2.4"/>
+<rect x="204.8" y="170" width="50.400000000000006" height="4" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<path d="M208.4,174 L208.4,193.2 L251.6,193.2 L251.6,174 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="222.8" y1="174.0" x2="222.8" y2="193.2" stroke="#23262B" stroke-width="2.4"/>
+<line x1="237.2" y1="174.0" x2="237.2" y2="193.2" stroke="#23262B" stroke-width="2.4"/>
+<line x1="230.0" y1="49.0" x2="230.0" y2="233.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="251.6" y1="72.0" x2="560.0" y2="50.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<line x1="560.0" y1="50.0" x2="575.0" y2="50.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<text x="580" y="54" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">hex head: in VIEW, not hatched</text>
+<line x1="245.0" y1="138.0" x2="560.0" y2="138.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<line x1="560.0" y1="138.0" x2="575.0" y2="138.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<text x="580" y="142" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">clearance hole &gt; bolt Ø (gap!)</text>
+<line x1="255.2" y1="172.0" x2="560.0" y2="194.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<line x1="560.0" y1="194.0" x2="575.0" y2="194.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<text x="580" y="198" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">washer</text>
+<line x1="251.6" y1="183.6" x2="560.0" y2="218.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<line x1="560.0" y1="218.0" x2="575.0" y2="218.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<text x="580" y="222" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">nut: in view too</text>
+<line x1="242.0" y1="217.0" x2="560.0" y2="241.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<line x1="560.0" y1="241.0" x2="575.0" y2="241.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<text x="580" y="245" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">bolt sticks out 1–2 pitches</text>
+<text x="70" y="66" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">plate 1 /45°</text>
+<text x="70" y="186" font-size="11" fill="#6B6F76" stroke="none" text-anchor="start" font-weight="500">plate 2 \135° (opposite!)</text>
+</g>
+</svg>
+</figure></div><h4><span class="ru">Чек-лист, который закрывает почти все баллы</span><span class="en">A checklist that covers almost all points</span></h4><ol><li><span class="ru"><b>Первое правило:</b> где болт вкручен, <b>видны линии болта</b> (толстый наружный Ø, тонкий внутренний). Резьба отверстия под ним не рисуется.</span><span class="en"><b>First rule:</b> where the bolt is screwed in, <b>you see the bolt's lines</b> (wide major Ø, narrow minor). The hole's thread underneath isn't drawn.</span></li><li><span class="ru"><b>Отверстие с зазором</b> под болт: шире болта, зазор виден на обеих сторонах.</span><span class="en"><b>Clearance hole</b> for the bolt: wider than the bolt, the gap shows on both sides.</span></li><li><span class="ru"><b>Глухое резьбовое отверстие:</b> резьба глубже, чем вкручен болт, сверлёная часть ещё глубже, на дне конус 120°. Конец резьбы толстой линией.</span><span class="en"><b>Blind tapped hole:</b> the thread goes deeper than the bolt, the drilling deeper still, a 120° cone at the bottom. Thread end as a wide line.</span></li><li><span class="ru"><b>Шпилька</b> вкручена до конца своей резьбы, линия конца резьбы шпильки совпадает с верхом корпуса.</span><span class="en"><b>Stud:</b> screwed in to the end of its thread; the stud's thread-end line sits flush with the top of the housing.</span></li><li><span class="ru"><b>Крепёж не штрихуется</b>: болт, гайка, шайба, шпилька остаются видом. Штрихуются только корпуса и пластины.</span><span class="en"><b>Fasteners aren't hatched</b>: bolt, nut, washer, stud stay as a view. Only housings and plates are hatched.</span></li><li><span class="ru"><b>Соседние детали</b> штрихуются в разные стороны. Штриховка в резьбовом отверстии <b>до толстой линии</b>.</span><span class="en"><b>Neighbouring parts</b> hatched in opposite directions. Hatching in a tapped hole runs <b>to the wide line</b>.</span></li><li><span class="ru">Болт торчит из гайки на 1–2 шага, фаска на конце. Гайка с дугами на гранях.</span><span class="en">The bolt sticks 1–2 pitches out of the nut, chamfered end. The nut has arcs on its faces.</span></li><li><span class="ru"><b>Корончатая гайка:</b> шплинт через прорезь гайки и отверстие в валу, концы разогнуты. <b>Гайка подшипника:</b> зуб шайбы в пазу вала, усик отогнут в шлиц гайки, в разрезе не режется.</span><span class="en"><b>Castle nut:</b> cotter pin through a slot in the nut and a hole in the shaft, ends bent. <b>Bearing locknut:</b> washer tooth in the shaft groove, a tab bent into the nut slot, not cut in section.</span></li><li><span class="ru"><b>Накидная гайка:</b> гайка цепляет буртик одной трубы и накручивается на резьбу другой. Следи за проточкой и диаметрами буртиков.</span><span class="en"><b>Union fitting:</b> the nut catches one pipe's collar and screws onto the other's thread. Watch the run-off groove and collar diameters.</span></li></ol><div class="tip"><span class="ru"><b>Пропорции для эскиза:</b> под ключ ≈ 1.6–2d, высота гайки ≈ 0.8d, высота головки ≈ 0.7d, шайба ≈ 2d × 0.15d, отверстие с зазором ≈ 1.1d. Под M10 сверлят 8.5 (d − P).</span><span class="en"><b>Sketch proportions:</b> across flats ≈ 1.6–2d, nut height ≈ 0.8d, head height ≈ 0.7d, washer ≈ 2d × 0.15d, clearance hole ≈ 1.1d. Tap drill for M10 is 8.5 (d − P).</span></div><div class="links"><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-08-threaded-joints" target="_blank" rel="noopener">Тема 08: соединения</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-08-threaded-joints" target="_blank" rel="noopener">Topic 08: threaded joints</a><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-07-threads" target="_blank" rel="noopener">Тема 07: резьба</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-07-threads" target="_blank" rel="noopener">Topic 07: threads</a><a class="yt" href="https://www.youtube.com/watch?v=r_wOPys5qCw" target="_blank" rel="noopener"><i>▶</i>Bolt and nut in section</a><a class="yt" href="https://www.youtube.com/watch?v=5DqM0RNLQZ8" target="_blank" rel="noopener"><i>▶</i>Castle nut and cotter pin</a></div></article><article class="ex" id="ex5"><h3><span class="tag">5 · 3+2</span><span class="ru">Чертёж детали с размерами</span><span class="en">Part drawing with dimensions</span></h3><p class="ru">Дают 3D-картинку вала: квадратный хвостовик с резьбовым отверстием, буртик, шпоночный паз, лыска, резьба с проточкой. Нарисовать чертёж детали: <b>3 балла за виды</b> без ошибок контура и <b>2 балла за размеры</b>. Сколько видов, не говорят: деталь должна быть определена полностью, но без лишнего.</p><p class="en">You get a 3D picture of a shaft: a square end with a tapped hole, a collar, a keyseat, a flat, a thread with a run-off groove. Draw its part drawing: <b>3 points for views</b> with no outline mistakes and <b>2 points for dimensions</b>. The number of views isn't given: fully defined, nothing extra.</p><figure class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" role="img" aria-label="Test 1 exercise 5 practice: shaft part drawing with dimensions and removed cut">
+<title>Test 1 exercise 5 practice: shaft part drawing with dimensions and removed cut</title>
+<defs>
+<pattern id="ex5shaft-h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex5shaft-h135" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#23262B" stroke-width="0.9"/></pattern>
+<pattern id="ex5shaft-h45w" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="11" stroke="#23262B" stroke-width="0.9"/></pattern>
+<marker id="ex5shaft-ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#23262B"/></marker>
+<marker id="ex5shaft-arb" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8 z" fill="#2F6FA8"/></marker>
+</defs>
+<rect width="760" height="370" fill="#FFFDF9"/>
+<g font-family="Inter, 'Segoe UI', system-ui, sans-serif" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M70.0,119.0 L79.0,110.0 L190.0,110.0 L190.0,95.0 L220.0,95.0 L220.0,110.0 L379.0,110.0 L385.0,116.0 L385.0,131.0 L400.0,131.0 L400.0,125.0 L469.0,125.0 L475.0,131.0 L475.0,209.0 L469.0,215.0 L400.0,215.0 L400.0,209.0 L385.0,209.0 L385.0,224.0 L379.0,230.0 L220.0,230.0 L220.0,245.0 L190.0,245.0 L190.0,230.0 L79.0,230.0 L70.0,221.0 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="79.0" y1="110.0" x2="79.0" y2="230.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="190.0" y1="110.0" x2="190.0" y2="230.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="220.0" y1="110.0" x2="220.0" y2="230.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="385.0" y1="131.0" x2="385.0" y2="209.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="400.0" y1="131.0" x2="400.0" y2="209.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="469.0" y1="131.0" x2="469.0" y2="209.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="190.0" y1="95.0" x2="190.0" y2="245.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="220.0" y1="95.0" x2="220.0" y2="245.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="79.0" y1="110.0" x2="190.0" y2="230.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="79.0" y1="230.0" x2="190.0" y2="110.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="400.0" y1="132.5" x2="475.0" y2="132.5" stroke="#23262B" stroke-width="1.0"/>
+<line x1="400.0" y1="207.5" x2="475.0" y2="207.5" stroke="#23262B" stroke-width="1.0"/>
+<path d="M274,152 L340,152 A18,18 0 0 1 340,188 L274,188 A18,18 0 0 1 274,152 Z" stroke="#23262B" stroke-width="2.4" fill="none"/>
+<line x1="70.0" y1="146.0" x2="136.0" y2="146.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="70.0" y1="194.0" x2="136.0" y2="194.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="70.0" y1="149.0" x2="148.0" y2="149.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="70.0" y1="191.0" x2="148.0" y2="191.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<path d="M148,149 L160,170 L148,191" stroke="#23262B" stroke-width="1.0" fill="none" stroke-dasharray="6 4"/>
+<line x1="136.0" y1="146.0" x2="136.0" y2="194.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="6 4"/>
+<line x1="56.0" y1="170.0" x2="489.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="310.0" y1="81.0" x2="310.0" y2="93.0" stroke="#23262B" stroke-width="2.4"/>
+<line x1="310.0" y1="247.0" x2="310.0" y2="259.0" stroke="#23262B" stroke-width="2.4"/>
+<text x="316" y="89" font-size="13" fill="#23262B" stroke="none" text-anchor="start" font-weight="700">A</text>
+<text x="316" y="263" font-size="13" fill="#23262B" stroke="none" text-anchor="start" font-weight="700">A</text>
+<line x1="190.0" y1="234.0" x2="190.0" y2="279.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="275.0" x2="190.0" y2="275.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="130.0" y="270.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">40</text>
+<line x1="220.0" y1="249.0" x2="220.0" y2="299.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="295.0" x2="220.0" y2="295.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="145.0" y="290.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">50</text>
+<line x1="385.0" y1="234.0" x2="385.0" y2="319.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="315.0" x2="385.0" y2="315.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="227.5" y="310.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">105</text>
+<line x1="475.0" y1="234.0" x2="475.0" y2="339.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="70.0" y1="335.0" x2="475.0" y2="335.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="272.5" y="330.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">135</text>
+<line x1="70.0" y1="225.0" x2="70.0" y2="339.0" stroke="#23262B" stroke-width="1.0"/>
+<text x="66" y="357" font-size="11" fill="#2F6FA8" stroke="none" text-anchor="middle" font-weight="700">datum</text>
+<line x1="256.0" y1="152.0" x2="256.0" y2="67.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="358.0" y1="152.0" x2="358.0" y2="67.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="220.0" y1="93.0" x2="220.0" y2="67.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="220.0" y1="71.0" x2="256.0" y2="71.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="238.0" y="66.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">12</text>
+<line x1="256.0" y1="71.0" x2="358.0" y2="71.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="307.0" y="66.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">34</text>
+<line x1="205.0" y1="95.0" x2="205.0" y2="245.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="200.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 200.0 170.0)">Ø50</text>
+<line x1="295.0" y1="110.0" x2="295.0" y2="230.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="290.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 290.0 170.0)">Ø40</text>
+<line x1="436.0" y1="125.0" x2="436.0" y2="215.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="431.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 431.0 170.0)">M30</text>
+<line x1="130.0" y1="110.0" x2="130.0" y2="230.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="125.0" y="170.0" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 125.0 170.0)">□40</text>
+<text x="392.5" y="225" font-size="10" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">groove</text>
+<text x="392.5" y="237" font-size="10" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">Ø26×5</text>
+<text x="485" y="123" font-size="11" fill="#23262B" stroke="none" text-anchor="start" font-weight="500">2×45°</text>
+<text x="20" y="111" font-size="11" fill="#23262B" stroke="none" text-anchor="start" font-weight="500">2×45°</text>
+<line x1="100.0" y1="194.0" x2="50.0" y2="218.0" stroke="#2F6FA8" stroke-width="0.7"/>
+<text x="48" y="232" font-size="11" fill="#23262B" stroke="none" text-anchor="middle" font-weight="500">M16×22</text>
+<text x="615" y="92" font-size="14" fill="#23262B" stroke="none" text-anchor="middle" font-weight="700">A–A</text>
+<path d="M633.0,112.8 A60,60 0 1 1 597.0,112.8 L597.0,125.0 L633.0,125.0 Z" stroke="#23262B" stroke-width="2.4" fill="url(#ex5shaft-h45)"/>
+<line x1="543.0" y1="170.0" x2="687.0" y2="170.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="615.0" y1="102.0" x2="615.0" y2="242.0" stroke="#23262B" stroke-width="1.0" stroke-dasharray="14 3 2 3"/>
+<line x1="597.0" y1="125.0" x2="569.0" y2="125.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="555.0" y1="230.0" x2="527.0" y2="230.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="535.0" y1="125.0" x2="535.0" y2="230.0" stroke="#23262B" stroke-width="1.0" marker-start="url(#ex5shaft-ar)" marker-end="url(#ex5shaft-ar)"/><text x="530.0" y="177.5" font-size="12" fill="#23262B" stroke="none" text-anchor="middle" transform="rotate(-90 530.0 177.5)">35</text>
+<line x1="597.0" y1="112.8" x2="597.0" y2="84.0" stroke="#23262B" stroke-width="1.0"/>
+<line x1="633.0" y1="112.8" x2="633.0" y2="84.0" stroke="#23262B" stroke-width="1.0"/>
+<text x="615" y="256" font-size="11" fill="#6B6F76" stroke="none" text-anchor="middle" font-weight="500">keyseat 12P9</text>
+</g>
+</svg>
+</figure><h4><span class="ru">Как рисовать</span><span class="en">How to draw it</span></h4><ol><li><span class="ru"><b>Вал горизонтально</b>, одним главным видом. Вид сбоку не нужен: диаметры скажут знаки Ø.</span><span class="en"><b>Shaft horizontal</b>, one main view. No side view: the Ø signs say it's round.</span></li><li><span class="ru"><b>Ось</b> через всю деталь, с выходом за контур.</span><span class="en"><b>Centre line</b> along the whole part, sticking out past the outline.</span></li><li><span class="ru"><b>Квадрат</b>: на виде сбоку он прямоугольник, поэтому ставь знак □ на размере и тонкий крест диагоналей (знак плоскости).</span><span class="en"><b>Square end</b>: from the side it's a rectangle, so put □ on the dimension and narrow crossed diagonals (the flat sign).</span></li><li><span class="ru"><b>Шпоночный паз</b> на главном виде повёрнут к тебе: контур «стадион». Ширину и глубину показывает <b>вынесенное сечение A–A</b>.</span><span class="en"><b>Keyseat</b> facing you in the main view: a "stadium" outline. Width and depth come from a <b>removed cut A–A</b>.</span></li><li><span class="ru"><b>Резьба</b>: толстый наружный, тонкий внутренний, толстая линия конца резьбы, фаска. Перед ней <b>проточка</b>.</span><span class="en"><b>Thread</b>: wide major, narrow minor, a wide thread-end line, a chamfer. A <b>run-off groove</b> before it.</span></li><li><span class="ru"><b>Резьбовое отверстие</b> в торце: местный разрез или штриховые. Конус сверла 120°.</span><span class="en"><b>Tapped hole</b> in the end: a broken-out section or dashed lines. 120° drill cone.</span></li><li><span class="ru"><b>Лыска</b> на цилиндре: тонкие диагонали крест-накрест.</span><span class="en"><b>Flat</b> on the cylinder: narrow crossed diagonals.</span></li></ol><h4><span class="ru">Размеры за 2 балла</span><span class="en">Dimensions for 2 points</span></h4><ul><li><span class="ru">Длины <b>от одной базы</b> (торец) или комбинированно. <b>Никаких замкнутых цепей.</b></span><span class="en">Lengths <b>from one datum</b> (an end face) or combined. <b>No closed chains.</b></span></li><li><span class="ru">Каждый диаметр со знаком <b>Ø</b>, квадрат <b>□</b>, резьба <b>M</b>, радиус <b>R</b>, фаска <b>2×45°</b>.</span><span class="en">Every diameter with <b>Ø</b>, the square with <b>□</b>, the thread with <b>M</b>, radius <b>R</b>, chamfer <b>2×45°</b>.</span></li><li><span class="ru">Размеры одного элемента на одном виде: паз по длине на главном, по ширине и глубине на A–A.</span><span class="en">One feature's dimensions in one view: keyseat length on the main view, width and depth on A–A.</span></li><li><span class="ru">Числа писать не надо. Где нужен особый допуск, ставь <b>+T</b>.</span><span class="en">No numbers needed. Mark dimensions needing a special tolerance with <b>+T</b>.</span></li><li><span class="ru">Стрелки острые, выносные линии выходят на 2–3 мм, размерные не ближе 10 мм к контуру.</span><span class="en">Sharp arrows, extension lines 2–3 mm past, dimension lines at least 10 mm from the outline.</span></li></ul><div class="links"><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-06-dimensioning" target="_blank" rel="noopener">Тема 06: размеры</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-06-dimensioning" target="_blank" rel="noopener">Topic 06: dimensioning</a><a class="ru" href="https://ingenium-psi-orpin.vercel.app/ru/materials/med-04-sections" target="_blank" rel="noopener">Тема 04: разрезы</a><a class="en" href="https://ingenium-psi-orpin.vercel.app/en/materials/med-04-sections" target="_blank" rel="noopener">Topic 04: sections</a><a class="yt" href="https://www.youtube.com/watch?v=XIfOtKO3FJU" target="_blank" rel="noopener"><i>▶</i>Dimensions in engineering drawing (ISO)</a></div></article></section><section class="sec" id="cheat"><div class="sec-h"><span class="sec-no">3</span><h2><span class="ru">Шпаргалка на последний вечер</span><span class="en">Last-evening cheat sheet</span></h2></div><p class="ru">Читать дома. На тест шпаргалки нельзя.</p><p class="en">Read it at home. No cheat sheets in the test.</p><div class="cheat"><div class="card"><h4><span class="ru">Проекции</span><span class="en">Projections</span></h4><ul><li><span class="ru">Первый угол: вид сверху <b>под</b> главным, вид слева <b>справа</b>.</span><span class="en">First angle: top view <b>below</b> the front, left view on the <b>right</b>.</span></li><li><span class="ru">Высота общая у главного и бокового, ширина у главного и верхнего, глубина у верхнего и бокового.</span><span class="en">Height shared by front and side, width by front and top, depth by top and side.</span></li><li><span class="ru">Изометрия: оси через 120°, размеры по осям натуральные.</span><span class="en">Isometric: axes 120° apart, lengths along them true.</span></li></ul></div><div class="card"><h4><span class="ru">Линии</span><span class="en">Lines</span></h4><ul><li><span class="ru">Толстая 0.7: видимый контур. Тонкая 0.35: размеры, штриховка, резьба по впадинам.</span><span class="en">Wide 0.7: visible outline. Narrow 0.35: dimensions, hatching, thread roots.</span></li><li><span class="ru">Штриховая: невидимое. Штрихпунктир: оси. С двумя точками: крайние положения.</span><span class="en">Dashed: hidden. Long-dash dotted: axes. Double-dotted: end positions.</span></li></ul></div><div class="card"><h4><span class="ru">Разрезы</span><span class="en">Sections</span></h4><ul><li><span class="ru">Штриховка 45°, соседние детали в разные стороны.</span><span class="en">Hatching 45°, neighbouring parts opposite ways.</span></li><li><span class="ru">Вдоль не режут: валы, болты, шпонки, штифты, шарики, рёбра, зубья.</span><span class="en">Never cut lengthwise: shafts, bolts, keys, pins, balls, ribs, teeth.</span></li><li><span class="ru">Половина вида и разреза: разрез снизу или справа.</span><span class="en">Half view – half section: section below or to the right.</span></li></ul></div><div class="card"><h4><span class="ru">Резьба</span><span class="en">Threads</span></h4><ul><li><span class="ru">Болт: наружный толстый, внутренний тонкий. Отверстие: наоборот.</span><span class="en">Bolt: major wide, minor narrow. Hole: the other way round.</span></li><li><span class="ru">Торец: тонкая ¾ окружности. Штриховка до толстой.</span><span class="en">End view: narrow ¾ circle. Hatching to the wide line.</span></li><li><span class="ru">Болт закрывает резьбу отверстия. Крепёж не штрихуется.</span><span class="en">The bolt covers the hole thread. Fasteners aren't hatched.</span></li><li><span class="ru">M10: шаг 1.5, сверло 8.5. M12: 1.75. M16: 2. M20: 2.5.</span><span class="en">M10: pitch 1.5, drill 8.5. M12: 1.75. M16: 2. M20: 2.5.</span></li></ul></div><div class="card"><h4><span class="ru">Срезы цилиндра</span><span class="en">Cut cylinders</span></h4><ul><li><span class="ru">∥ оси: хорда, ширина 2√(R² − h²).</span><span class="en">∥ axis: chord, width 2√(R² − h²).</span></li><li><span class="ru">Наклонно: эллипс, полуоси R и половина высоты среза. 45° = круг.</span><span class="en">Oblique: ellipse, half-axes R and half the cut height. 45° = circle.</span></li></ul></div><div class="card"><h4><span class="ru">Размеры</span><span class="en">Dimensions</span></h4><ul><li><span class="ru">Каждый один раз, без замкнутых цепей, от баз.</span><span class="en">Each once, no closed chains, from datums.</span></li><li><span class="ru">Ø, R, SØ, SR, □, M, 2×45°. Миллиметры не пишут.</span><span class="en">Ø, R, SØ, SR, □, M, 2×45°. Millimetres not written.</span></li><li><span class="ru">Шпоночный паз: длина на виде, ширина и глубина на сечении.</span><span class="en">Keyseat: length on the view, width and depth on the cut.</span></li></ul></div></div></section><section class="sec" id="check"><div class="sec-h"><span class="sec-no">4</span><h2><span class="ru">Проверь себя</span><span class="en">Self-check</span></h2></div><p class="ru">Ответь в голове, потом открой.</p><p class="en">Answer in your head, then open it.</p><div class="qs"><details class="reveal"><summary><span class="ru">1. В первом угле где стоит вид слева?</span><span class="en">1. In first angle, where does the left view go?</span></summary><div><span class="ru">Справа от главного.</span><span class="en">To the right of the front view.</span></div></details><details class="reveal"><summary><span class="ru">2. Что будет за одну пропущенную видимую линию в задании 1?</span><span class="en">2. What does one missing visible line in exercise 1 cost?</span></summary><div><span class="ru">Ноль за всё задание: это ошибка контура.</span><span class="en">Zero for the whole exercise: it's an outline mistake.</span></div></details><details class="reveal"><summary><span class="ru">3. Цилиндр Ø60, лыска на 20 мм от оси. Какая ширина лыски на виде сверху?</span><span class="en">3. Ø60 cylinder, flat 20 mm from the axis. How wide is the flat in the top view?</span></summary><div><span class="ru">2√(30² − 20²) ≈ 44.7 мм.</span><span class="en">2√(30² − 20²) ≈ 44.7 mm.</span></div></details><details class="reveal"><summary><span class="ru">4. Срез цилиндра под 45° к оси. Что в соседнем виде?</span><span class="en">4. A cylinder cut at 45° to its axis. What appears in the next view?</span></summary><div><span class="ru">Круг: обе полуоси равны R.</span><span class="en">A circle: both half-axes equal R.</span></div></details><details class="reveal"><summary><span class="ru">5. Какой линией у отверстия рисуют наружный диаметр резьбы?</span><span class="en">5. Which line shows a tapped hole's major diameter?</span></summary><div><span class="ru">Тонкой, а на торце тонкой ¾ окружностью.</span><span class="en">Narrow, and a narrow ¾ circle in the end view.</span></div></details><details class="reveal"><summary><span class="ru">6. Болт вкручен в резьбовое отверстие. Чьи линии видны?</span><span class="en">6. A bolt is screwed into a tapped hole. Whose lines show?</span></summary><div><span class="ru">Болта. Наружная резьба закрывает внутреннюю.</span><span class="en">The bolt's. The external thread covers the internal.</span></div></details><details class="reveal"><summary><span class="ru">7. Штриховать ли гайку и шайбу в разрезе?</span><span class="en">7. Do you hatch the nut and washer in section?</span></summary><div><span class="ru">Нет, стандартный крепёж остаётся видом.</span><span class="en">No, standard fasteners stay as a view.</span></div></details><details class="reveal"><summary><span class="ru">8. Почему отверстие под болт больше болта?</span><span class="en">8. Why is the bolt hole bigger than the bolt?</span></summary><div><span class="ru">Чтобы легко собрать и болт не заклинило.</span><span class="en">For easy assembly, so the bolt doesn't jam.</span></div></details><details class="reveal"><summary><span class="ru">9. Как показать ширину и глубину шпоночного паза?</span><span class="en">9. How do you show a keyseat's width and depth?</span></summary><div><span class="ru">Вынесенным сечением A–A рядом с видом.</span><span class="en">With a removed cut A–A next to the view.</span></div></details><details class="reveal"><summary><span class="ru">10. Можно ли проставить все ступени вала цепью плюс общую длину?</span><span class="en">10. Can you chain every shaft step and add the overall length?</span></summary><div><span class="ru">Нет, это замкнутая цепь, один размер лишний.</span><span class="en">No, that's a closed chain; one dimension is extra.</span></div></details></div><p class="ru">Все темы курса по порядку лежат на сайте в разделе «Черчение (BME)»: от листа и линий до допусков и посадок. Удачи на тесте!</p><p class="en">All the course topics, in order, are on the site under "Mechanical engineering drawing (BME)": from sheets and lines to tolerances and fits. Good luck in the test!</p></section>
+</main>
+<script>
+(function(){
+  var root=document.documentElement, KEY="ingenium-med-midterm-lang";
+  function set(l){root.setAttribute("data-lang",l);root.lang=l;
+    document.querySelectorAll(".lang button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.l===l))});
+    try{localStorage.setItem(KEY,l)}catch(e){}}
+  var start="ru";
+  try{start=new URLSearchParams(location.search).get("lang")||localStorage.getItem(KEY)||"ru"}catch(e){}
+  set(start==="en"?"en":"ru");
+  document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){set(b.dataset.l)})});
+})();
+</script>
+</body>
+</html>
