@@ -11,7 +11,7 @@
 - **react-markdown + KaTeX** — конспекты в Markdown с формулами
 - **Neon Postgres + Drizzle ORM** — база (локально без настроек — встроенный PGlite в `.data/`)
 - **Vercel Blob** — фото, загруженные через админку
-- **Вход через GitHub** — в админку пускает только `naugumegor`
+- **Вход через GitHub** — в админку пускает `naugumegor` и тех, чьи GitHub id перечислены в `ADMIN_GITHUB_IDS`
 
 ## Запуск
 
@@ -34,6 +34,7 @@ npm run db:generate   # после правки src/db/schema.ts — созда�
 | `BLOB_READ_WRITE_TOKEN` | Blob-хранилище `ingenium-media` |
 | `AUTH_SECRET` | случайная строка, подписывает cookie сессии |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth App (callback: `/api/auth/callback`) |
+| `ADMIN_GITHUB_IDS` | необязательно: числовые GitHub id ещё админов через запятую (id смотреть на `https://api.github.com/users/<логин>`); владелец админ всегда. После смены нужен Redeploy |
 | `RESEND_API_KEY` | необязательно: ключ [Resend](https://resend.com) для писем со сбросом пароля |
 | `MAIL_FROM` | необязательно: отправитель, напр. `Ingenium <mail@твой-домен>` (без своего домена Resend шлёт только на свою почту) |
 | `TELEGRAM_BOT_TOKEN` | токен бота от @BotFather (без него бот просто молчит) |
