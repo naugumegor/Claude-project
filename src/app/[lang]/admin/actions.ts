@@ -22,7 +22,7 @@ import { slugify } from "@/lib/slug";
 import { requireAdmin } from "@/lib/session";
 import type { MaterialInput } from "./types";
 import { isSection } from "@/lib/taxonomy";
-import { DOCUMENT_KINDS, documentKind, isDocumentKind } from "@/lib/documents";
+import { documentKind, fileFormat, isDocumentKind } from "@/lib/documents";
 import { isOwnBlob } from "@/lib/blob";
 import { announceMaterial } from "@/lib/telegram-notify";
 
@@ -226,7 +226,7 @@ export async function uploadDocumentLocal(form: FormData): Promise<Result<{ url:
   const kind = file instanceof File ? documentKind(file) : null;
   if (!(file instanceof File) || !kind) return { ok: false, error: "badFile" };
 
-  const name = `documents/${crypto.randomUUID()}.${DOCUMENT_KINDS[kind].ext}`;
+  const name = `documents/${crypto.randomUUID()}.${fileFormat(kind, file).ext}`;
   const target = path.join(process.cwd(), "public", "uploads", name);
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, Buffer.from(await file.arrayBuffer()));

@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
-import { Box, Download, FileCode, FileText, Loader2, Maximize2 } from "lucide-react";
+import { Box, Download, FileCode, FileText, ImageIcon, Loader2, Maximize2 } from "lucide-react";
 import type { MaterialFile } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
+import { kindLabel } from "@/lib/documents";
 import { ModelViewer } from "./model-viewer";
 
 const spring = { type: "spring", stiffness: 420, damping: 34 } as const;
 
-/** Shows attached PDFs, HTML pages and 3D models inline, with tabs when there are several. */
+/** Shows attached PDFs, HTML pages, 3D models and photos inline, with tabs when there are several. */
 export function DocumentViewer({
   files,
   labels,
@@ -33,7 +34,7 @@ export function DocumentViewer({
         <LayoutGroup id="doc-tabs">
           <div className="flex min-w-0 flex-1 flex-wrap gap-1">
             {files.map((f) => {
-              const Icon = f.kind === "pdf" ? FileText : f.kind === "model" ? Box : FileCode;
+              const Icon = f.kind === "pdf" ? FileText : f.kind === "model" ? Box : f.kind === "image" ? ImageIcon : FileCode;
               const on = f.id === file.id;
               return (
                 <button
@@ -50,12 +51,18 @@ export function DocumentViewer({
                   <Icon
                     size={16}
                     className={`relative shrink-0 transition-transform group-hover:scale-110 ${
-                      f.kind === "pdf" ? "text-rose" : f.kind === "model" ? "text-accent" : "text-plum"
+                      f.kind === "pdf"
+                        ? "text-rose"
+                        : f.kind === "model"
+                          ? "text-accent"
+                          : f.kind === "image"
+                            ? "text-ochre"
+                            : "text-plum"
                     }`}
                   />
                   <span className="relative truncate">{f.name}</span>
                   <span className="relative text-[10px] font-semibold uppercase text-muted">
-                    {f.kind === "model" ? "3D" : f.kind}
+                    {kindLabel(f.kind, locale)}
                   </span>
                 </button>
               );
@@ -88,6 +95,41 @@ export function DocumentViewer({
         <div className="[&>figure]:my-0 [&>figure]:rounded-none [&>figure]:border-0">
           <ModelViewer key={file.id} src={src} locale={locale} />
         </div>
+      ) : file.kind === "image" ? (
+        <a
+          href={src}
+          target="_blank"
+          rel="noopener"
+          title={labels.openFull}
+          className="relative flex min-h-[20rem] cursor-zoom-in items-center justify-center bg-surface-2 p-3 sm:p-6"
+        >
+          <AnimatePresence>
+            {!loaded[file.id] && (
+              <motion.span
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 flex items-center justify-center text-muted"
+              >
+                <Loader2 size={24} className="animate-spin" />
+              </motion.span>
+            )}
+          </AnimatePresence>
+          {/* eslint-disable-next-line @next/next/no-img-element -- a stored file of any size, served as is */}
+          <img
+            key={file.id}
+            src={src}
+            alt={file.name}
+            // A cached photo may finish before hydration, when onLoad has no listener yet.
+            ref={(el) => {
+              if (el?.complete && !loaded[file.id]) setLoaded((prev) => ({ ...prev, [file.id]: true }));
+            }}
+            onLoad={() => setLoaded((prev) => ({ ...prev, [file.id]: true }))}
+            onError={() => setLoaded((prev) => ({ ...prev, [file.id]: true }))}
+            className={`max-h-[75vh] max-w-full rounded-lg object-contain shadow-[0_18px_40px_-28px_rgba(35,38,43,0.6)] transition-opacity duration-500 ${
+              loaded[file.id] ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </a>
       ) : (
         <div className="relative h-[75vh] min-h-[28rem] bg-surface-2">
           <AnimatePresence>

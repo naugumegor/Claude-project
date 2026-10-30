@@ -8,7 +8,7 @@ import { and, count, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { userDocuments } from "@/db/schema";
 import { requireAdmin, requireUser } from "@/lib/session";
-import { DOCUMENT_KINDS, documentKind, isDocumentKind } from "@/lib/documents";
+import { documentKind, fileFormat, isDocumentKind, typeFitsKind } from "@/lib/documents";
 import { USER_DOC_MAX_BYTES, USER_DOC_MAX_COUNT } from "@/lib/user-docs-shared";
 import { blobInfo, isOwnBlob } from "@/lib/blob";
 import { deleteDiscussion } from "@/lib/discussion";
@@ -34,7 +34,7 @@ export async function uploadUserDocLocal(form: FormData): Promise<Result<{ url: 
   const kind = file instanceof File ? documentKind(file) : null;
   if (!(file instanceof File) || !kind) return { ok: false, error: "badType" };
   if (file.size > USER_DOC_MAX_BYTES) return { ok: false, error: "tooBig" };
-  const name = `user-docs/${user.id}/${crypto.randomUUID()}.${DOCUMENT_KINDS[kind].ext}`;
+  const name = `user-docs/${user.id}/${crypto.randomUUID()}.${fileFormat(kind, file).ext}`;
   const target = path.join(process.cwd(), "public", "uploads", name);
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, Buffer.from(await file.arrayBuffer()));
@@ -56,7 +56,7 @@ export async function addUserDocument(input: {
   if (isOwnBlob(input.url, "user-docs/")) {
     // Size and type as stored, not as the browser reports them.
     const info = await blobInfo(input.url);
-    if (!info || info.contentType.split(";")[0].trim() !== DOCUMENT_KINDS[input.kind].type) return { ok: false, error: "badType" };
+    if (!info || !typeFitsKind(input.kind, info.contentType)) return { ok: false, error: "badType" };
     if (info.size > USER_DOC_MAX_BYTES) return { ok: false, error: "tooBig" };
     size = info.size;
   }

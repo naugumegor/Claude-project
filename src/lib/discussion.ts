@@ -4,15 +4,12 @@ import { and, desc, eq, inArray, or, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { commentReports, comments, materialTexts, materials, news, ownerSettings, reactions, userDocuments, users } from "@/db/schema";
 import type { Locale } from "@/lib/i18n";
-import { ADMIN_GITHUB_ID, devBypass } from "@/lib/session";
+import { isAdminGithubId } from "@/lib/session";
 import { REACTIONS, type ReactionKind, type Target, type TargetType } from "@/lib/discussion-shared";
 
 // Comments and reactions under materials, readers' documents and news posts.
 // Thread reads are per request (they depend on who is looking); the home page feed is cached
 // under the "comments" tag, which every change to a published comment refreshes.
-
-export const isAdminGithubId = (githubId: string | null | undefined) =>
-  githubId === ADMIN_GITHUB_ID || (devBypass && githubId === "dev");
 
 /** Spam markers that send a comment to review instead of straight onto the page. Swearing is fine. */
 const STOP_WORDS = [

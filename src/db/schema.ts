@@ -14,7 +14,7 @@ import {
 
 export const materialType = pgEnum("material_type", ["note", "link", "photo", "doc"]);
 export const materialStatus = pgEnum("material_status", ["draft", "published"]);
-export const fileKind = pgEnum("file_kind", ["pdf", "html", "model"]);
+export const fileKind = pgEnum("file_kind", ["pdf", "html", "model", "image"]);
 
 export const subjects = pgTable("subjects", {
   id: serial("id").primaryKey(),
