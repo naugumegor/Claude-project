@@ -580,5 +580,68 @@
       "empty": "It's empty",
       "failed": "Something went wrong"
     }
+  },
+  "discussion": {
+    "title": "Discussion",
+    "reactionsTitle": "How was it?",
+    "reactions": {
+      "useful": "Useful",
+      "fire": "Fire",
+      "hard": "Tough",
+      "unclear": "Unclear"
+    },
+    "placeholder": "Write a comment… Markdown and $math$ work",
+    "replyPlaceholder": "Reply…",
+    "send": "Send",
+    "sending": "Sending…",
+    "reply": "Reply",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirmDelete": "Delete this comment?",
+    "report": "Report",
+    "reported": "Reported",
+    "deleted": "Comment deleted",
+    "edited": "edited",
+    "author": "author",
+    "pending": "In review: only you can see it",
+    "pendingAdmin": "Waiting for review",
+    "sentPending": "Sent! First comments show up after a quick review.",
+    "empty": "Nobody has said anything yet. Be the first.",
+    "signIn": "Sign in to comment and react",
+    "signInLink": "Sign in",
+    "banned": "You can't post comments.",
+    "like": "Like",
+    "errors": {
+      "signIn": "Sign in first.",
+      "banned": "You can't post comments.",
+      "empty": "The comment is empty.",
+      "tooLong": "Too long, 2000 characters at most.",
+      "tooFast": "Not so fast, wait 20 seconds.",
+      "dailyLimit": "You've hit today's comment limit.",
+      "tooManyLinks": "Two links per comment at most.",
+      "noLinksYet": "Links are allowed from the second day after signing up.",
+      "tooLate": "Comments can only be edited in the first 15 minutes.",
+      "notFound": "Couldn't find what this belongs to."
+    },
+    "feedTitle": "Being discussed",
+    "feedIn": "in",
+    "feedEmpty": "Quiet so far. Open any material and write the first comment.",
+    "adminTitle": "Comments to review",
+    "adminEmpty": "Nothing waits for review.",
+    "approve": "Approve",
+    "hide": "Hide",
+    "remove": "Delete",
+    "ban": "Ban",
+    "unban": "Unban",
+    "moderateAll": "Review every comment, not just the first ones",
+    "reasons": {
+      "new": "new author",
+      "words": "stop words",
+      "reports": "reports",
+      "all": "review all"
+    },
+    "open": "Open"
   }
 }

@@ -10,6 +10,9 @@ import { db } from "@/db";
 import { news, userDocuments, users } from "@/db/schema";
 import { DocReview } from "@/components/admin/doc-review";
 import { UserList } from "@/components/admin/user-list";
+import { CommentReview } from "@/components/admin/comment-review";
+import { getModerateAll, loadReviewQueue, requestTime, targetPath } from "@/lib/discussion";
+import { timeAgo } from "@/lib/discussion-shared";
 import { localize } from "@/lib/content";
 import { formatDate } from "@/lib/format";
 import { getAdmin, getUser } from "@/lib/session";
@@ -37,7 +40,7 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
   const [admin, user] = await Promise.all([getAdmin(), getUser()]);
   if (!admin) return <LoginCard dict={dict.admin} next={`/${locale}/admin`} denied={Boolean(user)} />;
 
-  const [materialRows, newsRows, docRows, userRows] = await Promise.all([
+  const [materialRows, newsRows, docRows, userRows, commentQueue, moderateAll, bannedRows] = await Promise.all([
     loadMaterials({}),
     db.select().from(news).orderBy(desc(news.pinned), desc(news.createdAt)),
     db
@@ -51,7 +54,26 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
       .from(users)
       .orderBy(desc(users.createdAt))
       .limit(200),
+    loadReviewQueue(),
+    getModerateAll(),
+    db.select({ id: users.id, name: users.name }).from(users).where(eq(users.commentBanned, true)),
   ]);
+  const now = requestTime();
+  const commentRows = await Promise.all(
+    commentQueue.map(async (c) => {
+      const path = await targetPath(c.target, locale);
+      return {
+        id: c.id,
+        author: c.author,
+        authorId: c.authorId,
+        banned: c.banned,
+        body: c.body,
+        reason: c.reason,
+        when: timeAgo(c.createdAt, locale, now),
+        href: path && `${path}#comment-${c.id}`,
+      };
+    }),
+  );
   const rows = materialRows.map((m) => localize(m, locale));
   const docs = docRows.map(({ doc, author }) => ({
     id: doc.id,
@@ -101,6 +123,11 @@ async function AdminList({ dict, locale }: { dict: Dictionary; locale: Locale })
           </form>
         </div>
       </div>
+
+      <h2 id="comments" className="mb-3 mt-10 font-display text-xl font-bold">
+        {dict.discussion.adminTitle} <span className="text-base font-medium text-muted">{commentRows.length}</span>
+      </h2>
+      <CommentReview rows={commentRows} banned={bannedRows} moderateAll={moderateAll} labels={dict.discussion} />
 
       <h2 className="mb-3 mt-10 font-display text-xl font-bold">
         {dict.admin.review}{" "}

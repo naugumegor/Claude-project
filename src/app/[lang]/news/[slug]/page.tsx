@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,6 +9,7 @@ import { excerpt, getNews, getNewsPost } from "@/lib/community";
 import { formatDate } from "@/lib/format";
 import { Markdown } from "@/components/markdown";
 import { Reveal } from "@/components/reveal";
+import { Discussion, DiscussionSkeleton } from "@/components/discussion/discussion";
 
 export async function generateStaticParams() {
   const posts = await getNews("ru");
@@ -47,6 +49,9 @@ export default async function NewsPostPage({ params }: PageProps<"/[lang]/news/[
       <div className="mt-8">
         <Markdown locale={post.fallback ? "ru" : locale}>{post.body}</Markdown>
       </div>
+      <Suspense fallback={<DiscussionSkeleton />}>
+        <Discussion target={{ type: "news", id: post.id }} path={`/${locale}/news/${post.slug}`} locale={locale} dict={dict.discussion} />
+      </Suspense>
     </article>
   );
 }

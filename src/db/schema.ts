@@ -1,4 +1,5 @@
 import {
+  type AnyPgColumn,
   boolean,
   index,
   integer,
@@ -124,6 +125,8 @@ export const users = pgTable("users", {
   githubLogin: text("github_login"),
   /** Bumped to sign the account out everywhere: older session cookies stop working. */
   sessionVersion: integer("session_version").notNull().default(0),
+  /** Set by the admin: the account can still read and sign in, but not comment or react. */
+  commentBanned: boolean("comment_banned").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -324,4 +327,73 @@ export const pastes = pgTable(
     expiresAt: timestamp("expires_at", { withTimezone: true }),
   },
   (t) => [index("pastes_user_idx").on(t.userId, t.createdAt)],
+);
+
+// ---------- Discussion: comments and reactions under materials, readers' documents and news ----------
+
+/** What a comment or reaction belongs to; `comment` is only used for likes on a comment. */
+export const discussionTarget = pgEnum("discussion_target", ["material", "doc", "news", "comment"]);
+/**
+ * published: everyone sees it. pending: only its author and the admin, until approved.
+ * hidden: taken down by the admin. deleted: removed by its author, kept only as a placeholder
+ * while it still has replies.
+ */
+export const commentStatus = pgEnum("comment_status", ["published", "pending", "hidden", "deleted"]);
+
+export const comments = pgTable(
+  "comments",
+  {
+    id: serial("id").primaryKey(),
+    targetType: discussionTarget("target_type").notNull(),
+    targetId: integer("target_id").notNull(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** Replies go one level deep: a reply to a reply is attached to the same top comment. */
+    parentId: integer("parent_id").references((): AnyPgColumn => comments.id, { onDelete: "cascade" }),
+    body: text("body").notNull(),
+    status: commentStatus("status").notNull().default("published"),
+    /** Why a comment waits for review: "new" author, "words", "reports" or "all" (moderate everything). */
+    reason: text("reason"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    editedAt: timestamp("edited_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("comments_target_idx").on(t.targetType, t.targetId, t.createdAt),
+    index("comments_user_idx").on(t.userId, t.createdAt),
+    index("comments_status_idx").on(t.status, t.createdAt),
+  ],
+);
+
+/** One row per reader, target and kind (useful / fire / hard / unclear, or like on a comment). */
+export const reactions = pgTable(
+  "reactions",
+  {
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    targetType: discussionTarget("target_type").notNull(),
+    targetId: integer("target_id").notNull(),
+    kind: text("kind").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.targetType, t.targetId, t.kind] }),
+    index("reactions_target_idx").on(t.targetType, t.targetId),
+  ],
+);
+
+/** "Пожаловаться": one report per reader and comment; enough of them send it back to review. */
+export const commentReports = pgTable(
+  "comment_reports",
+  {
+    commentId: integer("comment_id")
+      .notNull()
+      .references(() => comments.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.commentId, t.userId] })],
 );

@@ -16,6 +16,7 @@ import { Toc } from "@/components/study/toc";
 import { readingMinutes } from "@/lib/study";
 import { Favorite, FavoriteSkeleton } from "@/components/account/favorite";
 import { Reveal } from "@/components/reveal";
+import { Discussion, DiscussionSkeleton } from "@/components/discussion/discussion";
 import { typeMeta } from "@/components/type-meta";
 import { sectionMeta } from "@/components/section-icon";
 import { getSection } from "@/lib/taxonomy";
@@ -255,6 +256,15 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
           </Reveal>
         </>
       )}
+
+      <Suspense fallback={<DiscussionSkeleton />}>
+        <Discussion
+          target={{ type: "material", id: material.id }}
+          path={`/${locale}/materials/${material.slug}`}
+          locale={locale}
+          dict={dict.discussion}
+        />
+      </Suspense>
 
       {related.length > 0 && (
         <section className="focus-hide no-print mt-20 border-t border-line pt-10">

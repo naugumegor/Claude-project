@@ -11,6 +11,7 @@ import { requireAdmin, requireUser } from "@/lib/session";
 import { DOCUMENT_KINDS, documentKind, isDocumentKind } from "@/lib/documents";
 import { USER_DOC_MAX_BYTES, USER_DOC_MAX_COUNT } from "@/lib/user-docs-shared";
 import { blobInfo, isOwnBlob } from "@/lib/blob";
+import { deleteDiscussion } from "@/lib/discussion";
 
 // "Мои документы": a reader's own files. Everything is checked against the signed-in user,
 // so nobody can touch another reader's documents by sending a different id.
@@ -102,6 +103,7 @@ export async function deleteUserDocument(id: number): Promise<Result> {
   if (doc.url.includes(".blob.vercel-storage.com/") && process.env.BLOB_READ_WRITE_TOKEN) {
     await del(doc.url).catch(() => {});
   }
+  await deleteDiscussion({ type: "doc", id });
   if (doc.status === "published") updateTag("user-docs");
   return { ok: true, data: null };
 }

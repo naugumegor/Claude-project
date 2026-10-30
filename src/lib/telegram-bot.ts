@@ -1,4 +1,5 @@
 import "server-only";
+import { revalidateTag } from "next/cache";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { telegramChats } from "@/db/schema";
@@ -10,6 +11,7 @@ import { documentKind } from "@/lib/documents";
 import { downloadFile, escapeHtml, isOwnerLinkToken, tg } from "@/lib/telegram";
 import { texts } from "@/lib/telegram-texts";
 import { chatLocale, send, sendCard } from "@/lib/telegram-notify";
+import { applyModeration } from "@/lib/discussion";
 import { latestDrafts, saveDraft, type InboxFile, type InboxImage } from "@/lib/telegram-inbox";
 
 // Handles one webhook update from Telegram: commands, the owner's notes, and button presses.
@@ -92,6 +94,14 @@ async function onButton(q: NonNullable<Update["callback_query"]>) {
   const chat = await ensureChat(String(q.message.chat.id), q.from);
   const locale = chatLocale(chat);
   if (q.data === "card") return sendCard(chat.chatId, locale);
+  // Comment moderation buttons; only the chat linked to the admin may press them.
+  const moderation = q.data?.match(/^cm:(approve|hide):(\d+)$/);
+  if (moderation && chat.isOwner) {
+    const decision = moderation[1] as "approve" | "hide";
+    await applyModeration(Number(moderation[2]), decision);
+    revalidateTag("comments", "max");
+    return send(chat.chatId, decision === "approve" ? texts[locale].approved : texts[locale].hidden);
+  }
   if (q.data === "remind:off" && chat.remind) {
     await setChat(chat.chatId, { remind: false });
     return send(chat.chatId, texts[locale].remindOff);

@@ -14,6 +14,7 @@ import { sectionMeta } from "@/components/section-icon";
 import { excerpt, getNews, getPublishedUserDocs } from "@/lib/community";
 import { formatDate } from "@/lib/format";
 import { OwnerPanel } from "@/components/dashboard/owner-panel";
+import { DiscussionFeed } from "@/components/discussion/feed";
 
 export default async function HomePage() {
   const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
@@ -122,6 +123,8 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      <DiscussionFeed locale={locale} dict={dict.discussion} />
 
       {latestNews.length > 0 && (
         <section className="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
