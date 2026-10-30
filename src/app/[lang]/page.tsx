@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { ArrowRight, Box, FileCode, FileText, Megaphone, Pin } from "lucide-react";
+import { ArrowRight, Box, FileCode, FileText, ImageIcon, Megaphone, Pin } from "lucide-react";
 import { getDictionary, getLocale } from "@/dictionaries";
 import { getMaterials } from "@/lib/materials";
 import { cardLabels, plural, pluralWord } from "@/lib/format";
@@ -163,16 +163,28 @@ export default async function HomePage() {
           <p className="mb-6 mt-1 text-sm text-muted">{dict.docs.communityLead}</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {userDocs.map((d, i) => {
-              const Icon = d.kind === "pdf" ? FileText : d.kind === "model" ? Box : FileCode;
-              const tone = d.kind === "pdf" ? "bg-rose-soft text-rose" : d.kind === "model" ? "bg-accent-soft text-accent" : "bg-plum-soft text-plum";
+              const Icon = d.kind === "pdf" ? FileText : d.kind === "model" ? Box : d.kind === "image" ? ImageIcon : FileCode;
+              const tone =
+                d.kind === "pdf"
+                  ? "bg-rose-soft text-rose"
+                  : d.kind === "model"
+                    ? "bg-accent-soft text-accent"
+                    : d.kind === "image"
+                      ? "bg-ochre-soft text-ochre"
+                      : "bg-plum-soft text-plum";
               return (
                 <Reveal key={d.id} delay={i * 0.05}>
                   <Link
                     href={`/${locale}/docs/${d.id}`}
                     className="group flex h-full gap-3 rounded-2xl border border-line bg-surface p-4 transition-all duration-300 hover:-translate-y-1 hover:border-accent"
                   >
-                    <span className={`flex size-11 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:rotate-[-6deg] group-hover:scale-110 ${tone}`}>
-                      <Icon size={20} />
+                    <span className={`flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl transition-transform group-hover:rotate-[-6deg] group-hover:scale-110 ${tone}`}>
+                      {d.kind === "image" ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- served by /api/user-files, not the image optimizer
+                        <img src={`/api/user-files/${d.id}`} alt="" loading="lazy" className="size-full object-cover" />
+                      ) : (
+                        <Icon size={20} />
+                      )}
                     </span>
                     <span className="min-w-0">
                       <span className="block truncate font-semibold">{d.name}</span>

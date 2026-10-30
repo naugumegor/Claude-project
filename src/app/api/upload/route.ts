@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { userDocuments } from "@/db/schema";
 import { getAdmin, getUser } from "@/lib/session";
-import { DOCUMENT_KINDS } from "@/lib/documents";
+import { UPLOAD_TYPES } from "@/lib/documents";
 import { USER_DOC_MAX_BYTES, USER_DOC_MAX_COUNT, USER_DOC_MAX_TOTAL_BYTES } from "@/lib/user-docs-shared";
 
 // Hands the browser a short-lived token to upload a document straight to Vercel Blob, so big
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        const types = Object.values(DOCUMENT_KINDS).map((k) => k.type);
+        const types = UPLOAD_TYPES;
         if (pathname.startsWith("documents/")) {
           if (!(await getAdmin())) throw new Error("Not authorized");
           return { allowedContentTypes: types, maximumSizeInBytes: 100 * 1024 * 1024, addRandomSuffix: true };

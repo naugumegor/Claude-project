@@ -1,11 +1,11 @@
 import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { DOCUMENT_KINDS, type DocumentKind } from "@/lib/documents";
+import { storedFormat, type DocumentKind } from "@/lib/documents";
 import { isOwnBlob } from "@/lib/blob";
 
 /**
- * Streams a stored PDF, HTML document or 3D model from our own domain with headers we control:
+ * Streams a stored PDF, HTML document, 3D model or photo from our own domain with headers we control:
  * PDFs open inline, and HTML runs in a CSP sandbox (an opaque origin), so a document's
  * scripts can't touch the site, its cookies or its API.
  */
@@ -29,10 +29,11 @@ export async function fileResponse(
     body = upstream.body;
   }
 
+  const format = storedFormat(file.kind, file.url);
   const headers = new Headers({
-    "Content-Type": file.kind === "html" ? "text/html; charset=utf-8" : DOCUMENT_KINDS[file.kind].type,
+    "Content-Type": file.kind === "html" ? "text/html; charset=utf-8" : format.type,
     "Content-Disposition": `${download ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(
-      `${file.name}.${DOCUMENT_KINDS[file.kind].ext}`,
+      `${file.name}.${format.ext}`,
     )}`,
     "X-Content-Type-Options": "nosniff",
     "Cache-Control": cache ? "public, max-age=300, s-maxage=3600" : "private, no-store",

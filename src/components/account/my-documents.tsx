@@ -4,9 +4,10 @@ import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
 import { AnimatePresence, motion } from "motion/react";
-import { Box, ExternalLink, FileCode, FileText, Home, Loader2, Trash2, Undo2, Upload } from "lucide-react";
+import { Box, ExternalLink, FileCode, FileText, Home, ImageIcon, Loader2, Trash2, Undo2, Upload } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
-import { DOCUMENT_ACCEPT, DOCUMENT_KINDS, documentKind, type DocumentKind } from "@/lib/documents";
+import { DOCUMENT_ACCEPT, documentKind, fileFormat, kindLabel, stripExt, type DocumentKind } from "@/lib/documents";
+import { normalizeUpload } from "@/lib/heic";
 import { USER_DOC_MAX_BYTES } from "@/lib/user-docs-shared";
 import { slugify } from "@/lib/slug";
 import { formatDate } from "@/lib/format";
@@ -47,8 +48,13 @@ type Labels = {
   failed: string;
 };
 
-const ICONS = { pdf: FileText, html: FileCode, model: Box };
-const TONES = { pdf: "bg-rose-soft text-rose", html: "bg-plum-soft text-plum", model: "bg-accent-soft text-accent" };
+const ICONS = { pdf: FileText, html: FileCode, model: Box, image: ImageIcon };
+const TONES = {
+  pdf: "bg-rose-soft text-rose",
+  html: "bg-plum-soft text-plum",
+  model: "bg-accent-soft text-accent",
+  image: "bg-ochre-soft text-ochre",
+};
 const STATUS_TONES = {
   private: "bg-surface-2 text-muted",
   pending: "bg-ochre-soft text-ochre",
@@ -57,7 +63,9 @@ const STATUS_TONES = {
 };
 
 const mb = (bytes: number, locale: Locale) =>
-  `${(bytes / 1024 / 1024).toLocaleString(locale, { maximumFractionDigits: 1 })} ${locale === "ru" ? "МБ" : "MB"}`;
+  bytes < 1024 * 1024
+    ? `${Math.max(1, Math.round(bytes / 1024))} ${locale === "ru" ? "КБ" : "KB"}`
+    : `${(bytes / 1024 / 1024).toLocaleString(locale, { maximumFractionDigits: 1 })} ${locale === "ru" ? "МБ" : "MB"}`;
 
 export function MyDocuments({
   docs,
@@ -87,7 +95,7 @@ export function MyDocuments({
     if (!documentKind(f)) return setError(labels.badType);
     if (f.size > USER_DOC_MAX_BYTES) return setError(labels.tooBig);
     setFile(f);
-    if (!name) setName(f.name.replace(/\.(pdf|html?|glb)$/i, ""));
+    if (!name) setName(stripExt(f.name));
   };
 
   const submit = async () => {
@@ -96,24 +104,27 @@ export function MyDocuments({
     setError(null);
     setProgress(0);
     try {
+      // iPhone photos (HEIC) become JPEG first, so every browser can show them.
+      const ready = await normalizeUpload(file);
+      const format = fileFormat(kind, ready);
       let url: string;
       if (directUpload) {
-        const blob = await upload(`user-docs/${userId}/${slugify(name) || "document"}.${DOCUMENT_KINDS[kind].ext}`, file, {
+        const blob = await upload(`user-docs/${userId}/${slugify(name) || "document"}.${format.ext}`, ready, {
           access: "public",
           handleUploadUrl: "/api/upload",
-          contentType: DOCUMENT_KINDS[kind].type,
-          multipart: file.size > 8 * 1024 * 1024,
+          contentType: format.type,
+          multipart: ready.size > 8 * 1024 * 1024,
           onUploadProgress: ({ percentage }) => setProgress(percentage),
         });
         url = blob.url;
       } else {
         const form = new FormData();
-        form.append("file", file);
+        form.append("file", ready);
         const res = await uploadUserDocLocal(form);
         if (!res.ok) throw new Error(labels[res.error as "tooBig" | "badType"] ?? labels.failed);
         url = res.data.url;
       }
-      const res = await addUserDocument({ name: name || file.name, description, url, kind, size: file.size });
+      const res = await addUserDocument({ name: name || file.name, description, url, kind, size: ready.size });
       if (!res.ok) throw new Error(labels[res.error as "badType"] ?? labels.failed);
       setFile(null);
       setName("");
@@ -208,14 +219,19 @@ export function MyDocuments({
                 layout
                 className="group flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-surface p-3 transition-colors hover:border-accent/50"
               >
-                <span className={`flex size-10 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-105 ${TONES[d.kind]}`}>
-                  <Icon size={18} />
+                <span className={`flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl transition-transform group-hover:scale-105 ${TONES[d.kind]}`}>
+                  {d.kind === "image" ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- a private file, not for the image optimizer
+                    <img src={`/api/user-files/${d.id}`} alt="" loading="lazy" className="size-full object-cover" />
+                  ) : (
+                    <Icon size={18} />
+                  )}
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-medium">{d.name}</span>
                   <span className="block truncate text-xs text-muted">
                     {d.description ? `${d.description} · ` : ""}
-                    {d.kind === "model" ? "3D" : d.kind.toUpperCase()} · {mb(d.size, locale)} · {formatDate(d.createdAt, locale)}
+                    {kindLabel(d.kind, locale)} · {mb(d.size, locale)} · {formatDate(d.createdAt, locale)}
                   </span>
                 </span>
                 <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_TONES[d.status]}`}>{labels.status[d.status]}</span>
