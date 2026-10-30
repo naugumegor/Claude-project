@@ -15,6 +15,7 @@
   { "slug": "me-drawing", "nameRu": "Черчение (BME)", "nameEn": "Mechanical engineering drawing (BME)" },
   { "slug": "drafting", "nameRu": "Инженерная графика и ГОСТ", "nameEn": "Engineering drawing and standards" },
   { "slug": "cad-cae", "nameRu": "САПР и инженерный анализ", "nameEn": "CAD and CAE" },
+  { "slug": "python-bme", "nameRu": "Python (BME)", "nameEn": "Programming in Python (BME)" },
   { "slug": "engineering-python", "nameRu": "Инженерный Python", "nameEn": "Engineering Python" },
   { "slug": "finance", "nameRu": "Финансы и инвестиции", "nameEn": "Finance and investment" },
   { "slug": "economics", "nameRu": "Экономика", "nameEn": "Economics" },

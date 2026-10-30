@@ -1,0 +1,1701 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python midterm · Ingenium</title>
+<meta name="description" content="Подготовка к мидтерму по базовому Python: все темы на пальцах, код с настоящим выводом, типичные ошибки, 25 «угадай вывод», 14 задач с решениями, проверенные ресурсы и видео.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Manrope:wght@700;800&display=swap">
+<style>
+:root{--paper:#F7F4EE;--sheet:#FFFDF9;--soft:#F1ECE3;--ink:#23262B;--ink2:#6B6F76;--rule:#E6E0D6;
+ --blue:#2F6FA8;--green:#2F7D6D;--red:#C4573A;--ochre:#B07A2E;--violet:#7A5BA8;
+ --code:#FBF8F2;--out:#EEF3EF;
+ --shadow:0 1px 2px rgba(35,38,43,.05),0 12px 32px -18px rgba(35,38,43,.28);
+ --display:"Manrope","Inter",system-ui,sans-serif;--body:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#17191D;--sheet:#1F2227;--soft:#282C32;--ink:#E9E5DD;--ink2:#9DA1A8;--rule:#34383F;--blue:#79AEE0;--green:#5DB3A0;--red:#EE8A6C;--ochre:#E2AB62;--violet:#B79BE0;--code:#1B1E22;--out:#1A2522;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#17191D;--sheet:#1F2227;--soft:#282C32;--ink:#E9E5DD;--ink2:#9DA1A8;--rule:#34383F;--blue:#79AEE0;--green:#5DB3A0;--red:#EE8A6C;--ochre:#E2AB62;--violet:#B79BE0;--code:#1B1E22;--out:#1A2522;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6);color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+code{font-family:var(--mono);font-size:.9em}
+p code,li code,td code{background:var(--soft);border-radius:6px;padding:1px 5px}
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.topbar-in{display:flex;align-items:center;gap:10px;height:56px;max-width:960px;margin:0 auto;padding:0 16px}
+.brand{font:800 15px/1 var(--display);margin-right:auto;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.brand i{width:20px;height:20px;border-radius:6px;background:conic-gradient(from 200deg,var(--blue),var(--green),var(--ochre),var(--red),var(--blue));animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav a{font:600 13px/1 var(--body);color:var(--ink2);text-decoration:none;padding:8px 10px;border-radius:9px;white-space:nowrap}
+.nav a:hover{background:var(--soft);color:var(--ink)}
+@media (max-width:760px){.nav{display:none}}
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--blue),var(--green),var(--ochre));z-index:30}
+main{max-width:900px;margin:0 auto;padding:0 16px 80px}
+.hero{padding:40px 0 10px}
+.kicker{display:inline-block;font:600 11.5px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green);border:1px solid color-mix(in srgb,var(--green) 30%,transparent);border-radius:99px;padding:6px 12px;margin-bottom:18px}
+h1{font:800 clamp(34px,7vw,56px)/1.05 var(--display);margin:0;letter-spacing:-.02em}
+h1 .sub{display:block;font-size:.42em;margin-top:12px;background:linear-gradient(90deg,var(--blue),var(--green),var(--ochre),var(--red));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font:800 26px/1.2 var(--display);margin:0}
+h3{font:700 20px/1.3 var(--display);margin:28px 0 10px}
+h4{font:700 15px/1.3 var(--body);margin:20px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.chip{font:600 12.5px/1 var(--mono);border:1px solid var(--rule);background:var(--sheet);border-radius:99px;padding:9px 13px}
+.chip b{color:var(--red)}
+.sec{padding-top:56px}
+.sec-h{display:flex;align-items:center;gap:14px;padding-bottom:14px;margin-bottom:18px;border-bottom:2px solid var(--rule)}
+.sec-no{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;font:800 18px/1 var(--display);color:var(--green);background:color-mix(in srgb,var(--green) 12%,var(--sheet));border:1px solid color-mix(in srgb,var(--green) 30%,transparent);flex:none}
+.table{overflow-x:auto;border:1px solid var(--rule);border-radius:16px;background:var(--sheet);box-shadow:var(--shadow);margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:10px 14px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font:600 12px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+tr:last-child td{border-bottom:0}
+td:first-child code{white-space:nowrap}
+ul,ol{padding-left:1.3em}li{margin:.35em 0}li::marker{color:var(--green)}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);min-width:0}
+.card h4{margin-top:4px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px;margin:16px 0;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;margin:16px 0}
+.minute{border-top:3px solid var(--green)}
+.minute ol{margin:6px 0}
+.day b{display:block;font:800 14px/1.2 var(--mono);color:var(--blue);margin-bottom:4px}
+.day{font-size:14.5px}
+.analogy{border-radius:14px;padding:12px 16px;margin:14px 0;background:color-mix(in srgb,var(--blue) 9%,var(--sheet));border-left:3px solid var(--blue);font-size:15.5px}
+.analogy::before{content:"На пальцах · ";font:700 12px/1 var(--mono);color:var(--blue);text-transform:uppercase;letter-spacing:.06em}
+.warn,.tip{border-radius:12px;padding:12px 16px;margin:14px 0;font-size:15px}
+.warn{background:color-mix(in srgb,var(--red) 10%,var(--sheet));border-left:3px solid var(--red)}
+.warn::before{content:"Косяк · ";font:700 12px/1 var(--mono);color:var(--red);text-transform:uppercase;letter-spacing:.06em}
+.tip{background:color-mix(in srgb,var(--ochre) 12%,var(--sheet));border-left:3px solid var(--ochre)}
+.tip::before{content:"Фишка · ";font:700 12px/1 var(--mono);color:var(--ochre);text-transform:uppercase;letter-spacing:.06em}
+.code{margin:12px 0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--code);box-shadow:var(--shadow)}
+.code pre{margin:0;padding:12px 16px;overflow-x:auto;font:500 14px/1.55 var(--mono);tab-size:4}
+.code pre code{font-size:inherit;background:none;padding:0}
+.code pre.out{background:var(--out);border-top:1px dashed var(--rule);color:var(--ink)}
+.code pre.out::before{content:"вывод";display:block;font:700 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.k{color:var(--violet);font-weight:700}.s{color:var(--green)}.c{color:var(--ink2);font-style:italic}.n{color:var(--ochre)}.b{color:var(--blue)}
+.reveal{margin:12px 0;border:1px solid var(--rule);border-radius:14px;background:var(--sheet)}
+.reveal>summary{cursor:pointer;list-style:none;padding:12px 16px 12px 48px;font-weight:650;position:relative}
+.reveal>summary::-webkit-details-marker{display:none}
+.reveal>summary::before{content:"+";position:absolute;left:16px;top:12px;display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--soft);font:700 14px/1 var(--mono);color:var(--green);flex:none;transition:transform .25s}
+.reveal[open]>summary::before{transform:rotate(45deg)}
+.reveal>div{padding:0 16px 12px;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}}
+.check{margin:16px 0;padding:12px 16px;border:1px dashed color-mix(in srgb,var(--green) 45%,transparent);border-radius:14px}
+.check>b{font:700 12px/1 var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em}
+/* guess-the-output */
+.score{position:sticky;top:64px;z-index:5;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--sheet);border:1px solid var(--rule);border-radius:14px;padding:10px 14px;box-shadow:var(--shadow);margin:14px 0;font:600 14px/1.3 var(--body)}
+.bar{flex:1 1 160px;height:8px;border-radius:99px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .4s}
+.score button,.q button{appearance:none;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:10px;padding:8px 12px;font:600 13px/1 var(--body);cursor:pointer}
+.score button:hover,.q button:hover{border-color:var(--green)}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:14px}
+.q{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);min-width:0;transition:border-color .3s}
+.q .code{box-shadow:none;margin:8px 0}
+.q .out{display:none}
+.q.shown .out{display:block;animation:fade .3s ease}
+.q .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.q .judge{display:none;gap:8px}
+.q.shown .judge{display:flex}
+.q.shown .show{display:none}
+.q.good{border-color:var(--green)}.q.bad{border-color:var(--red)}
+.q .why{display:none;font-size:14.5px;color:var(--ink2);margin-top:8px}
+.q.shown .why{display:block}
+.qn{font:700 12px/1 var(--mono);color:var(--ink2)}
+.task h3{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.lvl{font:700 11px/1 var(--mono);border-radius:7px;padding:5px 7px;color:var(--paper);background:var(--green)}
+.bonus{font:700 11px/1 var(--mono);vertical-align:middle;border-radius:7px;padding:5px 7px;color:var(--violet);border:1px solid color-mix(in srgb,var(--violet) 40%,transparent);text-transform:uppercase;letter-spacing:.06em}
+.note{color:var(--ink2);font-size:14.5px}
+.lvl.m{background:var(--ochre)}.lvl.h{background:var(--red)}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px;margin:14px 0}
+.links a{display:block;text-decoration:none;border:1px solid var(--rule);background:var(--sheet);border-radius:14px;padding:12px 14px;color:var(--ink);transition:border-color .2s,transform .2s}
+.links a:hover{border-color:var(--green);transform:translateY(-2px)}
+.links a b{display:block;font:700 15px/1.3 var(--body)}
+.links a span{display:block;font-size:13.5px;color:var(--ink2);margin-top:4px}
+.links a.yt b::before{content:"▶ ";color:var(--red)}
+.cheat{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px}
+.cheat .card{font-size:14.5px}
+.cheat .card ul{margin:4px 0}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--rule);color:var(--ink2);font-size:14px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{.topbar,.score,.progress{display:none}.reveal>div{display:block}.q .out,.q .why{display:block}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar"><div class="topbar-in">
+  <div class="brand"><i></i>Ingenium · Python</div>
+  <nav class="nav">
+    <a href="#scope">Что будет</a><a href="#plan">План</a><a href="#types">Типы</a><a href="#loops">Циклы</a><a href="#strings">Строки</a><a href="#lists">Списки</a><a href="#func">Функции</a><a href="#guess">Угадайка</a><a href="#tasks">Задачи</a><a href="#theory">Теория</a><a href="#links">Ресурсы</a><a href="#cheat">Шпаргалка</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero">
+  <span class="kicker">BMEGEMIBSKPYTH · мидтерм 1 · вторник 3 ноября</span>
+  <h1>Python без паники<span class="sub">Вся база на пальцах, код с настоящим выводом и задачи с ответами</span></h1>
+  <div class="chips">
+    <span class="chip">по практикам <b>1–8</b> и лекциям <b>L01–L07</b></span>
+    <span class="chip"><b>30</b> «угадай вывод»</span>
+    <span class="chip"><b>16</b> задач в стиле практик</span>
+    <span class="chip">весь вывод получен запуском, Python 3.13</span>
+  </div>
+  <div class="card minute">
+    <h4>Вся мидка за минуту</h4>
+    <ol>
+      <li><b>Переменная</b> это наклейка на коробке. <code>x = 5</code> клеит наклейку «x» на коробку с пятёркой.</li>
+      <li><b><code>input()</code> всегда отдаёт строку.</b> Нужна цифра, значит <code>int(input())</code>.</li>
+      <li><code>//</code> делит нацело, <code>%</code> даёт остаток, <code>/</code> всегда даёт дробь.</li>
+      <li><code>range(a, b)</code> доходит до <code>b - 1</code>. Конец никогда не включается, и в срезах тоже.</li>
+      <li>Строки и кортежи менять нельзя, списки, словари и множества можно.</li>
+      <li><code>b = a</code> для списка не копирует его: две наклейки на одной коробке.</li>
+      <li>Функция без <code>return</code> возвращает <code>None</code>. <code>print</code> показывает, <code>return</code> отдаёт.</li>
+      <li><code>[[0] * 3] * 2</code> это ловушка: обе строки одна и та же. Таблицу делай генератором.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="scope">
+  <div class="sec-h"><span class="sec-no">i</span><h2>Что будет на мидтерме</h2></div>
+  <p>По вводной лекции: мидтерм 1 пишется <b>на практике</b> и весит <b>40%</b>, второй 60%. Оба надо сдать минимум на проходной, оба можно пересдать в конце семестра. AI на программировании курс запрещает, так что руки должны помнить сами.</p>
+  <p>Мидтерм на практике значит, что дадут задачи <b>в стиле примеров из ноутбуков</b>: написать программу в Jupyter / VS Code. Поэтому главное здесь задачи из практик 1–8. Вот как темы курса раскладываются по этой странице:</p>
+  <div class="table"><table>
+    <tr><th>Практика</th><th>Что было</th><th>Где тут</th></tr>
+    <tr><td>1 · variables</td><td>переменные, типы, <code>print</code> (sep, end, format, f-строки), преобразования, <code>bool()</code>, присваивание</td><td><a href="#types">1</a>, <a href="#io">3</a></td></tr>
+    <tr><td>2 · math module</td><td><code>math</code>, <code>cmath</code>, порядок операций, <code>is</code> / <code>in</code>, <code>input()</code></td><td><a href="#math">2</a>, <a href="#io">3</a></td></tr>
+    <tr><td>3 · conditions</td><td><code>and or not</code>, XOR, де Морган, <code>if/elif/else</code>, вложенные, тернарный, <code>match-case</code></td><td><a href="#if">4</a></td></tr>
+    <tr><td>4 · while</td><td><code>while</code>, <code>break</code>, <code>continue</code>, <code>while-else</code>, модуль <code>random</code></td><td><a href="#loops">5</a></td></tr>
+    <tr><td>5–6 · list 1–3</td><td>списки и кортежи, методы, ссылки и копии, <code>for</code>, <code>range</code>, <code>enumerate</code>, <code>for-else</code>, <code>pass</code>, срезы, распаковка</td><td><a href="#lists">7</a></td></tr>
+    <tr><td>7 · list 4</td><td>новый список из старого, list comprehension, <code>[x] * N</code></td><td><a href="#lists">7</a></td></tr>
+    <tr><td>8 · list 5</td><td>вложенные списки (матрицы), <code>is</code>, <code>isinstance</code>, итераторы и <code>next()</code></td><td><a href="#lists">7</a></td></tr>
+  </table></div>
+  <div class="tip">Строки, словари, функции, исключения и файлы в практиках 1–8 почти не трогали, они были только на лекциях. Я оставил их ниже как <b>бонус</b>: на первом мидтерме вряд ли, а ко второму пригодятся. Приоритет: темы 1–7 и задачи.</div>
+</section>
+
+<section class="sec" id="plan">
+  <div class="sec-h"><span class="sec-no">0</span><h2>План до вторника</h2></div>
+  <p>Пять вечеров, по 1,5–2 часа. Главное правило: <b>каждый пример набирай руками и запускай</b>. Читать код и писать код это как смотреть на велосипед и ехать на нём.</p>
+  <div class="grid3">
+    <div class="card day"><b>Пт 30.10</b>Темы 1–4: типы, арифметика, math, ввод/вывод, условия. Угадайка 1–10. Задачи 1–4.</div>
+    <div class="card day"><b>Сб 31.10</b>Тема 5: while, random. Задачи 5–8. Угадайка 11–15.</div>
+    <div class="card day"><b>Вс 1.11</b>Тема 7: списки целиком. Задачи 9–16. Угадайка 16–30.</div>
+    <div class="card day"><b>Пн 2.11</b>Перерешать задачи без подсказок, на время (по 10–15 минут). Всё, где был «мимо». Таблица косяков.</div>
+    <div class="card day"><b>Вт 3.11</b>Утром только шпаргалка и угадайка на скорость. Новое не учить.</div>
+  </div>
+  <div class="tip">Где запускать: <a href="https://pythontutor.com/" target="_blank" rel="noopener">pythontutor.com</a> рисует коробки и стрелки по шагам, лучший способ понять списки и функции. Или просто IDLE / VS Code / Thonny на компе.</div>
+</section>
+
+<!-- 1 -->
+<section class="sec" id="types">
+  <div class="sec-h"><span class="sec-no">1</span><h2>Переменные и типы данных</h2></div>
+  <div class="analogy">Переменная это наклейка с именем, а значение это коробка. <code>x = 5</code> значит «положи 5 в коробку и прилепи на неё наклейку x». Знак <code>=</code> в Python не «равно», а «положи».</div>
+  <div class="table"><table>
+    <tr><th>Тип</th><th>Что это</th><th>Пример</th></tr>
+    <tr><td><code>int</code></td><td>целое число, любого размера</td><td><code>42</code>, <code>-7</code>, <code>10**30</code></td></tr>
+    <tr><td><code>float</code></td><td>дробное (с точкой!)</td><td><code>3.14</code>, <code>2.0</code>, <code>1e-3</code></td></tr>
+    <tr><td><code>str</code></td><td>текст в кавычках</td><td><code>'привет'</code>, <code>"5"</code></td></tr>
+    <tr><td><code>bool</code></td><td>правда / ложь</td><td><code>True</code>, <code>False</code> (с большой буквы)</td></tr>
+    <tr><td><code>NoneType</code></td><td>«ничего», пустое место</td><td><code>None</code></td></tr>
+  </table></div>
+<div class="code"><pre><code>x = <span class="n">5</span>
+y = <span class="n">2.5</span>
+name = <span class="s">&quot;Egor&quot;</span>
+ok = <span class="k">True</span>
+<span class="b">print</span>(<span class="b">type</span>(x), <span class="b">type</span>(y), <span class="b">type</span>(name), <span class="b">type</span>(ok))
+
+<span class="c"># преобразования типов</span>
+<span class="b">print</span>(<span class="b">int</span>(<span class="s">&quot;42&quot;</span>) + <span class="n">1</span>)     <span class="c"># строку в число</span>
+<span class="b">print</span>(<span class="b">str</span>(<span class="n">42</span>) + <span class="s">&quot;1&quot;</span>)     <span class="c"># число в строку</span>
+<span class="b">print</span>(<span class="b">float</span>(<span class="s">&quot;3.5&quot;</span>), <span class="b">int</span>(<span class="n">3.99</span>))   <span class="c"># int() отрубает дробь, а не округляет</span></code></pre><pre class="out"><code>&lt;class &#x27;int&#x27;&gt; &lt;class &#x27;float&#x27;&gt; &lt;class &#x27;str&#x27;&gt; &lt;class &#x27;bool&#x27;&gt;
+43
+421
+3.5 3</code></pre></div>
+  <div class="warn"><code>int(3.99)</code> даёт <code>3</code>, а не 4: дробь просто отрезается. <code>int("3.5")</code> вообще падает с ValueError, сначала надо <code>float("3.5")</code>.</div>
+  <h4>Имена переменных</h4>
+  <p>Буквы, цифры и <code>_</code>, но не с цифры. Регистр важен: <code>Age</code> и <code>age</code> это две разные переменные. Нельзя называть как ключевые слова (<code>for</code>, <code>if</code>, <code>class</code>…). Не называй переменную <code>list</code>, <code>str</code>, <code>sum</code>: сломаешь встроенную функцию.</p>
+<div class="code"><pre><code>a, b = <span class="n">1</span>, <span class="n">2</span>      <span class="c"># можно присвоить сразу две</span>
+a, b = b, a      <span class="c"># обмен без третьей переменной</span>
+<span class="b">print</span>(a, b)
+x = y = z = <span class="n">1</span>    <span class="c"># одно значение сразу в три</span>
+height = <span class="n">175</span>
+height = <span class="s">&quot;short&quot;</span> <span class="c"># динамическая типизация: тип можно сменить на лету</span>
+<span class="b">print</span>(<span class="b">type</span>(height))</code></pre><pre class="out"><code>2 1
+&lt;class &#x27;str&#x27;&gt;</code></pre></div>
+  <h4>bool(): что считается ложью</h4>
+  <p>В <code>False</code> превращаются только «нули и пустоты»: <code>0</code>, <code>0.0</code>, <code>""</code>, пустой список, <code>None</code>. Всё остальное <code>True</code>, даже строка <code>"False"</code>.</p>
+<div class="code"><pre><code><span class="b">print</span>(<span class="b">bool</span>(<span class="n">0</span>), <span class="b">bool</span>(-<span class="n">3</span>), <span class="b">bool</span>(<span class="n">0.0</span>), <span class="b">bool</span>(<span class="s">&quot;&quot;</span>), <span class="b">bool</span>(<span class="s">&quot;False&quot;</span>), <span class="b">bool</span>([]))
+<span class="b">print</span>(<span class="b">str</span>(<span class="k">True</span>), <span class="b">int</span>(<span class="k">True</span>), <span class="b">float</span>(<span class="n">7</span>))
+z = <span class="n">3</span> + <span class="n">4j</span>        <span class="c"># complex: мнимая часть пишется j, без знака умножения</span>
+<span class="b">print</span>(z.real, z.imag, <span class="b">type</span>(z))</code></pre><pre class="out"><code>False True False False True False
+True 1 7.0
+3.0 4.0 &lt;class &#x27;complex&#x27;&gt;</code></pre></div>
+</section>
+
+<!-- 2 -->
+<section class="sec" id="math">
+  <div class="sec-h"><span class="sec-no">2</span><h2>Арифметика</h2></div>
+  <div class="table"><table>
+    <tr><th>Оператор</th><th>Что делает</th><th>7 и 2</th></tr>
+    <tr><td><code>+ - *</code></td><td>как в школе</td><td><code>9, 5, 14</code></td></tr>
+    <tr><td><code>/</code></td><td>деление, <b>всегда float</b></td><td><code>3.5</code> (и <code>4/2</code> = <code>2.0</code>)</td></tr>
+    <tr><td><code>//</code></td><td>деление нацело (вниз)</td><td><code>3</code></td></tr>
+    <tr><td><code>%</code></td><td>остаток</td><td><code>1</code></td></tr>
+    <tr><td><code>**</code></td><td>степень</td><td><code>49</code></td></tr>
+  </table></div>
+  <div class="analogy">7 конфет на 2 друзей: каждому по <code>7 // 2 = 3</code>, и <code>7 % 2 = 1</code> конфета остаётся тебе. <code>% 2</code> это вечный тест на чётность: <code>n % 2 == 0</code> значит чётное.</div>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">7</span> / <span class="n">2</span>, <span class="n">7</span> // <span class="n">2</span>, <span class="n">7</span> % <span class="n">2</span>, <span class="n">2</span> ** <span class="n">10</span>)
+<span class="b">print</span>(-<span class="n">7</span> // <span class="n">2</span>)            <span class="c"># округляет ВНИЗ, к минус бесконечности</span>
+n = <span class="n">1234</span>
+<span class="b">print</span>(n % <span class="n">10</span>, n // <span class="n">10</span>)    <span class="c"># последняя цифра и число без неё</span>
+x = <span class="n">10</span>
+x += <span class="n">5</span>                    <span class="c"># то же, что x = x + 5</span>
+x *= <span class="n">2</span>
+<span class="b">print</span>(x)
+<span class="b">print</span>(<span class="b">round</span>(<span class="n">3.14159</span>, <span class="n">2</span>), <span class="b">abs</span>(-<span class="n">4</span>), <span class="b">max</span>(<span class="n">3</span>, <span class="n">9</span>, <span class="n">1</span>), <span class="b">min</span>(<span class="n">3</span>, <span class="n">9</span>, <span class="n">1</span>))</code></pre><pre class="out"><code>3.5 3 1 1024
+-4
+4 123
+30
+3.14 4 9 1</code></pre></div>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">0.1</span> + <span class="n">0.2</span>)          <span class="c"># дробные числа хранятся неточно</span>
+<span class="b">print</span>(<span class="b">round</span>(<span class="n">2.5</span>), <span class="b">round</span>(<span class="n">3.5</span>))   <span class="c"># «банковское» округление к чётному</span></code></pre><pre class="out"><code>0.30000000000000004
+2 4</code></pre></div>
+  <div class="warn">Никогда не сравнивай дроби через <code>==</code>: <code>0.1 + 0.2 == 0.3</code> даёт <code>False</code>. Сравнивай с допуском: <code>abs(a - b) &lt; 1e-9</code>. И <code>round(2.5)</code> это 2, не 3.</div>
+  <h4>Порядок действий (с практики 2)</h4>
+  <div class="table"><table>
+    <tr><th>Сначала</th><th>Что</th></tr>
+    <tr><td><code>( )</code></td><td>скобки</td></tr>
+    <tr><td><code>**</code></td><td>степень, <b>справа налево</b>: <code>2**3**2</code> = <code>2**9</code></td></tr>
+    <tr><td><code>+x -x</code></td><td>знак числа (ниже степени: <code>-2**2</code> = <code>-4</code>)</td></tr>
+    <tr><td><code>* / // %</code></td><td>слева направо</td></tr>
+    <tr><td><code>+ -</code></td><td>слева направо</td></tr>
+    <tr><td><code>== != &lt; &gt; is in</code></td><td>сравнения</td></tr>
+    <tr><td><code>not</code> → <code>and</code> → <code>or</code></td><td>логика, именно в таком порядке</td></tr>
+  </table></div>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">2</span> ** <span class="n">3</span> ** <span class="n">2</span>, (<span class="n">2</span> ** <span class="n">3</span>) ** <span class="n">2</span>)
+<span class="b">print</span>(-<span class="n">2</span> ** <span class="n">2</span>, (-<span class="n">2</span>) ** <span class="n">2</span>)
+<span class="b">print</span>(<span class="n">2</span> + <span class="n">5</span> * <span class="n">3</span>, (<span class="n">2</span> + <span class="n">5</span>) * <span class="n">3</span>, <span class="n">10</span> - <span class="n">4</span> - <span class="n">3</span>)
+<span class="b">print</span>(<span class="k">True</span> <span class="k">or</span> <span class="k">True</span> <span class="k">and</span> <span class="k">False</span>)   <span class="c"># and раньше or: True or (True and False)</span></code></pre><pre class="out"><code>512 64
+-4 4
+17 21 3
+True</code></pre></div>
+  <h4>Модуль math</h4>
+  <div class="analogy">Модуль это ящик с инструментами, который по умолчанию лежит в кладовке. <code>import math</code> приносит ящик, а потом берёшь инструмент через точку: <code>math.sqrt</code>.</div>
+<div class="code"><pre><code><span class="k">import</span> math
+<span class="b">print</span>(math.sqrt(<span class="n">16</span>), math.<span class="b">pow</span>(<span class="n">2</span>, <span class="n">3</span>))     <span class="c"># pow всегда даёт float</span>
+<span class="b">print</span>(math.log10(<span class="n">100</span>), math.log(math.e), <span class="b">round</span>(math.exp(<span class="n">1</span>), <span class="n">4</span>))
+<span class="b">print</span>(math.ceil(<span class="n">4.3</span>), math.floor(<span class="n">4.9</span>), math.fabs(-<span class="n">7.5</span>))
+<span class="c"># тригонометрия ждёт РАДИАНЫ</span>
+<span class="b">print</span>(<span class="b">round</span>(math.sin(math.radians(<span class="n">30</span>)), <span class="n">3</span>), <span class="b">round</span>(math.cos(math.pi / <span class="n">3</span>), <span class="n">3</span>))
+<span class="b">print</span>(math.degrees(math.pi))
+<span class="b">print</span>(math.isclose(<span class="n">0.1</span> + <span class="n">0.2</span>, <span class="n">0.3</span>))      <span class="c"># правильное сравнение дробей</span></code></pre><pre class="out"><code>4.0 8.0
+2.0 1.0 2.7183
+5 4 7.5
+0.5 0.5
+180.0
+True</code></pre></div>
+  <div class="warn"><code>math.sin(30)</code> считает синус 30 радиан, а не градусов. Сначала <code>math.radians(30)</code>. Для корня из отрицательного нужен <code>cmath.sqrt(-1)</code>, обычный <code>math.sqrt(-1)</code> падает с ValueError.</div>
+  <h4>== против is</h4>
+<div class="code"><pre><code>a = [<span class="n">1</span>, <span class="n">2</span>]
+b = [<span class="n">1</span>, <span class="n">2</span>]
+c = a
+<span class="b">print</span>(a == b, a <span class="k">is</span> b, a <span class="k">is</span> c)   <span class="c"># == одинаковое содержимое, is тот же самый объект</span>
+x = <span class="k">None</span>
+<span class="b">print</span>(x <span class="k">is</span> <span class="k">None</span>)                <span class="c"># с None сравнивают через is</span></code></pre><pre class="out"><code>True False True
+True</code></pre></div>
+  <div class="analogy">Два одинаковых айфона из коробки: <code>==</code> правда (одинаковые), <code>is</code> ложь (это два разных телефона). <code>c = a</code> это твой же телефон, только ты дал ему кличку.</div>
+</section>
+
+<!-- 3 -->
+<section class="sec" id="io">
+  <div class="sec-h"><span class="sec-no">3</span><h2>Ввод и вывод</h2></div>
+  <div class="analogy"><code>input()</code> как окошко в кассе: что бы тебе ни сунули, ты получаешь бумажку с текстом. Даже если на бумажке написано «5», это текст «5», а не число пять.</div>
+<div class="code"><pre><code>name = <span class="b">input</span>(<span class="s">&quot;Как зовут? &quot;</span>)
+age = <span class="b">int</span>(<span class="b">input</span>(<span class="s">&quot;Сколько лет? &quot;</span>))   <span class="c"># без int() было бы &quot;19&quot;</span>
+<span class="b">print</span>(<span class="s">&quot;Привет,&quot;</span>, name)
+<span class="b">print</span>(<span class="s">&quot;Через год тебе&quot;</span>, age + <span class="n">1</span>)</code></pre><pre class="out"><code>Как зовут? Egor
+Сколько лет? 19
+Привет, Egor
+Через год тебе 20</code></pre></div>
+<div class="code"><pre><code>a, b = <span class="b">map</span>(<span class="b">int</span>, <span class="b">input</span>().split())   <span class="c"># два числа в одной строке</span>
+<span class="b">print</span>(a + b)</code></pre><pre class="out"><code>3 4
+7</code></pre></div>
+  <h4>print: sep и end</h4>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>)              <span class="c"># по умолчанию через пробел</span>
+<span class="b">print</span>(<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, sep=<span class="s">&quot;-&quot;</span>)     <span class="c"># свой разделитель</span>
+<span class="b">print</span>(<span class="s">&quot;a&quot;</span>, end=<span class="s">&quot;&quot;</span>)          <span class="c"># не переходить на новую строку</span>
+<span class="b">print</span>(<span class="s">&quot;b&quot;</span>)</code></pre><pre class="out"><code>1 2 3
+1-2-3
+ab</code></pre></div>
+  <h4>f-строки: самый удобный способ</h4>
+<div class="code"><pre><code>price = <span class="n">1234.5678</span>
+item = <span class="s">&quot;кофе&quot;</span>
+<span class="b">print</span>(<span class="s">f&quot;</span>{item}<span class="s"> стоит </span>{price:<span class="s">.2f</span>}<span class="s"> руб</span><span class="s">&quot;</span>)   <span class="c"># 2 знака после точки</span>
+<span class="b">print</span>(<span class="s">f&quot;</span><span class="s">[</span>{item:<span class="s">&gt;8</span>}<span class="s">]</span><span class="s">&quot;</span>)                    <span class="c"># вправо, ширина 8</span>
+<span class="b">print</span>(<span class="s">f&quot;</span><span class="s">[</span>{<span class="n">42</span>:<span class="s">05d</span>}<span class="s">]</span><span class="s">&quot;</span>, <span class="s">f&quot;</span>{<span class="n">0.256</span>:<span class="s">.1%</span>}<span class="s">&quot;</span>)     <span class="c"># нули слева, проценты</span>
+<span class="b">print</span>(<span class="s">f&quot;</span>{<span class="n">2</span> + <span class="n">3</span> = }<span class="s">&quot;</span>)                     <span class="c"># отладочный трюк</span>
+<span class="b">print</span>(<span class="s">&quot;My name: {0}, age: {1}&quot;</span>.<span class="b">format</span>(<span class="s">&quot;Gabe&quot;</span>, <span class="n">25</span>))   <span class="c"># старый способ, тоже был на практике</span></code></pre><pre class="out"><code>кофе стоит 1234.57 руб
+[    кофе]
+[00042] 25.6%
+2 + 3 = 5
+My name: Gabe, age: 25</code></pre></div>
+  <div class="table"><table>
+    <tr><th>Формат</th><th>Что делает</th><th>Пример → результат</th></tr>
+    <tr><td><code>:.3f</code></td><td>3 знака после точки</td><td><code>f"{math.pi:.3f}"</code> → <code>3.142</code></td></tr>
+    <tr><td><code>:.0f</code></td><td>без дробной части (округляет)</td><td><code>f"{2.6:.0f}"</code> → <code>3</code></td></tr>
+    <tr><td><code>:8</code> / <code>:&gt;8</code> / <code>:^8</code></td><td>ширина 8, выравнивание</td><td>таблички</td></tr>
+    <tr><td><code>:,</code></td><td>разделитель тысяч</td><td><code>f"{15000000:,}"</code> → <code>15,000,000</code></td></tr>
+    <tr><td><code>:.1%</code></td><td>проценты</td><td><code>f"{0.256:.1%}"</code> → <code>25.6%</code></td></tr>
+  </table></div>
+  <div class="warn"><code>"Возраст: " + 19</code> падает с TypeError: строку с числом через <code>+</code> не склеишь. Либо <code>str(19)</code>, либо f-строка, либо <code>print("Возраст:", 19)</code> через запятую.</div>
+</section>
+
+<!-- 4 -->
+<section class="sec" id="if">
+  <div class="sec-h"><span class="sec-no">4</span><h2>Условия: if / elif / else</h2></div>
+  <div class="analogy">Светофор. Python проверяет условия сверху вниз и <b>выполняет только первую подошедшую ветку</b>, остальные даже не смотрит. <code>else</code> это «во всех остальных случаях».</div>
+<div class="code"><pre><code>score = <span class="b">int</span>(<span class="b">input</span>(<span class="s">&quot;Баллы: &quot;</span>))
+<span class="k">if</span> score &gt;= <span class="n">85</span>:
+    <span class="b">print</span>(<span class="s">&quot;5&quot;</span>)
+<span class="k">elif</span> score &gt;= <span class="n">70</span>:
+    <span class="b">print</span>(<span class="s">&quot;4&quot;</span>)      <span class="c"># 73 сюда, дальше не проверяется</span>
+<span class="k">elif</span> score &gt;= <span class="n">55</span>:
+    <span class="b">print</span>(<span class="s">&quot;3&quot;</span>)
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">&quot;не сдал&quot;</span>)</code></pre><pre class="out"><code>Баллы: 73
+4</code></pre></div>
+  <div class="table"><table>
+    <tr><th>Пишешь</th><th>Значит</th></tr>
+    <tr><td><code>== !=</code></td><td>равно, не равно (<code>=</code> это присваивание!)</td></tr>
+    <tr><td><code>&lt; &gt; &lt;= &gt;=</code></td><td>сравнения; можно цепочкой: <code>0 &lt; x &lt; 10</code></td></tr>
+    <tr><td><code>and or not</code></td><td>и, или, не</td></tr>
+    <tr><td><code>in</code></td><td>«входит ли»: <code>'a' in 'cat'</code>, <code>3 in [1,2,3]</code></td></tr>
+  </table></div>
+<div class="code"><pre><code>x = <span class="n">7</span>
+<span class="b">print</span>(<span class="n">0</span> &lt; x &lt; <span class="n">10</span>, x % <span class="n">2</span> == <span class="n">0</span> <span class="k">or</span> x &gt; <span class="n">5</span>, <span class="k">not</span> x == <span class="n">7</span>)
+<span class="c"># «пустое» считается ложью: 0, 0.0, &quot;&quot;, [], {}, None</span>
+<span class="k">if</span> []:
+    <span class="b">print</span>(<span class="s">&quot;не напечатается&quot;</span>)
+<span class="k">if</span> <span class="s">&quot;0&quot;</span>:
+    <span class="b">print</span>(<span class="s">&quot;непустая строка всегда True, даже &#x27;0&#x27;&quot;</span>)</code></pre><pre class="out"><code>True True False
+непустая строка всегда True, даже &#x27;0&#x27;</code></pre></div>
+  <div class="warn">Отступы это часть синтаксиса. Всё, что внутри <code>if</code>, сдвинуто на 4 пробела, а после условия стоит двоеточие. Забыл <code>:</code> или сдвинул криво, получишь SyntaxError или IndentationError.</div>
+  <div class="warn"><code>if x == 1 or 2:</code> всегда True, потому что читается как <code>(x == 1) or 2</code>, а 2 это «правда». Правильно: <code>if x == 1 or x == 2:</code> или <code>if x in (1, 2):</code>.</div>
+  <h4>Тернарный оператор: if в одну строку</h4>
+<div class="code"><pre><code>number = <span class="n">7</span>
+result = <span class="s">&quot;Even&quot;</span> <span class="k">if</span> number % <span class="n">2</span> == <span class="n">0</span> <span class="k">else</span> <span class="s">&quot;Odd&quot;</span>   <span class="c"># значение_если_да if условие else значение_если_нет</span>
+a, b = <span class="n">2000</span>, <span class="n">330</span>
+greater = a <span class="k">if</span> a &gt; b <span class="k">else</span> b
+<span class="b">print</span>(result, greater)</code></pre><pre class="out"><code>Odd 2000</code></pre></div>
+  <h4>Вложенные условия и логика</h4>
+<div class="code"><pre><code>year = <span class="n">2100</span>
+<span class="c"># високосный: делится на 4, но не на 100, ИЛИ делится на 400</span>
+<span class="k">if</span> (year % <span class="n">4</span> == <span class="n">0</span> <span class="k">and</span> year % <span class="n">100</span> != <span class="n">0</span>) <span class="k">or</span> year % <span class="n">400</span> == <span class="n">0</span>:
+    <span class="b">print</span>(year, <span class="s">&quot;високосный&quot;</span>)
+<span class="k">else</span>:
+    <span class="b">print</span>(year, <span class="s">&quot;не високосный&quot;</span>)
+
+A, B = <span class="k">True</span>, <span class="k">False</span>
+<span class="b">print</span>((A <span class="k">and</span> <span class="k">not</span> B) <span class="k">or</span> (<span class="k">not</span> A <span class="k">and</span> B))    <span class="c"># XOR: правда, если ровно одно True</span>
+<span class="b">print</span>((<span class="k">not</span> (A <span class="k">and</span> B)) == ((<span class="k">not</span> A) <span class="k">or</span> (<span class="k">not</span> B)))   <span class="c"># закон де Моргана</span></code></pre><pre class="out"><code>2100 не високосный
+True
+True</code></pre></div>
+  <h4>match-case (Python 3.10+)</h4>
+<div class="code"><pre><code>grade = <span class="n">4</span>
+match grade:
+    case <span class="n">5</span>:
+        <span class="b">print</span>(<span class="s">&quot;Very Good&quot;</span>)
+    case <span class="n">4</span>:
+        <span class="b">print</span>(<span class="s">&quot;Good&quot;</span>)
+    case <span class="n">2</span> | <span class="n">3</span>:              <span class="c"># несколько вариантов через |</span>
+        <span class="b">print</span>(<span class="s">&quot;Passed&quot;</span>)
+    case _:                  <span class="c"># _ это «всё остальное», как else</span>
+        <span class="b">print</span>(<span class="s">&quot;Insufficient / invalid&quot;</span>)</code></pre><pre class="out"><code>Good</code></pre></div>
+  <div class="warn">Переменная, созданная только внутри <code>if</code>, существует только если условие сработало. Иначе дальше будет NameError. Задай её до <code>if</code> (хоть <code>text = None</code>) или в каждой ветке, включая <code>else</code>.</div>
+<div class="code"><pre><code>year = <span class="n">1</span>
+<span class="k">if</span> year &gt; <span class="n">6</span>:
+    text = <span class="s">&quot;School-age&quot;</span>
+<span class="b">print</span>(text)</code></pre><pre class="out"><code>Traceback (most recent call last):
+  ...
+NameError: name &#x27;text&#x27; is not defined</code></pre></div>
+  <div class="check"><b>Самопроверка</b>
+    <details class="reveal"><summary>Что напечатает: <code>x = 10</code>, потом <code>if x &gt; 5: print('A')</code>, <code>elif x &gt; 8: print('B')</code>?</summary><div>Только <code>A</code>. Первая подошедшая ветка выполнилась, <code>elif</code> уже не проверяется, хотя 10 &gt; 8 тоже правда.</div></details>
+    <details class="reveal"><summary>Как одним условием проверить «двузначное число»?</summary><div><code>if 10 &lt;= a &lt; 100:</code>. Для отрицательных: <code>10 &lt;= abs(a) &lt; 100</code>.</div></details>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="sec" id="loops">
+  <div class="sec-h"><span class="sec-no">5</span><h2>Циклы: for, while, range</h2></div>
+  <div class="analogy"><code>for</code> это «для каждого предмета на конвейере сделай…», количество известно заранее. <code>while</code> это «мешай суп, пока не закипит»: крутится, пока условие правда, и сколько раз, заранее не знаешь.</div>
+  <h4>range: старт, стоп (не включая), шаг</h4>
+<div class="code"><pre><code><span class="b">print</span>(<span class="b">list</span>(<span class="b">range</span>(<span class="n">5</span>)))          <span class="c"># 0..4, пятёрки нет!</span>
+<span class="b">print</span>(<span class="b">list</span>(<span class="b">range</span>(<span class="n">2</span>, <span class="n">6</span>)))       <span class="c"># 2..5</span>
+<span class="b">print</span>(<span class="b">list</span>(<span class="b">range</span>(<span class="n">10</span>, <span class="n">0</span>, -<span class="n">3</span>)))  <span class="c"># обратный шаг</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">3</span>):
+    <span class="b">print</span>(<span class="s">&quot;круг&quot;</span>, i)</code></pre><pre class="out"><code>[0, 1, 2, 3, 4]
+[2, 3, 4, 5]
+[10, 7, 4, 1]
+круг 0
+круг 1
+круг 2</code></pre></div>
+  <h4>Накопители: сумма, счётчик, максимум</h4>
+  <p>Почти каждая задача на мидтерме это «пройди по данным и что-то накопи». Шаблон всегда один: <b>до цикла</b> завёл переменную, <b>в цикле</b> обновляешь, <b>после цикла</b> печатаешь.</p>
+<div class="code"><pre><code>nums = [<span class="n">4</span>, -<span class="n">2</span>, <span class="n">9</span>, <span class="n">0</span>, <span class="n">7</span>, -<span class="n">5</span>]
+total = <span class="n">0</span>          <span class="c"># копилка для суммы</span>
+count_pos = <span class="n">0</span>      <span class="c"># счётчик</span>
+biggest = nums[<span class="n">0</span>]  <span class="c"># максимум начинаем с первого, а не с 0!</span>
+<span class="k">for</span> n <span class="k">in</span> nums:
+    total += n
+    <span class="k">if</span> n &gt; <span class="n">0</span>:
+        count_pos += <span class="n">1</span>
+    <span class="k">if</span> n &gt; biggest:
+        biggest = n
+<span class="b">print</span>(total, count_pos, biggest)
+<span class="b">print</span>(<span class="b">sum</span>(nums), <span class="b">max</span>(nums))    <span class="c"># то же встроенными функциями</span></code></pre><pre class="out"><code>13 3 9
+13 9</code></pre></div>
+  <h4>while, break, continue</h4>
+<div class="code"><pre><code><span class="c"># классика: читаем числа, пока не введут -1</span>
+total = <span class="n">0</span>
+<span class="k">while</span> <span class="k">True</span>:
+    s = <span class="b">input</span>(<span class="s">&quot;число (-1 = стоп): &quot;</span>)
+    <span class="k">if</span> s == <span class="s">&quot;-1&quot;</span>:
+        <span class="k">break</span>           <span class="c"># выйти из цикла совсем</span>
+    <span class="k">if</span> <span class="k">not</span> s.lstrip(<span class="s">&quot;-&quot;</span>).isdigit():
+        <span class="b">print</span>(<span class="s">&quot;это не число, пропускаю&quot;</span>)
+        <span class="k">continue</span>        <span class="c"># перейти к следующему кругу</span>
+    total += <span class="b">int</span>(s)
+<span class="b">print</span>(<span class="s">&quot;сумма:&quot;</span>, total)</code></pre><pre class="out"><code>число (-1 = стоп): 5
+число (-1 = стоп): abc
+это не число, пропускаю
+число (-1 = стоп): -1
+сумма: 5</code></pre></div>
+<div class="code"><pre><code>n = <span class="n">1234</span>
+digits = <span class="n">0</span>
+<span class="k">while</span> n &gt; <span class="n">0</span>:        <span class="c"># сколько цифр в числе</span>
+    n //= <span class="n">10</span>
+    digits += <span class="n">1</span>
+<span class="b">print</span>(digits)</code></pre><pre class="out"><code>4</code></pre></div>
+  <h4>Вложенные циклы</h4>
+<div class="code"><pre><code><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">4</span>):
+    <span class="k">for</span> j <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">4</span>):
+        <span class="b">print</span>(i * j, end=<span class="s">&quot;\t&quot;</span>)
+    <span class="b">print</span>()        <span class="c"># перевод строки после каждого ряда</span></code></pre><pre class="out"><code>1	2	3	
+2	4	6	
+3	6	9</code></pre></div>
+  <h4>enumerate и zip</h4>
+<div class="code"><pre><code>names = [<span class="s">&quot;Аня&quot;</span>, <span class="s">&quot;Боря&quot;</span>, <span class="s">&quot;Вика&quot;</span>]
+marks = [<span class="n">5</span>, <span class="n">3</span>, <span class="n">4</span>]
+<span class="k">for</span> i, name <span class="k">in</span> <span class="b">enumerate</span>(names, start=<span class="n">1</span>):
+    <span class="b">print</span>(i, name)
+<span class="k">for</span> name, m <span class="k">in</span> <span class="b">zip</span>(names, marks):
+    <span class="b">print</span>(name, <span class="s">&quot;-&gt;&quot;</span>, m)</code></pre><pre class="out"><code>1 Аня
+2 Боря
+3 Вика
+Аня -&gt; 5
+Боря -&gt; 3
+Вика -&gt; 4</code></pre></div>
+  <h4>else у цикла: «дошёл до конца без break»</h4>
+  <div class="analogy">Ищешь ключи по карманам. Нашёл, <code>break</code>. Проверил все карманы и не нашёл, тогда срабатывает <code>else</code>: «ключей нет». Если был <code>break</code>, <code>else</code> молчит.</div>
+<div class="code"><pre><code>number = <span class="n">91</span>
+divisor = <span class="n">2</span>
+<span class="k">while</span> divisor * divisor &lt;= number:
+    <span class="k">if</span> number % divisor == <span class="n">0</span>:
+        <span class="b">print</span>(number, <span class="s">&quot;делится на&quot;</span>, divisor)
+        <span class="k">break</span>
+    divisor += <span class="n">1</span>
+<span class="k">else</span>:
+    <span class="b">print</span>(number, <span class="s">&quot;простое&quot;</span>)
+
+<span class="k">for</span> fruit <span class="k">in</span> [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;pear&quot;</span>, <span class="s">&quot;plum&quot;</span>]:
+    <span class="k">if</span> fruit == <span class="s">&quot;banana&quot;</span>:
+        <span class="b">print</span>(<span class="s">&quot;нашёл банан&quot;</span>)
+        <span class="k">break</span>
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">&quot;банана нет&quot;</span>)</code></pre><pre class="out"><code>91 делится на 7
+банана нет</code></pre></div>
+  <div class="tip"><code>pass</code> это «пустое место»: тело <code>if</code>, <code>for</code>, <code>while</code> не может быть пустым, а <code>pass</code> ничего не делает. Удобно как заглушка: <code>for x in data: pass  # допишу потом</code>.</div>
+  <h4>Модуль random</h4>
+<div class="code"><pre><code><span class="k">import</span> random
+random.seed(<span class="n">42</span>)                       <span class="c"># одинаковый seed = одинаковые «случайные» числа</span>
+<span class="b">print</span>(random.randint(<span class="n">1</span>, <span class="n">100</span>))         <span class="c"># целое, 1 и 100 ВКЛЮЧИТЕЛЬНО</span>
+<span class="b">print</span>(random.randrange(<span class="n">10</span>, <span class="n">100</span>, <span class="n">5</span>))   <span class="c"># как range: 100 не включается</span>
+<span class="b">print</span>(<span class="b">round</span>(random.random(), <span class="n">3</span>))      <span class="c"># дробь от 0 до 1</span>
+<span class="b">print</span>(<span class="b">round</span>(random.uniform(<span class="n">3</span>, <span class="n">5</span>), <span class="n">3</span>)) <span class="c"># дробь от 3 до 5</span>
+nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+<span class="b">print</span>(random.choice(nums))            <span class="c"># один случайный элемент</span>
+<span class="b">print</span>(random.sample(<span class="b">range</span>(<span class="n">1</span>, <span class="n">91</span>), <span class="n">5</span>)) <span class="c"># 5 РАЗНЫХ из 1..90 (лотерея)</span>
+<span class="b">print</span>(random.choices(nums, k=<span class="n">3</span>))      <span class="c"># 3 штуки, повторы можно</span>
+random.shuffle(nums)                  <span class="c"># перемешать на месте (вернёт None)</span>
+<span class="b">print</span>(nums)</code></pre><pre class="out"><code>82
+25
+0.025
+3.55
+2
+[18, 14, 87, 70, 12]
+[3, 1, 1]
+[5, 4, 3, 1, 2]</code></pre></div>
+  <div class="warn"><code>randint(1, 6)</code> включает 6, а <code>randrange(1, 6)</code> и <code>range(1, 6)</code> нет. Путаница на ровном месте, которую любят проверять.</div>
+  <div class="warn">Вечный цикл: в <code>while</code> забыл менять переменную условия (<code>n += 1</code>), и программа висит. Спасает Ctrl+C.</div>
+  <div class="warn">«Ошибка на единицу»: <code>range(1, 10)</code> не включает 10. Нужны числа от 1 до n включительно, пиши <code>range(1, n + 1)</code>.</div>
+</section>
+
+<!-- 6 -->
+<section class="sec" id="strings">
+  <div class="sec-h"><span class="sec-no">6</span><h2>Строки <span class="bonus">бонус</span></h2></div>
+  <p class="note">На практиках строки шли только через f-строки, на лекции L03 была теория. Но срезы тут работают ровно как у списков, так что прочитай хотя бы первые два блока.</p>
+  <div class="analogy">Строка это ряд пронумерованных ячеек с буквами, номера начинаются с 0. Отрицательные номера считают с конца: <code>-1</code> это последняя буква. Строку нельзя менять: можно только сделать новую.</div>
+<div class="code"><pre><code>s = <span class="s">&quot;Python&quot;</span>
+<span class="c">#    P  y  t  h  o  n</span>
+<span class="c">#    0  1  2  3  4  5</span>
+<span class="c">#   -6 -5 -4 -3 -2 -1</span>
+<span class="b">print</span>(s[<span class="n">0</span>], s[-<span class="n">1</span>], <span class="b">len</span>(s))
+<span class="b">print</span>(s[<span class="n">1</span>:<span class="n">4</span>])      <span class="c"># с 1 по 3, конец не включается</span>
+<span class="b">print</span>(s[:<span class="n">2</span>], s[<span class="n">2</span>:], s[::<span class="n">2</span>], s[::-<span class="n">1</span>])   <span class="c"># начало, хвост, через одну, задом наперёд</span></code></pre><pre class="out"><code>P n 6
+yth
+Py thon Pto nohtyP</code></pre></div>
+  <div class="tip">Срез <code>[start:stop:step]</code> работает одинаково для строк, списков и кортежей. <code>[::-1]</code> переворачивает. Срез за границами не падает (<code>s[2:100]</code> ок), а индекс за границей падает (<code>s[100]</code> → IndexError).</div>
+  <h4>Методы, которые спрашивают чаще всего</h4>
+<div class="code"><pre><code>t = <span class="s">&quot;  Hello, World  &quot;</span>
+<span class="b">print</span>(t.strip())                  <span class="c"># убрать пробелы по краям</span>
+<span class="b">print</span>(t.lower(), t.upper())
+<span class="b">print</span>(t.strip().replace(<span class="s">&quot;World&quot;</span>, <span class="s">&quot;BME&quot;</span>))
+<span class="b">print</span>(<span class="s">&quot;a,b,c&quot;</span>.split(<span class="s">&quot;,&quot;</span>))         <span class="c"># строку в список</span>
+<span class="b">print</span>(<span class="s">&quot;one two  three&quot;</span>.split())   <span class="c"># без аргумента режет по любым пробелам</span>
+<span class="b">print</span>(<span class="s">&quot;-&quot;</span>.join([<span class="s">&quot;2026&quot;</span>, <span class="s">&quot;11&quot;</span>, <span class="s">&quot;03&quot;</span>]))   <span class="c"># список в строку</span>
+<span class="b">print</span>(<span class="s">&quot;banana&quot;</span>.count(<span class="s">&quot;a&quot;</span>), <span class="s">&quot;banana&quot;</span>.find(<span class="s">&quot;n&quot;</span>), <span class="s">&quot;banana&quot;</span>.find(<span class="s">&quot;z&quot;</span>))
+<span class="b">print</span>(<span class="s">&quot;42&quot;</span>.isdigit(), <span class="s">&quot;abc&quot;</span>.isalpha(), <span class="s">&quot;Hi&quot;</span>.startswith(<span class="s">&quot;H&quot;</span>))</code></pre><pre class="out"><code>Hello, World
+  hello, world     HELLO, WORLD  
+Hello, BME
+[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]
+[&#x27;one&#x27;, &#x27;two&#x27;, &#x27;three&#x27;]
+2026-11-03
+3 2 -1
+True True True</code></pre></div>
+<div class="code"><pre><code>s = <span class="s">&quot;hello&quot;</span>
+<span class="c"># s[0] = &quot;H&quot; упадёт: строки не меняются. Делаем новую:</span>
+s = <span class="s">&quot;H&quot;</span> + s[<span class="n">1</span>:]
+<span class="b">print</span>(s)
+<span class="k">for</span> ch <span class="k">in</span> <span class="s">&quot;abc&quot;</span>:          <span class="c"># перебор по буквам</span>
+    <span class="b">print</span>(ch, <span class="b">ord</span>(ch))    <span class="c"># ord: код буквы, chr: обратно</span>
+<span class="b">print</span>(<span class="s">&quot;ab&quot;</span> * <span class="n">3</span>, <span class="s">&quot;x&quot;</span> <span class="k">in</span> <span class="s">&quot;box&quot;</span>)</code></pre><pre class="out"><code>Hello
+a 97
+b 98
+c 99
+ababab True</code></pre></div>
+  <div class="warn">Методы строк ничего не меняют «на месте», а возвращают новую строку. <code>s.upper()</code> без присваивания бесполезен: пиши <code>s = s.upper()</code>.</div>
+  <h4>Пример: посчитать гласные</h4>
+<div class="code"><pre><code>text = <span class="s">&quot;Programming in Python is fun&quot;</span>
+vowels = <span class="n">0</span>
+<span class="k">for</span> ch <span class="k">in</span> text.lower():
+    <span class="k">if</span> ch <span class="k">in</span> <span class="s">&quot;aeiou&quot;</span>:
+        vowels += <span class="n">1</span>
+<span class="b">print</span>(vowels)</code></pre><pre class="out"><code>7</code></pre></div>
+</section>
+
+<!-- 7 -->
+<section class="sec" id="lists">
+  <div class="sec-h"><span class="sec-no">7</span><h2>Списки</h2></div>
+  <div class="analogy">Список это поезд из вагонов: вагоны пронумерованы с 0, в них можно класть что угодно, добавлять вагоны в конец, выкидывать из середины. В отличие от строки, список меняется на месте.</div>
+<div class="code"><pre><code>a = [<span class="n">3</span>, <span class="n">1</span>, <span class="n">4</span>]
+a.append(<span class="n">1</span>)         <span class="c"># в конец</span>
+a.insert(<span class="n">0</span>, <span class="n">9</span>)      <span class="c"># на позицию 0</span>
+<span class="b">print</span>(a)
+a.remove(<span class="n">1</span>)         <span class="c"># удалить первую единицу (по значению)</span>
+last = a.pop()      <span class="c"># вынуть последний (по позиции, по умолчанию -1)</span>
+<span class="b">print</span>(a, last)
+a[<span class="n">0</span>] = <span class="n">100</span>          <span class="c"># заменить элемент</span>
+<span class="b">print</span>(a, <span class="b">len</span>(a), a.index(<span class="n">4</span>), <span class="n">4</span> <span class="k">in</span> a)
+a.extend([<span class="n">7</span>, <span class="n">8</span>])    <span class="c"># приклеить другой список</span>
+<span class="b">print</span>(a)</code></pre><pre class="out"><code>[9, 3, 1, 4, 1]
+[9, 3, 4] 1
+[100, 3, 4] 3 2 True
+[100, 3, 4, 7, 8]</code></pre></div>
+  <h4>sort() против sorted()</h4>
+<div class="code"><pre><code>a = [<span class="n">3</span>, <span class="n">1</span>, <span class="n">2</span>]
+b = <span class="b">sorted</span>(a)       <span class="c"># НОВЫЙ отсортированный список, a не тронут</span>
+<span class="b">print</span>(a, b)
+r = a.sort()        <span class="c"># сортирует a на месте и возвращает None!</span>
+<span class="b">print</span>(a, r)
+<span class="b">print</span>(<span class="b">sorted</span>([<span class="n">3</span>, <span class="n">1</span>, <span class="n">2</span>], reverse=<span class="k">True</span>))
+<span class="b">print</span>(<span class="b">sorted</span>([<span class="s">&quot;bob&quot;</span>, <span class="s">&quot;Al&quot;</span>, <span class="s">&quot;cy&quot;</span>], key=<span class="b">len</span>))   <span class="c"># по длине</span></code></pre><pre class="out"><code>[3, 1, 2] [1, 2, 3]
+[1, 2, 3] None
+[3, 2, 1]
+[&#x27;Al&#x27;, &#x27;cy&#x27;, &#x27;bob&#x27;]</code></pre></div>
+  <div class="warn"><code>a = a.sort()</code> превращает список в <code>None</code>. Методы, которые меняют список (<code>sort</code>, <code>append</code>, <code>reverse</code>…), возвращают <code>None</code>.</div>
+  <h4>Ловушка: две наклейки на одной коробке</h4>
+<div class="code"><pre><code>a = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+b = a           <span class="c"># НЕ копия, а второе имя для того же списка</span>
+b.append(<span class="n">4</span>)
+<span class="b">print</span>(a)        <span class="c"># a тоже изменился!</span>
+c = a.copy()    <span class="c"># настоящая копия (или a[:], или list(a))</span>
+c.append(<span class="n">5</span>)
+<span class="b">print</span>(a, c)</code></pre><pre class="out"><code>[1, 2, 3, 4]
+[1, 2, 3, 4] [1, 2, 3, 4, 5]</code></pre></div>
+  <h4>Генераторы списков (list comprehension)</h4>
+<div class="code"><pre><code>squares = [x ** <span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> <span class="b">range</span>(<span class="n">6</span>)]
+evens = [x <span class="k">for</span> x <span class="k">in</span> <span class="b">range</span>(<span class="n">10</span>) <span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span>]
+words = [w.upper() <span class="k">for</span> w <span class="k">in</span> <span class="s">&quot;a bb ccc&quot;</span>.split()]
+<span class="b">print</span>(squares, evens, words)</code></pre><pre class="out"><code>[0, 1, 4, 9, 16, 25] [0, 2, 4, 6, 8] [&#x27;A&#x27;, &#x27;BB&#x27;, &#x27;CCC&#x27;]</code></pre></div>
+  <p>Читается как предложение: «дай мне <code>x**2</code> для каждого <code>x</code> из <code>range(6)</code>, если…». Это то же самое, что цикл с <code>append</code>, только в одну строку.</p>
+<div class="code"><pre><code>numbers = [<span class="n">1</span>, <span class="n">5</span>, <span class="n">2</span>, <span class="n">7</span>, <span class="n">9</span>, <span class="n">4</span>]
+<span class="c"># длинный путь, как на практике 7</span>
+doubled = []
+<span class="k">for</span> n <span class="k">in</span> numbers:
+    <span class="k">if</span> n &gt; <span class="n">3</span>:
+        doubled.append(n * <span class="n">2</span>)
+<span class="c"># короткий путь</span>
+<span class="b">print</span>(doubled, [n * <span class="n">2</span> <span class="k">for</span> n <span class="k">in</span> numbers <span class="k">if</span> n &gt; <span class="n">3</span>])
+<span class="b">print</span>([<span class="n">0</span>] * <span class="n">5</span>, [<span class="s">&quot;-&quot;</span>] * <span class="n">3</span>)                       <span class="c"># N одинаковых</span>
+<span class="b">print</span>([<span class="s">&quot;even&quot;</span> <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span> <span class="k">else</span> <span class="s">&quot;odd&quot;</span> <span class="k">for</span> n <span class="k">in</span> numbers])   <span class="c"># if-else ДО for</span></code></pre><pre class="out"><code>[10, 14, 18, 8] [10, 14, 18, 8]
+[0, 0, 0, 0, 0] [&#x27;-&#x27;, &#x27;-&#x27;, &#x27;-&#x27;]
+[&#x27;odd&#x27;, &#x27;odd&#x27;, &#x27;even&#x27;, &#x27;odd&#x27;, &#x27;odd&#x27;, &#x27;even&#x27;]</code></pre></div>
+  <div class="tip">Фильтр <code>if</code> стоит <b>после</b> <code>for</code>. А «выбор из двух значений» <code>a if усл else b</code> стоит <b>до</b> <code>for</code>. Перепутаешь, будет SyntaxError.</div>
+  <h4>Менять элементы списка в цикле</h4>
+<div class="code"><pre><code>numbers = [<span class="n">1</span>, <span class="n">5</span>, <span class="n">2</span>, <span class="n">7</span>]
+<span class="k">for</span> n <span class="k">in</span> numbers:
+    n = n * <span class="n">10</span>          <span class="c"># меняет только переменную n, список не трогает!</span>
+<span class="b">print</span>(numbers)
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="b">len</span>(numbers)):
+    numbers[i] = numbers[i] * <span class="n">10</span>   <span class="c"># через индекс работает</span>
+<span class="b">print</span>(numbers)
+<span class="k">for</span> i, n <span class="k">in</span> <span class="b">enumerate</span>(numbers):
+    numbers[i] = n + <span class="n">1</span>             <span class="c"># или через enumerate</span>
+<span class="b">print</span>(numbers)</code></pre><pre class="out"><code>[1, 5, 2, 7]
+[10, 50, 20, 70]
+[11, 51, 21, 71]</code></pre></div>
+  <h4>Срезы: и прочитать, и заменить кусок</h4>
+<div class="code"><pre><code>fruits = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;pear&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;orange&quot;</span>, <span class="s">&quot;kiwi&quot;</span>, <span class="s">&quot;melon&quot;</span>, <span class="s">&quot;mango&quot;</span>]
+<span class="b">print</span>(fruits[<span class="n">2</span>:<span class="n">5</span>], fruits[:<span class="n">2</span>], fruits[-<span class="n">3</span>:])
+<span class="b">print</span>(fruits[-<span class="n">1</span>:-<span class="n">4</span>:-<span class="n">1</span>])            <span class="c"># с конца, шаг назад</span>
+fruits[<span class="n">1</span>:<span class="n">3</span>] = [<span class="s">&quot;tangerine&quot;</span>]        <span class="c"># 2 элемента заменили одним</span>
+fruits[<span class="n">1</span>:<span class="n">1</span>] = [<span class="s">&quot;lemon&quot;</span>]            <span class="c"># вставка без удаления</span>
+fruits[<span class="n">4</span>:] = []                    <span class="c"># отрубить хвост</span>
+<span class="b">print</span>(fruits)</code></pre><pre class="out"><code>[&#x27;banana&#x27;, &#x27;orange&#x27;, &#x27;kiwi&#x27;] [&#x27;apple&#x27;, &#x27;pear&#x27;] [&#x27;kiwi&#x27;, &#x27;melon&#x27;, &#x27;mango&#x27;]
+[&#x27;mango&#x27;, &#x27;melon&#x27;, &#x27;kiwi&#x27;]
+[&#x27;apple&#x27;, &#x27;lemon&#x27;, &#x27;tangerine&#x27;, &#x27;orange&#x27;]</code></pre></div>
+  <h4>Распаковка: * и _</h4>
+<div class="code"><pre><code>length, width, thickness = (<span class="n">120</span>, <span class="n">40</span>, <span class="n">5</span>)     <span class="c"># сколько слева, столько справа</span>
+_, width, _ = (<span class="n">120</span>, <span class="n">40</span>, <span class="n">5</span>)                  <span class="c"># _ = «мне не нужно»</span>
+first, *middle, last = (<span class="n">0.8</span>, <span class="n">1.1</span>, <span class="n">1.4</span>, <span class="n">1.0</span>, <span class="n">0.9</span>)
+<span class="b">print</span>(width, first, middle, last)           <span class="c"># * собирает остаток в СПИСОК</span>
+a = [<span class="n">1</span>, <span class="n">2</span>]
+b = [<span class="n">3</span>, <span class="n">4</span>]
+<span class="b">print</span>([*a, *b, <span class="n">5</span>])                          <span class="c"># * справа «высыпает» список</span></code></pre><pre class="out"><code>40 0.8 [1.1, 1.4, 1.0] 0.9
+[1, 2, 3, 4, 5]</code></pre></div>
+  <h4>Кортежи в списке: записи о студентах</h4>
+<div class="code"><pre><code>results = [(<span class="s">&quot;BATMAN&quot;</span>, <span class="n">14</span>), (<span class="s">&quot;LOU7RG6&quot;</span>, <span class="n">80</span>), (<span class="s">&quot;SDRPH9&quot;</span>, <span class="n">67</span>), (<span class="s">&quot;SWR9IP&quot;</span>, <span class="n">34</span>)]
+<span class="k">for</span> code, score <span class="k">in</span> results:              <span class="c"># распаковка прямо в for</span>
+    <span class="k">if</span> score &gt;= <span class="n">40</span>:
+        <span class="b">print</span>(code, <span class="s">&quot;прошёл&quot;</span>)
+top = <span class="b">sorted</span>(results, key=<span class="k">lambda</span> r: r[<span class="n">1</span>], reverse=<span class="k">True</span>)   <span class="c"># по второму элементу</span>
+<span class="b">print</span>([code <span class="k">for</span> code, _ <span class="k">in</span> top[:<span class="n">3</span>]])</code></pre><pre class="out"><code>LOU7RG6 прошёл
+SDRPH9 прошёл
+[&#x27;LOU7RG6&#x27;, &#x27;SDRPH9&#x27;, &#x27;SWR9IP&#x27;]</code></pre></div>
+  <h4>Список списков (таблица)</h4>
+<div class="code"><pre><code>grid = [[<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>],
+        [<span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]]
+<span class="b">print</span>(grid[<span class="n">1</span>][<span class="n">2</span>])            <span class="c"># строка 1, столбец 2</span>
+<span class="k">for</span> row <span class="k">in</span> grid:
+    <span class="b">print</span>(<span class="b">sum</span>(row))
+grid2 = [[<span class="n">0</span>] * <span class="n">3</span> <span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span>(<span class="n">2</span>)]   <span class="c"># правильный способ создать 2x3</span>
+<span class="b">print</span>(grid2)</code></pre><pre class="out"><code>6
+6
+15
+[[0, 0, 0], [0, 0, 0]]</code></pre></div>
+  <div class="warn"><code>[[0] * 3] * 2</code> создаёт две ссылки на <b>одну и ту же</b> строку: меняешь одну, меняется и вторая. Таблицу создавай генератором, как выше.</div>
+<div class="code"><pre><code>bad = [[<span class="n">0</span>] * <span class="n">3</span>] * <span class="n">2</span>
+bad[<span class="n">0</span>][<span class="n">0</span>] = <span class="n">9</span>
+<span class="b">print</span>(bad, bad[<span class="n">0</span>] <span class="k">is</span> bad[<span class="n">1</span>])     <span class="c"># обе строки поменялись: это ОДИН список</span>
+N = <span class="n">3</span>
+unit = [[<span class="n">1</span> <span class="k">if</span> i == j <span class="k">else</span> <span class="n">0</span> <span class="k">for</span> j <span class="k">in</span> <span class="b">range</span>(N)] <span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(N)]   <span class="c"># единичная матрица</span>
+<span class="k">for</span> row <span class="k">in</span> unit:
+    <span class="b">print</span>(*row)                  <span class="c"># * печатает элементы через пробел, без скобок</span></code></pre><pre class="out"><code>[[9, 0, 0], [9, 0, 0]] True
+1 0 0
+0 1 0
+0 0 1</code></pre></div>
+  <h4>is, isinstance и итераторы (практика 8)</h4>
+<div class="code"><pre><code>v1 = [<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>]
+v2 = v1
+v3 = v1.copy()
+<span class="b">print</span>(v1 <span class="k">is</span> v2, v1 <span class="k">is</span> v3, v1 == v3)
+<span class="b">print</span>(<span class="b">isinstance</span>(<span class="n">3.5</span>, <span class="b">float</span>), <span class="b">isinstance</span>(<span class="k">True</span>, <span class="b">int</span>), <span class="b">type</span>(<span class="k">True</span>) <span class="k">is</span> <span class="b">int</span>)
+it = <span class="b">iter</span>([<span class="n">1</span>, <span class="n">5</span>, <span class="n">2</span>])     <span class="c"># итератор выдаёт по одному элементу</span>
+<span class="b">print</span>(<span class="b">next</span>(it), <span class="b">next</span>(it), <span class="b">next</span>(it))
+<span class="c"># ещё один next(it) упадёт с StopIteration: элементы кончились</span></code></pre><pre class="out"><code>True False True
+True True False
+1 5 2</code></pre></div>
+  <div class="tip"><code>isinstance(True, int)</code> это <code>True</code>, потому что bool наследуется от int. А <code>type(True) is int</code> это <code>False</code>: тип ровно bool.</div>
+  <h4>Пузырьковая сортировка (была на практике 6)</h4>
+  <div class="analogy">Пузырьки в газировке: сравниваешь соседей и меняешь их местами, если стоят неправильно. После каждого прохода самый большой «всплывает» в конец. Если за проход не было ни одного обмена, всё уже отсортировано.</div>
+<div class="code"><pre><code>items = [<span class="n">12</span>, <span class="n">2</span>, <span class="n">4</span>, <span class="n">10</span>, <span class="n">6</span>]
+n = <span class="b">len</span>(items)
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(n - <span class="n">1</span>):
+    swapped = <span class="k">False</span>
+    <span class="k">for</span> j <span class="k">in</span> <span class="b">range</span>(n - <span class="n">1</span> - i):        <span class="c"># хвост уже отсортирован, его не трогаем</span>
+        <span class="k">if</span> items[j] &gt; items[j + <span class="n">1</span>]:
+            items[j], items[j + <span class="n">1</span>] = items[j + <span class="n">1</span>], items[j]
+            swapped = <span class="k">True</span>
+    <span class="k">if</span> <span class="k">not</span> swapped:
+        <span class="k">break</span>
+<span class="b">print</span>(items)</code></pre><pre class="out"><code>[2, 4, 6, 10, 12]</code></pre></div>
+  <div class="warn">Не удаляй элементы из списка, пока бежишь по нему <code>for</code>: элементы съезжают, и часть пропускается. Собери новый список: <code>a = [x for x in a if x != 0]</code>.</div>
+</section>
+
+<!-- 8 -->
+<section class="sec" id="dicts">
+  <div class="sec-h"><span class="sec-no">8</span><h2>Словари и множества (+ кортежи) <span class="bonus">бонус</span></h2></div>
+  <div class="grid3">
+    <div class="card"><h4>tuple <code>(1, 2)</code></h4>Список, который нельзя менять. Координаты, дата, несколько значений из функции. Кортеж из одного: <code>(5,)</code> с запятой.</div>
+    <div class="card"><h4>dict <code>{"a": 1}</code></h4>Телефонная книга: ищешь не по номеру ячейки, а по имени (ключу). Ключи уникальны.</div>
+    <div class="card"><h4>set <code>{1, 2}</code></h4>Мешок без дубликатов и без порядка. Убрать повторы, проверить «есть ли», пересечения.</div>
+  </div>
+<div class="code"><pre><code>point = (<span class="n">3</span>, <span class="n">4</span>)
+x, y = point            <span class="c"># распаковка</span>
+<span class="b">print</span>(x, y, point[<span class="n">0</span>])
+<span class="k">def</span> min_max(lst):
+    <span class="k">return</span> <span class="b">min</span>(lst), <span class="b">max</span>(lst)   <span class="c"># на самом деле возвращает кортеж</span>
+lo, hi = min_max([<span class="n">5</span>, <span class="n">2</span>, <span class="n">8</span>])
+<span class="b">print</span>(lo, hi)</code></pre><pre class="out"><code>3 4 3
+2 8</code></pre></div>
+  <h4>Словари</h4>
+<div class="code"><pre><code>phone = {<span class="s">&quot;Аня&quot;</span>: <span class="s">&quot;111&quot;</span>, <span class="s">&quot;Боря&quot;</span>: <span class="s">&quot;222&quot;</span>}
+phone[<span class="s">&quot;Вика&quot;</span>] = <span class="s">&quot;333&quot;</span>           <span class="c"># добавить / заменить</span>
+<span class="b">print</span>(phone[<span class="s">&quot;Аня&quot;</span>], <span class="b">len</span>(phone))
+<span class="b">print</span>(phone.get(<span class="s">&quot;Гоша&quot;</span>))        <span class="c"># нет ключа: None, без ошибки</span>
+<span class="b">print</span>(phone.get(<span class="s">&quot;Гоша&quot;</span>, <span class="s">&quot;нет&quot;</span>))  <span class="c"># или своё значение по умолчанию</span>
+<span class="b">print</span>(<span class="s">&quot;Боря&quot;</span> <span class="k">in</span> phone)          <span class="c"># in проверяет КЛЮЧИ</span>
+<span class="k">del</span> phone[<span class="s">&quot;Боря&quot;</span>]
+<span class="k">for</span> name, num <span class="k">in</span> phone.items():
+    <span class="b">print</span>(name, num)
+<span class="b">print</span>(<span class="b">list</span>(phone.keys()), <span class="b">list</span>(phone.values()))</code></pre><pre class="out"><code>111 3
+None
+нет
+True
+Аня 111
+Вика 333
+[&#x27;Аня&#x27;, &#x27;Вика&#x27;] [&#x27;111&#x27;, &#x27;333&#x27;]</code></pre></div>
+  <div class="warn"><code>phone["Гоша"]</code> на несуществующий ключ падает с KeyError. Если не уверен, что ключ есть, бери <code>.get()</code>.</div>
+  <h4>Главный приём: посчитать, что сколько раз встречается</h4>
+<div class="code"><pre><code>text = <span class="s">&quot;the cat and the hat and the bat&quot;</span>
+counts = {}
+<span class="k">for</span> w <span class="k">in</span> text.split():
+    counts[w] = counts.get(w, <span class="n">0</span>) + <span class="n">1</span>   <span class="c"># было 0 или сколько было, +1</span>
+<span class="b">print</span>(counts)
+best = <span class="b">max</span>(counts, key=counts.get)     <span class="c"># ключ с самым большим значением</span>
+<span class="b">print</span>(best, counts[best])</code></pre><pre class="out"><code>{&#x27;the&#x27;: 3, &#x27;cat&#x27;: 1, &#x27;and&#x27;: 2, &#x27;hat&#x27;: 1, &#x27;bat&#x27;: 1}
+the 3</code></pre></div>
+  <h4>Множества</h4>
+<div class="code"><pre><code>a = {<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">3</span>, <span class="n">3</span>}
+b = {<span class="n">3</span>, <span class="n">4</span>}
+<span class="b">print</span>(a, <span class="b">len</span>(a))                 <span class="c"># дубли исчезли</span>
+<span class="b">print</span>(a | b, a &amp; b, a - b)       <span class="c"># объединение, пересечение, разность</span>
+<span class="b">print</span>(<span class="b">len</span>(<span class="b">set</span>(<span class="s">&quot;mississippi&quot;</span>)))   <span class="c"># сколько разных букв</span>
+empty = <span class="b">set</span>()                    <span class="c"># {} это пустой СЛОВАРЬ, не множество!</span>
+<span class="b">print</span>(<span class="b">type</span>({}), <span class="b">type</span>(empty))</code></pre><pre class="out"><code>{1, 2, 3} 3
+{1, 2, 3, 4} {3} {1, 2}
+4
+&lt;class &#x27;dict&#x27;&gt; &lt;class &#x27;set&#x27;&gt;</code></pre></div>
+  <div class="table"><table>
+    <tr><th></th><th>Порядок</th><th>Можно менять</th><th>Дубли</th><th>Доступ</th></tr>
+    <tr><td><code>list</code></td><td>да</td><td>да</td><td>да</td><td>по индексу</td></tr>
+    <tr><td><code>tuple</code></td><td>да</td><td>нет</td><td>да</td><td>по индексу</td></tr>
+    <tr><td><code>str</code></td><td>да</td><td>нет</td><td>да</td><td>по индексу</td></tr>
+    <tr><td><code>dict</code></td><td>да (порядок добавления)</td><td>да</td><td>ключи нет</td><td>по ключу</td></tr>
+    <tr><td><code>set</code></td><td>нет</td><td>да</td><td>нет</td><td>только <code>in</code></td></tr>
+  </table></div>
+</section>
+
+<!-- 9 -->
+<section class="sec" id="func">
+  <div class="sec-h"><span class="sec-no">9</span><h2>Функции <span class="bonus">бонус</span></h2></div>
+  <div class="analogy">Функция это кофемашина. Параметры это то, что ты засыпаешь (зёрна, вода), <code>return</code> это чашка, которую она тебе выдаёт. <code>print</code> внутри функции это машина, которая сама выпила кофе и сказала «вкусно»: тебе ничего не досталось.</div>
+<div class="code"><pre><code><span class="k">def</span> area(w, h):
+    <span class="s">&quot;&quot;&quot;Площадь прямоугольника.&quot;&quot;&quot;</span>   <span class="c"># докстринг: описание функции</span>
+    <span class="k">return</span> w * h
+
+s = area(<span class="n">3</span>, <span class="n">4</span>)       <span class="c"># результат можно сохранить и использовать дальше</span>
+<span class="b">print</span>(s, area(<span class="n">2</span>, <span class="n">5</span>) + <span class="n">1</span>)
+
+<span class="k">def</span> say(w, h):
+    <span class="b">print</span>(w * h)     <span class="c"># только показывает</span>
+
+r = say(<span class="n">3</span>, <span class="n">4</span>)
+<span class="b">print</span>(r)             <span class="c"># None: функция ничего не вернула</span></code></pre><pre class="out"><code>12 11
+12
+None</code></pre></div>
+  <div class="warn">Самая частая ошибка на мидтермах: в задании «напиши функцию, которая <b>возвращает</b>…», а студент пишет <code>print</code> вместо <code>return</code>. Автопроверка ставит ноль.</div>
+  <div class="tip"><code>return</code> сразу заканчивает функцию. Всё, что после него в той же ветке, не выполнится.</div>
+  <h4>Параметры по умолчанию и именованные аргументы</h4>
+<div class="code"><pre><code><span class="k">def</span> greet(name, greeting=<span class="s">&quot;Привет&quot;</span>, times=<span class="n">1</span>):
+    <span class="k">return</span> (greeting + <span class="s">&quot;, &quot;</span> + name + <span class="s">&quot;! &quot;</span>) * times
+
+<span class="b">print</span>(greet(<span class="s">&quot;Егор&quot;</span>))
+<span class="b">print</span>(greet(<span class="s">&quot;Егор&quot;</span>, <span class="s">&quot;Szia&quot;</span>))
+<span class="b">print</span>(greet(<span class="s">&quot;Егор&quot;</span>, times=<span class="n">2</span>))     <span class="c"># по имени можно пропускать</span></code></pre><pre class="out"><code>Привет, Егор! 
+Szia, Егор! 
+Привет, Егор! Привет, Егор!</code></pre></div>
+  <h4>Область видимости</h4>
+<div class="code"><pre><code>counter = <span class="n">0</span>
+<span class="k">def</span> bump():
+    counter = <span class="n">100</span>      <span class="c"># это НОВАЯ локальная переменная внутри функции</span>
+    <span class="k">return</span> counter
+bump()
+<span class="b">print</span>(counter)         <span class="c"># снаружи всё ещё 0</span>
+
+<span class="k">def</span> double(x):
+    x = x * <span class="n">2</span>          <span class="c"># меняет только локальную копию имени</span>
+y = <span class="n">5</span>
+double(y)
+<span class="b">print</span>(y)               <span class="c"># 5</span></code></pre><pre class="out"><code>0
+5</code></pre></div>
+<div class="code"><pre><code><span class="k">def</span> add_item(lst):
+    lst.append(<span class="n">99</span>)     <span class="c"># а вот СПИСОК функция поменять может</span>
+nums = [<span class="n">1</span>, <span class="n">2</span>]
+add_item(nums)
+<span class="b">print</span>(nums)</code></pre><pre class="out"><code>[1, 2, 99]</code></pre></div>
+  <div class="analogy">Числа и строки передаются в функцию как фотокопия: что бы она с ней ни делала, оригинал цел. Список передаётся как ключ от квартиры: функция может зайти и переставить мебель, и ты это увидишь.</div>
+  <h4>Ловушка: изменяемое значение по умолчанию</h4>
+<div class="code"><pre><code><span class="k">def</span> add(x, lst=[]):     <span class="c"># плохо: список создаётся ОДИН раз</span>
+    lst.append(x)
+    <span class="k">return</span> lst
+<span class="b">print</span>(add(<span class="n">1</span>), add(<span class="n">2</span>))
+
+<span class="k">def</span> add_ok(x, lst=<span class="k">None</span>): <span class="c"># правильно</span>
+    <span class="k">if</span> lst <span class="k">is</span> <span class="k">None</span>:
+        lst = []
+    lst.append(x)
+    <span class="k">return</span> lst
+<span class="b">print</span>(add_ok(<span class="n">1</span>), add_ok(<span class="n">2</span>))</code></pre><pre class="out"><code>[1, 2] [1, 2]
+[1] [2]</code></pre></div>
+  <h4>lambda и рекурсия (коротко)</h4>
+<div class="code"><pre><code>square = <span class="k">lambda</span> x: x * x            <span class="c"># функция в одну строку</span>
+<span class="b">print</span>(square(<span class="n">7</span>))
+pairs = [(<span class="s">&quot;Аня&quot;</span>, <span class="n">5</span>), (<span class="s">&quot;Боря&quot;</span>, <span class="n">3</span>)]
+<span class="b">print</span>(<span class="b">sorted</span>(pairs, key=<span class="k">lambda</span> p: p[<span class="n">1</span>]))   <span class="c"># сортировать по второму</span>
+
+<span class="k">def</span> fact(n):
+    <span class="k">if</span> n &lt;= <span class="n">1</span>:          <span class="c"># база: где остановиться</span>
+        <span class="k">return</span> <span class="n">1</span>
+    <span class="k">return</span> n * fact(n - <span class="n">1</span>)   <span class="c"># функция зовёт сама себя</span>
+<span class="b">print</span>(fact(<span class="n">5</span>))</code></pre><pre class="out"><code>49
+[(&#x27;Боря&#x27;, 3), (&#x27;Аня&#x27;, 5)]
+120</code></pre></div>
+</section>
+
+<!-- 10 -->
+<section class="sec" id="exc">
+  <div class="sec-h"><span class="sec-no">10</span><h2>Исключения: try / except <span class="bonus">бонус</span></h2></div>
+  <div class="analogy">Исключение это пожарная тревога. Без <code>try</code> программа просто падает. С <code>try</code> ты говоришь: «попробуй вот это, а если загорится ValueError, делай вот так». <code>finally</code> выполнится всегда, как проверка выключенного утюга перед выходом.</div>
+<div class="code"><pre><code><span class="k">while</span> <span class="k">True</span>:
+    <span class="k">try</span>:
+        n = <span class="b">int</span>(<span class="b">input</span>(<span class="s">&quot;Делитель: &quot;</span>))
+        <span class="b">print</span>(<span class="n">10</span> / n)
+        <span class="k">break</span>
+    <span class="k">except</span> <span class="b">ValueError</span>:
+        <span class="b">print</span>(<span class="s">&quot;Это не число&quot;</span>)
+    <span class="k">except</span> <span class="b">ZeroDivisionError</span>:
+        <span class="b">print</span>(<span class="s">&quot;На ноль нельзя&quot;</span>)</code></pre><pre class="out"><code>Делитель: abc
+Это не число
+Делитель: 0
+На ноль нельзя
+Делитель: 4
+2.5</code></pre></div>
+<div class="code"><pre><code><span class="k">def</span> safe_div(a, b):
+    <span class="k">try</span>:
+        r = a / b
+    <span class="k">except</span> <span class="b">ZeroDivisionError</span>:
+        <span class="b">print</span>(<span class="s">&quot;ноль&quot;</span>)
+        <span class="k">return</span> <span class="k">None</span>
+    <span class="k">else</span>:                 <span class="c"># если ошибки НЕ было</span>
+        <span class="b">print</span>(<span class="s">&quot;ок&quot;</span>)
+        <span class="k">return</span> r
+    <span class="k">finally</span>:              <span class="c"># в любом случае</span>
+        <span class="b">print</span>(<span class="s">&quot;конец&quot;</span>)
+<span class="b">print</span>(safe_div(<span class="n">6</span>, <span class="n">3</span>))
+<span class="b">print</span>(safe_div(<span class="n">1</span>, <span class="n">0</span>))</code></pre><pre class="out"><code>ок
+конец
+2.0
+ноль
+конец
+None</code></pre></div>
+  <h4>Своя ошибка: raise</h4>
+<div class="code"><pre><code><span class="k">def</span> set_age(age):
+    <span class="k">if</span> age &lt; <span class="n">0</span>:
+        <span class="k">raise</span> <span class="b">ValueError</span>(<span class="s">&quot;возраст не может быть отрицательным&quot;</span>)
+    <span class="k">return</span> age
+<span class="k">try</span>:
+    set_age(-<span class="n">3</span>)
+<span class="k">except</span> <span class="b">ValueError</span> <span class="k">as</span> e:
+    <span class="b">print</span>(<span class="s">&quot;Поймал:&quot;</span>, e)</code></pre><pre class="out"><code>Поймал: возраст не может быть отрицательным</code></pre></div>
+  <div class="table"><table>
+    <tr><th>Ошибка</th><th>Когда вылезает</th><th>Пример</th></tr>
+    <tr><td><code>SyntaxError</code></td><td>код написан неграмотно</td><td>забыл <code>:</code> или скобку</td></tr>
+    <tr><td><code>IndentationError</code></td><td>кривые отступы</td><td>смешал пробелы и табы</td></tr>
+    <tr><td><code>NameError</code></td><td>такого имени нет</td><td>опечатка, <code>Print</code>, переменная не создана</td></tr>
+    <tr><td><code>TypeError</code></td><td>не тот тип для операции</td><td><code>"a" + 1</code>, <code>len(5)</code></td></tr>
+    <tr><td><code>ValueError</code></td><td>тип верный, значение нет</td><td><code>int("abc")</code></td></tr>
+    <tr><td><code>IndexError</code></td><td>индекс за краем</td><td><code>[1,2][5]</code></td></tr>
+    <tr><td><code>KeyError</code></td><td>нет ключа в словаре</td><td><code>d["нет"]</code></td></tr>
+    <tr><td><code>ZeroDivisionError</code></td><td>деление на ноль</td><td><code>1 / 0</code>, <code>5 % 0</code></td></tr>
+    <tr><td><code>AttributeError</code></td><td>у объекта нет такого метода</td><td><code>[1].upper()</code>, <code>None.append</code></td></tr>
+    <tr><td><code>FileNotFoundError</code></td><td>нет файла</td><td><code>open("nope.txt")</code></td></tr>
+  </table></div>
+  <div class="tip">Traceback читай <b>снизу вверх</b>: последняя строка говорит, что за ошибка, строчка над ней показывает, где.</div>
+</section>
+
+<!-- 11 -->
+<section class="sec" id="files">
+  <div class="sec-h"><span class="sec-no">11</span><h2>Файлы <span class="bonus">бонус</span></h2></div>
+  <div class="analogy">Файл как холодильник: открыл, взял или положил, закрыл. <code>with</code> закрывает дверцу сам, даже если по дороге что-то упало. Режим: <code>"r"</code> читать, <code>"w"</code> писать с нуля (старое стирается!), <code>"a"</code> дописать в конец.</div>
+<div class="code"><pre><code><span class="c"># запись</span>
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;marks.txt&quot;</span>, <span class="s">&quot;w&quot;</span>, encoding=<span class="s">&quot;utf-8&quot;</span>) <span class="k">as</span> f:
+    f.write(<span class="s">&quot;Аня,5\n&quot;</span>)          <span class="c"># \n сам не ставится!</span>
+    f.write(<span class="s">&quot;Боря,3\n&quot;</span>)
+    f.write(<span class="s">&quot;Вика,4\n&quot;</span>)
+
+<span class="c"># дописать</span>
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;marks.txt&quot;</span>, <span class="s">&quot;a&quot;</span>, encoding=<span class="s">&quot;utf-8&quot;</span>) <span class="k">as</span> f:
+    <span class="b">print</span>(<span class="s">&quot;Гоша,5&quot;</span>, file=f)     <span class="c"># print сам ставит \n</span>
+
+<span class="c"># чтение построчно</span>
+total = <span class="n">0</span>
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;marks.txt&quot;</span>, encoding=<span class="s">&quot;utf-8&quot;</span>) <span class="k">as</span> f:
+    <span class="k">for</span> line <span class="k">in</span> f:
+        name, mark = line.strip().split(<span class="s">&quot;,&quot;</span>)   <span class="c"># strip убирает \n</span>
+        total += <span class="b">int</span>(mark)
+        <span class="b">print</span>(name, mark)
+<span class="b">print</span>(<span class="s">&quot;средняя:&quot;</span>, total / <span class="n">4</span>)</code></pre><pre class="out"><code>Аня 5
+Боря 3
+Вика 4
+Гоша 5
+средняя: 4.25</code></pre></div>
+<div class="code"><pre><code><span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;demo.txt&quot;</span>, <span class="s">&quot;w&quot;</span>) <span class="k">as</span> f:
+    f.write(<span class="s">&quot;line 1\nline 2\n&quot;</span>)
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;demo.txt&quot;</span>) <span class="k">as</span> f:
+    <span class="b">print</span>(<span class="b">repr</span>(f.read()))       <span class="c"># весь файл одной строкой</span>
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;demo.txt&quot;</span>) <span class="k">as</span> f:
+    <span class="b">print</span>(f.readlines())        <span class="c"># список строк, с \n на концах</span></code></pre><pre class="out"><code>&#x27;line 1\nline 2\n&#x27;
+[&#x27;line 1\n&#x27;, &#x27;line 2\n&#x27;]</code></pre></div>
+  <div class="warn">Строки из файла приходят с <code>\n</code> на конце и всегда как текст. Перед <code>int()</code> или сравнением делай <code>.strip()</code>.</div>
+  <div class="warn">Открыл существующий файл в режиме <code>"w"</code>, и он стёрт до нуля сразу при открытии.</div>
+</section>
+
+<!-- 12 -->
+<section class="sec" id="modules">
+  <div class="sec-h"><span class="sec-no">12</span><h2>import: как подключать модули <span class="bonus">L06</span></h2></div>
+<div class="code"><pre><code><span class="k">import</span> math                    <span class="c"># весь модуль, обращаешься math.sqrt</span>
+<span class="k">import</span> random <span class="k">as</span> rnd           <span class="c"># с псевдонимом</span>
+<span class="k">from</span> math <span class="k">import</span> pi, sqrt      <span class="c"># только нужное, без префикса</span>
+<span class="b">print</span>(sqrt(<span class="n">16</span>), <span class="b">round</span>(pi, <span class="n">2</span>), rnd.randint(<span class="n">5</span>, <span class="n">5</span>))</code></pre><pre class="out"><code>4.0 3.14 5</code></pre></div>
+  <div class="tip">Не пиши <code>from math import *</code>: имена из модуля могут затереть твои. И не называй свои файлы <code>math.py</code> или <code>random.py</code>, иначе <code>import</code> подхватит твой файл вместо настоящего модуля.</div>
+  <div class="tip"><code>if __name__ == "__main__":</code> внизу файла значит «запускай этот кусок, только если файл запустили напрямую, а не импортировали». Пакеты ставятся через <code>pip install имя</code>, а в каждом проекте лучше своё виртуальное окружение (<code>python -m venv .venv</code>).</div>
+</section>
+
+<section class="sec" id="theory">
+  <div class="sec-h"><span class="sec-no">L</span><h2>Теория с лекций одной строкой</h2></div>
+  <p>Если на мидтерме будет пара теоретических вопросов, то вот что из лекций L01–L07 стоит уметь сказать своими словами. Термины на английском, как на слайдах.</p>
+  <div class="table"><table>
+    <tr><th>Термин</th><th>По-человечески</th></tr>
+    <tr><td>Interpreted language</td><td>Python не компилируется заранее в машинный код: интерпретатор читает и выполняет программу на ходу. Поэтому удобно, но медленнее, и многие ошибки всплывают только при запуске (runtime errors).</td></tr>
+    <tr><td>Von Neumann architecture</td><td>CPU (управляющее устройство + АЛУ), память, ввод/вывод. Данные и команды лежат в одной памяти. У Harvard они раздельно.</td></tr>
+    <tr><td>Bit / byte, binary / hex</td><td>1 байт = 8 бит. 1 kB = 1000 B, 1 KiB = 1024 B. Байт удобно писать двумя hex-цифрами: <code>0xFF</code> = 255.</td></tr>
+    <tr><td>Floating point</td><td>Дробь хранится как знак, мантисса и порядок (float64: 1 + 11 + 52 бита). Отсюда неточность <code>0.1 + 0.2</code>.</td></tr>
+    <tr><td>Dynamic vs static typing</td><td>В Python тип живёт у значения, а не у переменной: одну переменную можно перезаписать числом, потом строкой. В C тип прибит к переменной.</td></tr>
+    <tr><td>Implicit / explicit conversion</td><td>Неявно: <code>int</code> → <code>float</code> при делении или смешанной арифметике. В строку неявно никогда, только явно <code>str()</code>.</td></tr>
+    <tr><td>Pass by value / reference</td><td>По значению: функция получает копию. По ссылке: работает с оригиналом. В Python списки ведут себя «по ссылке», числа и строки «как по значению».</td></tr>
+    <tr><td>Shallow vs deep copy</td><td><code>a.copy()</code> копирует только верхний уровень: вложенные списки остаются общими. Полная копия: <code>copy.deepcopy(a)</code>.</td></tr>
+    <tr><td>Mutable / immutable</td><td>list, dict, set меняются на месте. int, float, str, tuple нет.</td></tr>
+    <tr><td>Stack (LIFO) / queue (FIFO)</td><td>Стопка тарелок: последней положил, первой взял (<code>append</code> + <code>pop()</code>). Очередь в кассу: первым пришёл, первым ушёл.</td></tr>
+    <tr><td>Hash map (dict)</td><td>Ключ → значение, доступ по ключу за постоянное время, без перебора.</td></tr>
+    <tr><td>Sequential vs binary search</td><td>Перебор подряд работает на любых данных. Бинарный поиск делит пополам, но нужны <b>отсортированные</b> данные: 1000 элементов за ~10 шагов.</td></tr>
+    <tr><td>Sorting</td><td>Selection и bubble sort: O(n²). Merge sort: всегда O(n log n). Quick sort: в среднем O(n log n), в худшем O(n²).</td></tr>
+    <tr><td>Exceptions</td><td><code>try</code> / <code>except</code> ловят, <code>raise</code> бросает, <code>finally</code> всегда, <code>else</code> если ошибки не было, <code>assert</code> бросает AssertionError, если условие ложно.</td></tr>
+    <tr><td>OOP</td><td>Класс это чертёж, объект (instance) это деталь по чертежу. <code>__init__</code> конструктор, <code>self</code> сам объект, наследование (inheritance), переопределение (override), полиморфизм.</td></tr>
+    <tr><td>Functional style</td><td><code>map</code>, <code>filter</code>, <code>lambda</code>, list comprehension, генераторы.</td></tr>
+    <tr><td>Git</td><td>clone, add (подготовить), commit (сохранить снимок), push (отправить), pull, branch, merge.</td></tr>
+    <tr><td>NumPy / SciPy / Matplotlib / Pandas</td><td>Массивы и матрицы / научные алгоритмы / графики / таблицы данных.</td></tr>
+  </table></div>
+</section>
+
+<!-- 13 -->
+<section class="sec" id="mistakes">
+  <div class="sec-h"><span class="sec-no">13</span><h2>Топ косяков на мидтермах</h2></div>
+  <div class="table"><table>
+    <tr><th>Косяк</th><th>Как правильно</th></tr>
+    <tr><td><code>age = input()</code>, потом <code>age + 1</code></td><td><code>age = int(input())</code></td></tr>
+    <tr><td><code>if x = 5:</code></td><td><code>if x == 5:</code></td></tr>
+    <tr><td><code>if x == 1 or 2:</code></td><td><code>if x == 1 or x == 2:</code> / <code>x in (1, 2)</code></td></tr>
+    <tr><td><code>range(1, n)</code> для «от 1 до n»</td><td><code>range(1, n + 1)</code></td></tr>
+    <tr><td><code>print</code> вместо <code>return</code></td><td>функция должна <code>return</code>, печатает вызывающий</td></tr>
+    <tr><td><code>a = a.sort()</code></td><td><code>a.sort()</code> или <code>a = sorted(a)</code></td></tr>
+    <tr><td><code>s.upper()</code> без присваивания</td><td><code>s = s.upper()</code></td></tr>
+    <tr><td><code>b = a</code> как «копия» списка</td><td><code>b = a.copy()</code></td></tr>
+    <tr><td><code>max_val = 0</code> для поиска максимума</td><td><code>max_val = nums[0]</code> (вдруг все отрицательные)</td></tr>
+    <tr><td><code>return</code> внутри цикла поиска на первой итерации</td><td><code>return False</code> ставь после цикла, а не в <code>else</code> внутри</td></tr>
+    <tr><td><code>"Итого: " + 5</code></td><td><code>f"Итого: {5}"</code></td></tr>
+    <tr><td><code>{}</code> как пустое множество</td><td><code>set()</code></td></tr>
+    <tr><td><code>0.1 + 0.2 == 0.3</code></td><td><code>abs(a - b) &lt; 1e-9</code></td></tr>
+  </table></div>
+  <h4>Косяк «return в цикле», который режет полбалла</h4>
+<div class="code"><pre><code><span class="k">def</span> has_negative_bad(nums):
+    <span class="k">for</span> n <span class="k">in</span> nums:
+        <span class="k">if</span> n &lt; <span class="n">0</span>:
+            <span class="k">return</span> <span class="k">True</span>
+        <span class="k">else</span>:
+            <span class="k">return</span> <span class="k">False</span>     <span class="c"># выходит уже на ПЕРВОМ элементе</span>
+<span class="k">def</span> has_negative(nums):
+    <span class="k">for</span> n <span class="k">in</span> nums:
+        <span class="k">if</span> n &lt; <span class="n">0</span>:
+            <span class="k">return</span> <span class="k">True</span>
+    <span class="k">return</span> <span class="k">False</span>             <span class="c"># только после того, как проверил ВСЕ</span>
+<span class="b">print</span>(has_negative_bad([<span class="n">1</span>, -<span class="n">5</span>]), has_negative([<span class="n">1</span>, -<span class="n">5</span>]))</code></pre><pre class="out"><code>False True</code></pre></div>
+</section>
+
+<!-- guess -->
+<section class="sec" id="guess">
+  <div class="sec-h"><span class="sec-no">?</span><h2>Угадай вывод: 30 штук</h2></div>
+  <p>Лучшая тренировка «читать код глазами», без которой не найдёшь свою же ошибку на мидтерме. Сначала <b>честно напиши ответ на бумажке</b>, потом жми «Показать». Отмечай, угадал или нет: счёт сохраняется в браузере.</p>
+  <div class="score"><span id="sc">0 / 30 угадано</span><div class="bar"><i id="scbar"></i></div><button id="reset">Сбросить</button></div>
+  <div class="qgrid" id="quiz">
+    <div class="q"><span class="qn">#1</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">7</span> // <span class="n">2</span>, <span class="n">7</span> % <span class="n">2</span>, <span class="n">7</span> / <span class="n">2</span>, <span class="n">2</span> ** <span class="n">3</span>)</code></pre><pre class="out"><code>3 1 3.5 8</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why"><code>/</code> всегда даёт float, поэтому 3.5, а не 3.</div></div>
+
+    <div class="q"><span class="qn">#2</span>
+<div class="code"><pre><code>x = <span class="s">&quot;5&quot;</span>
+<span class="b">print</span>(x * <span class="n">3</span>)</code></pre><pre class="out"><code>555</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Строка, умноженная на число, повторяется. Как с <code>input()</code>, который всегда даёт строку.</div></div>
+
+    <div class="q"><span class="qn">#3</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="b">int</span>(<span class="s">&quot;7&quot;</span>) + <span class="n">3</span>, <span class="s">&quot;7&quot;</span> + <span class="b">str</span>(<span class="n">3</span>))</code></pre><pre class="out"><code>10 73</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Числа складываются, строки склеиваются.</div></div>
+
+    <div class="q"><span class="qn">#4</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="b">round</span>(<span class="n">2.5</span>), <span class="b">round</span>(<span class="n">3.5</span>), <span class="b">int</span>(<span class="n">3.99</span>))</code></pre><pre class="out"><code>2 4 3</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">round округляет половинки к чётному, int просто отрезает дробь.</div></div>
+
+    <div class="q"><span class="qn">#5</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">0.1</span> + <span class="n">0.2</span> == <span class="n">0.3</span>)</code></pre><pre class="out"><code>False</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">0.1 + 0.2 = 0.30000000000000004 из-за двоичной записи дробей.</div></div>
+
+    <div class="q"><span class="qn">#6</span>
+<div class="code"><pre><code><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">2</span>, <span class="n">10</span>, <span class="n">3</span>):
+    <span class="b">print</span>(i, end=<span class="s">&quot; &quot;</span>)</code></pre><pre class="out"><code>2 5 8</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">2, потом +3 = 5, +3 = 8, следующее 11 уже за стопом.</div></div>
+
+    <div class="q"><span class="qn">#7</span>
+<div class="code"><pre><code>x = <span class="n">10</span>
+<span class="k">if</span> x &gt; <span class="n">5</span>:
+    <span class="b">print</span>(<span class="s">&quot;A&quot;</span>)
+<span class="k">elif</span> x &gt; <span class="n">8</span>:
+    <span class="b">print</span>(<span class="s">&quot;B&quot;</span>)
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">&quot;C&quot;</span>)</code></pre><pre class="out"><code>A</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Выполняется только первая подошедшая ветка.</div></div>
+
+    <div class="q"><span class="qn">#8</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="b">bool</span>(<span class="s">&quot;&quot;</span>), <span class="b">bool</span>(<span class="s">&quot;0&quot;</span>), <span class="b">bool</span>([]), <span class="b">bool</span>(<span class="n">0.0</span>), <span class="b">bool</span>(<span class="s">&quot; &quot;</span>))</code></pre><pre class="out"><code>False True False False True</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Ложь только «пустое» и ноль. "0" и " " это непустые строки.</div></div>
+
+    <div class="q"><span class="qn">#9</span>
+<div class="code"><pre><code>s = <span class="s">&quot;Python&quot;</span>
+<span class="b">print</span>(s[<span class="n">0</span>], s[-<span class="n">1</span>], s[<span class="n">1</span>:<span class="n">4</span>], s[::-<span class="n">1</span>])</code></pre><pre class="out"><code>P n yth nohtyP</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">s[1:4] это индексы 1, 2, 3: y, t, h.</div></div>
+
+    <div class="q"><span class="qn">#10</span>
+<div class="code"><pre><code>n = <span class="n">0</span>
+<span class="k">while</span> n &lt; <span class="n">10</span>:
+    n += <span class="n">3</span>
+<span class="b">print</span>(n)</code></pre><pre class="out"><code>12</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">0 → 3 → 6 → 9 → 12. Проверка 9 &lt; 10 ещё правда, поэтому делает ещё шаг.</div></div>
+
+    <div class="q"><span class="qn">#11</span>
+<div class="code"><pre><code><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">3</span>):
+    <span class="k">if</span> i == <span class="n">1</span>:
+        <span class="k">continue</span>
+    <span class="b">print</span>(i)</code></pre><pre class="out"><code>0
+2</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">continue пропускает остаток круга, но цикл идёт дальше.</div></div>
+
+    <div class="q"><span class="qn">#12</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">3</span> * <span class="s">&quot;ab&quot;</span> + <span class="s">&quot;c&quot;</span>, <span class="b">len</span>(<span class="s">&quot;a b&quot;</span>))</code></pre><pre class="out"><code>abababc 3</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Умножение раньше сложения. Пробел тоже символ.</div></div>
+
+    <div class="q"><span class="qn">#13</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="s">&quot;a,b,,c&quot;</span>.split(<span class="s">&quot;,&quot;</span>))</code></pre><pre class="out"><code>[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;&#x27;, &#x27;c&#x27;]</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Между двумя запятыми пустая строка, она тоже элемент.</div></div>
+
+    <div class="q"><span class="qn">#14</span>
+<div class="code"><pre><code>a = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+b = a
+b.append(<span class="n">4</span>)
+<span class="b">print</span>(a)</code></pre><pre class="out"><code>[1, 2, 3, 4]</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">b это второе имя того же списка.</div></div>
+
+    <div class="q"><span class="qn">#15</span>
+<div class="code"><pre><code>a = [<span class="n">3</span>, <span class="n">1</span>, <span class="n">2</span>]
+<span class="b">print</span>(a.sort())
+<span class="b">print</span>(a)</code></pre><pre class="out"><code>None
+[1, 2, 3]</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">sort() сортирует на месте и возвращает None.</div></div>
+
+    <div class="q"><span class="qn">#16</span>
+<div class="code"><pre><code><span class="b">print</span>([x ** <span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> <span class="b">range</span>(<span class="n">5</span>) <span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span>])</code></pre><pre class="out"><code>[0, 4, 16]</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Берутся 0, 2, 4, их квадраты.</div></div>
+
+    <div class="q"><span class="qn">#17</span>
+<div class="code"><pre><code>a = [<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>, <span class="n">40</span>]
+<span class="b">print</span>(a[<span class="n">1</span>:<span class="n">3</span>], a[-<span class="n">2</span>:], a[<span class="n">5</span>:])</code></pre><pre class="out"><code>[20, 30] [30, 40] []</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Срез за границей не падает, а даёт пустой список.</div></div>
+
+    <div class="q"><span class="qn">#18</span>
+<div class="code"><pre><code>d = {<span class="s">&quot;a&quot;</span>: <span class="n">1</span>}
+d[<span class="s">&quot;b&quot;</span>] = <span class="n">2</span>
+d[<span class="s">&quot;a&quot;</span>] += <span class="n">10</span>
+<span class="b">print</span>(d, d.get(<span class="s">&quot;z&quot;</span>, <span class="n">0</span>))</code></pre><pre class="out"><code>{&#x27;a&#x27;: 11, &#x27;b&#x27;: 2} 0</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Ключи уникальны: "a" обновился, а не задвоился.</div></div>
+
+    <div class="q"><span class="qn">#19</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="b">len</span>({<span class="n">1</span>, <span class="n">2</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">3</span>, <span class="n">3</span>}))</code></pre><pre class="out"><code>3</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Множество выкидывает повторы.</div></div>
+
+    <div class="q"><span class="qn">#20</span>
+<div class="code"><pre><code>t = (<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>)
+<span class="k">try</span>:
+    t[<span class="n">0</span>] = <span class="n">9</span>
+<span class="k">except</span> <span class="b">TypeError</span>:
+    <span class="b">print</span>(<span class="s">&quot;нельзя&quot;</span>)</code></pre><pre class="out"><code>нельзя</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Кортеж неизменяемый.</div></div>
+
+    <div class="q"><span class="qn">#21</span>
+<div class="code"><pre><code><span class="k">try</span>:
+    <span class="b">print</span>(<span class="n">1</span> / <span class="n">0</span>)
+<span class="k">except</span> <span class="b">ZeroDivisionError</span>:
+    <span class="b">print</span>(<span class="s">&quot;ноль&quot;</span>)
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">&quot;ок&quot;</span>)
+<span class="k">finally</span>:
+    <span class="b">print</span>(<span class="s">&quot;конец&quot;</span>)</code></pre><pre class="out"><code>ноль
+конец</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">else только если ошибки не было, finally всегда.</div></div>
+
+    <div class="q"><span class="qn">#22</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="k">True</span> + <span class="k">True</span>, <span class="n">5</span> == <span class="n">5.0</span>, <span class="s">&quot;Z&quot;</span> &lt; <span class="s">&quot;a&quot;</span>, <span class="s">&quot;10&quot;</span> &lt; <span class="s">&quot;9&quot;</span>)</code></pre><pre class="out"><code>2 True True True</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">True это 1. Строки сравниваются посимвольно по кодам: заглавные раньше строчных, и "1" меньше "9", поэтому "10" &lt; "9".</div></div>
+  
+    <div class="q"><span class="qn">#23</span>
+<div class="code"><pre><code><span class="b">print</span>(<span class="n">2</span> ** <span class="n">3</span> ** <span class="n">2</span>, -<span class="n">2</span> ** <span class="n">2</span>)</code></pre><pre class="out"><code>512 -4</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Степень считается справа налево и раньше минуса: 2**9 = 512, а -(2**2) = -4.</div></div>
+
+    <div class="q"><span class="qn">#24</span>
+<div class="code"><pre><code>x = <span class="n">1</span>
+<span class="k">while</span> x &lt;= <span class="n">5</span>:
+    x = x + <span class="n">1</span>
+    <span class="k">if</span> x == <span class="n">4</span>:
+        <span class="k">continue</span>
+    <span class="b">print</span>(x, end=<span class="s">&quot; &quot;</span>)</code></pre><pre class="out"><code>2 3 5 6</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Как на практике 4: x растёт до проверки, поэтому печать начинается с 2, а 4 пропущено.</div></div>
+
+    <div class="q"><span class="qn">#25</span>
+<div class="code"><pre><code>x = <span class="n">1</span>
+<span class="k">while</span> x &lt;= <span class="n">5</span>:
+    <span class="k">if</span> x == <span class="n">2</span>:
+        <span class="k">break</span>
+    x += <span class="n">1</span>
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">&quot;закончился сам&quot;</span>)
+<span class="b">print</span>(<span class="s">&quot;x =&quot;</span>, x)</code></pre><pre class="out"><code>x = 2</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Был break, поэтому else у цикла не сработал.</div></div>
+
+    <div class="q"><span class="qn">#26</span>
+<div class="code"><pre><code>a = <span class="n">15</span>
+<span class="b">print</span>(<span class="s">&quot;big&quot;</span> <span class="k">if</span> a &gt; <span class="n">10</span> <span class="k">else</span> <span class="s">&quot;small&quot;</span>, a <span class="k">if</span> a % <span class="n">2</span> <span class="k">else</span> <span class="n">0</span>)</code></pre><pre class="out"><code>big 15</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Тернарный оператор; 15 % 2 = 1, а 1 считается правдой.</div></div>
+
+    <div class="q"><span class="qn">#27</span>
+<div class="code"><pre><code>m = [[<span class="n">0</span>] * <span class="n">2</span>] * <span class="n">2</span>
+m[<span class="n">0</span>][<span class="n">1</span>] = <span class="n">7</span>
+<span class="b">print</span>(m)</code></pre><pre class="out"><code>[[0, 7], [0, 7]]</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Обе строки это один и тот же список, поэтому 7 появилось в обеих.</div></div>
+
+    <div class="q"><span class="qn">#28</span>
+<div class="code"><pre><code>first, *rest = [<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>]
+*_, last = (<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>)
+<span class="b">print</span>(first, rest, last)</code></pre><pre class="out"><code>10 [20, 30] 3</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">Звёздочка собирает остаток в список, даже если распаковываешь кортеж.</div></div>
+
+    <div class="q"><span class="qn">#29</span>
+<div class="code"><pre><code>nums = [<span class="n">3</span>, <span class="n">8</span>, <span class="n">1</span>]
+<span class="k">for</span> n <span class="k">in</span> nums:
+    n = n * <span class="n">2</span>
+<span class="b">print</span>(nums)</code></pre><pre class="out"><code>[3, 8, 1]</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">n это копия значения на каждом круге, список не меняется. Менять нужно через nums[i].</div></div>
+
+    <div class="q"><span class="qn">#30</span>
+<div class="code"><pre><code><span class="b">print</span>([<span class="n">1</span>, <span class="n">2</span>] == [<span class="n">1</span>, <span class="n">2</span>], [<span class="n">1</span>, <span class="n">2</span>] <span class="k">is</span> [<span class="n">1</span>, <span class="n">2</span>], <span class="n">3</span> <span class="k">in</span> [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>])</code></pre><pre class="out"><code>True False True</code></pre></div><div class="row"><button class="show">Показать</button><span class="judge"><button data-v="1">Угадал ✓</button><button data-v="0">Мимо ✗</button></span></div><div class="why">== сравнивает содержимое, is проверяет «это один и тот же объект».</div></div>
+  </div>
+</section>
+
+<!-- tasks -->
+<section class="sec" id="tasks">
+  <div class="sec-h"><span class="sec-no">✎</span><h2>16 задач в стиле практик</h2></div>
+  <p>Это мои вариации задач из ваших ноутбуков (числа и условия другие, чтобы решал, а не вспоминал). Пробуй сам минимум 10 минут, потом подсказка, потом решение. После решения <b>перепиши его по памяти</b>. На мидтерме дают похожее, так что это главный блок страницы.</p>
+
+  <div class="task"><h3>1. Скидка и сдача по 5 форинтов <span class="lvl">практика 2–3</span></h3>
+  <p>Куртка стоит 45 990 HUF, на кассе скидка 15%. Сколько заплатить картой (до целого) и наличными (до ближайших 5 HUF)?</p>
+  <details class="reveal"><summary>Подсказка</summary><div>Остаток <code>% 5</code> показывает, насколько ты «выше» кратного пяти. Если остаток больше 2,5, округляй вверх, иначе вниз.</div></details>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>price = <span class="n">45990</span>
+discount = <span class="n">0.15</span>
+new_price = price * (<span class="n">1</span> - discount)
+<span class="b">print</span>(<span class="s">&quot;картой:&quot;</span>, <span class="b">round</span>(new_price), <span class="s">&quot;HUF&quot;</span>)
+remainder = new_price % <span class="n">5</span>
+<span class="k">if</span> remainder &gt;= <span class="n">2.5</span>:
+    cash = new_price + (<span class="n">5</span> - remainder)
+<span class="k">else</span>:
+    cash = new_price - remainder
+<span class="b">print</span>(<span class="s">&quot;наличными:&quot;</span>, <span class="b">round</span>(cash), <span class="s">&quot;HUF&quot;</span>)
+<span class="b">print</span>(<span class="s">&quot;проще:&quot;</span>, <span class="b">round</span>(new_price / <span class="n">5</span>) * <span class="n">5</span>)</code></pre><pre class="out"><code>картой: 39092 HUF
+наличными: 39090 HUF
+проще: 39090</code></pre></div></div></details></div>
+
+  <div class="task"><h3>2. Окружность из консоли <span class="lvl">практика 2</span></h3>
+  <p>Ввести радиус, вывести длину окружности и площадь круга с 3 знаками. Отрицательный радиус не принимать.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code><span class="k">import</span> math
+r = <span class="b">float</span>(<span class="b">input</span>(<span class="s">&quot;Радиус: &quot;</span>))
+<span class="k">if</span> r &lt; <span class="n">0</span>:
+    <span class="b">print</span>(<span class="s">&quot;Радиус не может быть отрицательным&quot;</span>)
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">f&quot;</span><span class="s">Длина: </span>{<span class="n">2</span> * math.pi * r:<span class="s">.3f</span>}<span class="s">&quot;</span>)
+    <span class="b">print</span>(<span class="s">f&quot;</span><span class="s">Площадь: </span>{math.pi * r ** <span class="n">2</span>:<span class="s">.3f</span>}<span class="s">&quot;</span>)</code></pre><pre class="out"><code>Радиус: 2.5
+Длина: 15.708
+Площадь: 19.635</code></pre></div></div></details></div>
+
+  <div class="task"><h3>3. Оценка по шкале BME <span class="lvl">практика 3</span></h3>
+  <p>Тест на 80 баллов. Пороги BME в процентах: &lt;40 Insufficient (1), 40–55 Sufficient (2), 55–70 Mediocre (3), 70–85 Good (4), ≥85 Very Good (5). Баллы вне 0–80 значит «Invalid».</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>score = <span class="b">int</span>(<span class="b">input</span>(<span class="s">&quot;Баллы из 80: &quot;</span>))
+<span class="k">if</span> score &lt; <span class="n">0</span> <span class="k">or</span> score &gt; <span class="n">80</span>:
+    <span class="b">print</span>(<span class="s">&quot;Invalid&quot;</span>)
+<span class="k">else</span>:
+    per = score / <span class="n">80</span> * <span class="n">100</span>
+    <span class="k">if</span> per &lt; <span class="n">40</span>:
+        grade = <span class="n">1</span>
+    <span class="k">elif</span> per &lt; <span class="n">55</span>:          <span class="c"># сюда попадаем, только если per &gt;= 40</span>
+        grade = <span class="n">2</span>
+    <span class="k">elif</span> per &lt; <span class="n">70</span>:
+        grade = <span class="n">3</span>
+    <span class="k">elif</span> per &lt; <span class="n">85</span>:
+        grade = <span class="n">4</span>
+    <span class="k">else</span>:
+        grade = <span class="n">5</span>
+    <span class="b">print</span>(<span class="s">f&quot;</span>{per:<span class="s">.1f</span>}<span class="s">% -&gt; </span>{grade}<span class="s">&quot;</span>)</code></pre><pre class="out"><code>Баллы из 80: 61
+76.2% -&gt; 4</code></pre></div>
+  <p>Нижнюю границу (<code>40 &lt;= per</code>) писать не обязательно: в <code>elif</code> мы попадаем, только если все верхние условия были ложными.</p></div></details></div>
+
+  <div class="task"><h3>4. Квадратное уравнение <span class="lvl">практика 3</span></h3>
+  <p>По a, b, c найти корни. Три случая: два корня, один, комплексные. Учесть <code>a = 0</code> (тогда уравнение линейное).</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code><span class="k">import</span> math, cmath
+<span class="k">for</span> a, b, c <span class="k">in</span> [(<span class="n">1</span>, -<span class="n">3</span>, <span class="n">2</span>), (<span class="n">1</span>, <span class="n">2</span>, <span class="n">1</span>), (<span class="n">1</span>, <span class="n">0</span>, <span class="n">4</span>), (<span class="n">0</span>, <span class="n">2</span>, -<span class="n">6</span>)]:
+    <span class="k">if</span> a == <span class="n">0</span>:
+        <span class="b">print</span>(<span class="s">&quot;линейное, x =&quot;</span>, -c / b)
+        <span class="k">continue</span>
+    d = b ** <span class="n">2</span> - <span class="n">4</span> * a * c
+    <span class="k">if</span> d &gt; <span class="n">0</span>:
+        x1 = (-b + math.sqrt(d)) / (<span class="n">2</span> * a)
+        x2 = (-b - math.sqrt(d)) / (<span class="n">2</span> * a)
+        <span class="b">print</span>(<span class="s">f&quot;</span><span class="s">два корня: </span>{x1:<span class="s">.3f</span>}<span class="s">, </span>{x2:<span class="s">.3f</span>}<span class="s">&quot;</span>)
+    <span class="k">elif</span> d == <span class="n">0</span>:
+        <span class="b">print</span>(<span class="s">f&quot;</span><span class="s">один корень: </span>{-b / (<span class="n">2</span> * a):<span class="s">.3f</span>}<span class="s">&quot;</span>)
+    <span class="k">else</span>:
+        x1 = (-b + cmath.sqrt(d)) / (<span class="n">2</span> * a)
+        <span class="b">print</span>(<span class="s">f&quot;</span><span class="s">комплексные: </span>{x1:<span class="s">.3f</span>}<span class="s"> и </span>{x1.conjugate():<span class="s">.3f</span>}<span class="s">&quot;</span>)</code></pre><pre class="out"><code>два корня: 2.000, 1.000
+один корень: -1.000
+комплексные: 0.000+2.000j и 0.000-2.000j
+линейное, x = 3.0</code></pre></div></div></details></div>
+
+  <div class="task"><h3>5. Улитка в колодце <span class="lvl m">практика 4</span></h3>
+  <p>Колодец 20 м. Днём улитка ползёт вверх на 6 м, ночью сползает на 3 м. На какой день она выберется? (Выбралась днём, значит ночью уже не сползает.)</p>
+  <details class="reveal"><summary>Подсказка</summary><div>В цикле сначала день (+6), сразу проверка «вылезла?», и только потом ночь (−3).</div></details>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>depth = <span class="n">20</span>
+height = <span class="n">0</span>
+day = <span class="n">0</span>
+<span class="k">while</span> <span class="k">True</span>:
+    day += <span class="n">1</span>
+    height += <span class="n">6</span>
+    <span class="k">if</span> height &gt;= depth:
+        <span class="k">break</span>
+    height -= <span class="n">3</span>
+<span class="b">print</span>(<span class="s">&quot;выбралась на день&quot;</span>, day)</code></pre><pre class="out"><code>выбралась на день 6</code></pre></div>
+  <p>Ловушка «в лоб»: 20 / (6 − 3) ≈ 7 дней. Неверно, потому что в последний день она не сползает.</p></div></details></div>
+
+  <div class="task"><h3>6. Простые числа <span class="lvl m">практика 4</span></h3>
+  <p>Проверить, простое ли число (while + флаг + break). Потом напечатать все простые до 50 в одну строку.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>n = <span class="n">2</span>
+<span class="k">while</span> n &lt;= <span class="n">50</span>:
+    prime = <span class="k">True</span>
+    d = <span class="n">2</span>
+    <span class="k">while</span> d * d &lt;= n:          <span class="c"># делители достаточно искать до корня</span>
+        <span class="k">if</span> n % d == <span class="n">0</span>:
+            prime = <span class="k">False</span>
+            <span class="k">break</span>
+        d += <span class="n">1</span>
+    <span class="k">if</span> prime:
+        <span class="b">print</span>(n, end=<span class="s">&quot; &quot;</span>)
+    n += <span class="n">1</span></code></pre><pre class="out"><code>2 3 5 7 11 13 17 19 23 29 31 37 41 43 47</code></pre></div></div></details></div>
+
+  <div class="task"><h3>7. Вклад: когда удвоится <span class="lvl m">практика 4</span></h3>
+  <p>10 000 000 Ft под 4,3% годовых (сложный процент). Через сколько лет сумма впервые станет больше 20 000 000? Печатать каждый год.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>capital = <span class="n">10e6</span>
+rate = <span class="n">4.3</span>
+year = <span class="n">0</span>
+<span class="k">while</span> capital &lt;= <span class="n">20e6</span>:
+    year += <span class="n">1</span>
+    capital += capital * rate / <span class="n">100</span>
+    <span class="b">print</span>(<span class="s">f&quot;</span><span class="s">год </span>{year:<span class="s">2</span>}<span class="s">: </span>{capital:<span class="s">,.0f</span>}<span class="s"> Ft</span><span class="s">&quot;</span>)
+<span class="b">print</span>(<span class="s">&quot;удвоилось за&quot;</span>, year, <span class="s">&quot;лет&quot;</span>)</code></pre><pre class="out"><code>год  1: 10,430,000 Ft
+год  2: 10,878,490 Ft
+год  3: 11,346,265 Ft
+год  4: 11,834,154 Ft
+год  5: 12,343,023 Ft
+год  6: 12,873,773 Ft
+год  7: 13,427,345 Ft
+год  8: 14,004,721 Ft
+год  9: 14,606,924 Ft
+год 10: 15,235,022 Ft
+год 11: 15,890,128 Ft
+год 12: 16,573,403 Ft
+год 13: 17,286,060 Ft
+год 14: 18,029,360 Ft
+год 15: 18,804,623 Ft
+год 16: 19,613,222 Ft
+год 17: 20,456,590 Ft
+удвоилось за 17 лет</code></pre></div></div></details></div>
+
+  <div class="task"><h3>8. Угадай число с ограничением <span class="lvl m">практика 4</span></h3>
+  <p>Компьютер загадывает 1..50. Игрок угадывает, ответ «больше/меньше». Максимум 7 попыток. Ввод не числа не считать попыткой.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code><span class="k">import</span> random
+random.seed(<span class="n">7</span>)                  <span class="c"># для проверки; на экзамене без seed</span>
+target = random.randint(<span class="n">1</span>, <span class="n">50</span>)
+attempts = <span class="n">0</span>
+<span class="k">while</span> attempts &lt; <span class="n">7</span>:
+    s = <span class="b">input</span>(<span class="s">&quot;Число: &quot;</span>)
+    <span class="k">if</span> <span class="k">not</span> s.isdigit():
+        <span class="b">print</span>(<span class="s">&quot;Нужно число&quot;</span>)
+        <span class="k">continue</span>
+    guess = <span class="b">int</span>(s)
+    attempts += <span class="n">1</span>
+    <span class="k">if</span> guess &lt; target:
+        <span class="b">print</span>(<span class="s">&quot;Больше&quot;</span>)
+    <span class="k">elif</span> guess &gt; target:
+        <span class="b">print</span>(<span class="s">&quot;Меньше&quot;</span>)
+    <span class="k">else</span>:
+        <span class="b">print</span>(<span class="s">&quot;Угадал за&quot;</span>, attempts)
+        <span class="k">break</span>
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">&quot;Попытки кончились, было&quot;</span>, target)</code></pre><pre class="out"><code>Число: 25
+Меньше
+Число: x
+Нужно число
+Число: 12
+Больше
+Число: 18
+Больше
+Число: 21
+Угадал за 4</code></pre></div></div></details></div>
+
+  <div class="task"><h3>9. Числовой треугольник <span class="lvl m">практика 4–6</span></h3>
+  <p>Для n = 5 напечатать фигуру справа (пробелы слева). Сделать двумя вложенными циклами, потом в одну строку через умножение строк.</p>
+<div class="code"><pre><code>    1
+   12
+  123
+ 1234
+12345</code></pre></div>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>n = <span class="n">5</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, n + <span class="n">1</span>):
+    <span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span>(n - i):
+        <span class="b">print</span>(<span class="s">&quot; &quot;</span>, end=<span class="s">&quot;&quot;</span>)
+    <span class="k">for</span> j <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, i + <span class="n">1</span>):
+        <span class="b">print</span>(j, end=<span class="s">&quot;&quot;</span>)
+    <span class="b">print</span>()
+<span class="c"># короче:</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, n + <span class="n">1</span>):
+    <span class="b">print</span>(<span class="s">&quot; &quot;</span> * (n - i) + <span class="s">&quot;&quot;</span>.join(<span class="b">str</span>(j) <span class="k">for</span> j <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, i + <span class="n">1</span>)))</code></pre><pre class="out"><code>    1
+   12
+  123
+ 1234
+12345
+    1
+   12
+  123
+ 1234
+12345</code></pre></div></div></details></div>
+
+  <div class="task"><h3>10. Мин, макс, среднее тремя способами <span class="lvl m">практика 6</span></h3>
+  <p>Для списка найти минимум, максимум и среднее: через <code>while</code>, через <code>for</code>, встроенными функциями. Плюс стандартное отклонение.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code><span class="k">import</span> math
+data = [<span class="n">2</span>, <span class="n">45</span>, <span class="n">47</span>, -<span class="n">8</span>, <span class="n">53</span>, <span class="n">54</span>, <span class="n">14</span>]
+
+i, lo, hi, total = <span class="n">1</span>, data[<span class="n">0</span>], data[<span class="n">0</span>], data[<span class="n">0</span>]   <span class="c"># while</span>
+<span class="k">while</span> i &lt; <span class="b">len</span>(data):
+    <span class="k">if</span> data[i] &lt; lo: lo = data[i]
+    <span class="k">if</span> data[i] &gt; hi: hi = data[i]
+    total += data[i]
+    i += <span class="n">1</span>
+<span class="b">print</span>(lo, hi, total / <span class="b">len</span>(data))
+
+lo = hi = data[<span class="n">0</span>]                                  <span class="c"># for</span>
+total = <span class="n">0</span>
+<span class="k">for</span> x <span class="k">in</span> data:
+    lo = x <span class="k">if</span> x &lt; lo <span class="k">else</span> lo
+    hi = x <span class="k">if</span> x &gt; hi <span class="k">else</span> hi
+    total += x
+<span class="b">print</span>(lo, hi, total / <span class="b">len</span>(data))
+
+mean = <span class="b">sum</span>(data) / <span class="b">len</span>(data)                       <span class="c"># встроенные</span>
+std = math.sqrt(<span class="b">sum</span>((x - mean) ** <span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> data) / <span class="b">len</span>(data))
+<span class="b">print</span>(<span class="b">min</span>(data), <span class="b">max</span>(data), <span class="b">round</span>(mean, <span class="n">3</span>), <span class="b">round</span>(std, <span class="n">3</span>))</code></pre><pre class="out"><code>-8 54 29.571428571428573
+-8 54 29.571428571428573
+-8 54 29.571 24.207</code></pre></div></div></details></div>
+
+  <div class="task"><h3>11. Температуры за месяц <span class="lvl h">практика 6</span></h3>
+  <p>Даны дневные температуры. Сколько дней жарче 30 °C? Средняя? Какая самая длинная серия подряд дней выше 30 °C, и была ли серия из 5+ дней?</p>
+  <details class="reveal"><summary>Подсказка</summary><div>Счётчик серии: если жарко, <code>streak += 1</code>, иначе <code>streak = 0</code>. После каждого шага обновляй максимум.</div></details>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>temps = [<span class="n">31.2</span>, <span class="n">33.0</span>, <span class="n">29.5</span>, <span class="n">30.4</span>, <span class="n">32.8</span>, <span class="n">34.1</span>, <span class="n">35.0</span>, <span class="n">31.7</span>, <span class="n">28.9</span>, <span class="n">27.5</span>,
+         <span class="n">30.1</span>, <span class="n">30.9</span>, <span class="n">26.4</span>, <span class="n">31.5</span>, <span class="n">32.2</span>]
+hot = <span class="b">len</span>([t <span class="k">for</span> t <span class="k">in</span> temps <span class="k">if</span> t &gt; <span class="n">30</span>])
+mean = <span class="b">sum</span>(temps) / <span class="b">len</span>(temps)
+streak = best = <span class="n">0</span>
+<span class="k">for</span> t <span class="k">in</span> temps:
+    <span class="k">if</span> t &gt; <span class="n">30</span>:
+        streak += <span class="n">1</span>
+        <span class="k">if</span> streak &gt; best:
+            best = streak
+    <span class="k">else</span>:
+        streak = <span class="n">0</span>
+<span class="b">print</span>(<span class="s">f&quot;</span><span class="s">жарких дней: </span>{hot}<span class="s">, средняя: </span>{mean:<span class="s">.2f</span>}<span class="s">&quot;</span>)
+<span class="b">print</span>(<span class="s">&quot;самая длинная серия:&quot;</span>, best, <span class="s">&quot;| 5+ подряд:&quot;</span>, best &gt;= <span class="n">5</span>)</code></pre><pre class="out"><code>жарких дней: 11, средняя: 31.01
+самая длинная серия: 5 | 5+ подряд: True</code></pre></div></div></details></div>
+
+  <div class="task"><h3>12. Лотерея 6 из 45 <span class="lvl m">практика 6</span></h3>
+  <p>Сгенерировать 6 разных чисел от 1 до 45 по возрастанию. Двумя способами: циклом с проверкой <code>not in</code> и одной функцией из random.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code><span class="k">import</span> random
+random.seed(<span class="n">3</span>)
+numbers = []
+<span class="k">while</span> <span class="b">len</span>(numbers) &lt; <span class="n">6</span>:
+    x = random.randint(<span class="n">1</span>, <span class="n">45</span>)
+    <span class="k">if</span> x <span class="k">not</span> <span class="k">in</span> numbers:        <span class="c"># повтор просто пропускаем</span>
+        numbers.append(x)
+numbers.sort()
+<span class="b">print</span>(numbers)
+<span class="b">print</span>(<span class="b">sorted</span>(random.sample(<span class="b">range</span>(<span class="n">1</span>, <span class="n">46</span>), <span class="n">6</span>)))   <span class="c"># range(1, 46): 45 включительно</span></code></pre><pre class="out"><code>[9, 16, 24, 35, 38, 39]
+[1, 5, 31, 38, 39, 41]</code></pre></div></div></details></div>
+
+  <div class="task"><h3>13. Чётные и нечётные до нуля <span class="lvl m">практика 7</span></h3>
+  <p>Читать целые числа, пока не введут 0. Разложить по двум спискам, вывести оба, их суммы и сколько было отрицательных.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>even, odd = [], []
+<span class="k">while</span> <span class="k">True</span>:
+    n = <span class="b">int</span>(<span class="b">input</span>(<span class="s">&quot;Число (0 = стоп): &quot;</span>))
+    <span class="k">if</span> n == <span class="n">0</span>:
+        <span class="k">break</span>
+    <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span>:
+        even.append(n)
+    <span class="k">else</span>:
+        odd.append(n)
+<span class="b">print</span>(<span class="s">&quot;чётные:&quot;</span>, even, <span class="b">sum</span>(even))
+<span class="b">print</span>(<span class="s">&quot;нечётные:&quot;</span>, odd, <span class="b">sum</span>(odd))
+<span class="b">print</span>(<span class="s">&quot;отрицательных:&quot;</span>, <span class="b">len</span>([x <span class="k">for</span> x <span class="k">in</span> even + odd <span class="k">if</span> x &lt; <span class="n">0</span>]))</code></pre><pre class="out"><code>Число (0 = стоп): 4
+Число (0 = стоп): -7
+Число (0 = стоп): 10
+Число (0 = стоп): 3
+Число (0 = стоп): -2
+Число (0 = стоп): 0
+чётные: [4, 10, -2] 12
+нечётные: [-7, 3] -4
+отрицательных: 2</code></pre></div>
+  <p><code>-7 % 2</code> в Python это 1, так что отрицательные нечётные тоже попадают куда надо.</p></div></details></div>
+
+  <div class="task"><h3>14. Поменять местами по индексам <span class="lvl h">практика 7</span></h3>
+  <p>Пользователь вводит два индекса, программа меняет элементы местами. Если индекс не число или вне списка, спросить заново.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>numbers = [<span class="n">1</span>, <span class="n">5</span>, <span class="n">2</span>, <span class="n">7</span>, <span class="n">9</span>, <span class="n">4</span>]
+indices = []
+<span class="k">while</span> <span class="b">len</span>(indices) &lt; <span class="n">2</span>:
+    s = <span class="b">input</span>(<span class="s">f&quot;</span><span class="s">Индекс </span>{<span class="b">len</span>(indices) + <span class="n">1</span>}<span class="s">: </span><span class="s">&quot;</span>)
+    <span class="k">if</span> s.lstrip(<span class="s">&quot;-&quot;</span>).isdigit() <span class="k">and</span> -<span class="b">len</span>(numbers) &lt;= <span class="b">int</span>(s) &lt; <span class="b">len</span>(numbers):
+        indices.append(<span class="b">int</span>(s))
+    <span class="k">else</span>:
+        <span class="b">print</span>(<span class="s">&quot;Неверный индекс, ещё раз&quot;</span>)
+i, j = indices
+numbers[i], numbers[j] = numbers[j], numbers[i]
+<span class="b">print</span>(numbers)</code></pre><pre class="out"><code>Индекс 1: 1
+Индекс 2: 9
+Неверный индекс, ещё раз
+Индекс 2: a
+Неверный индекс, ещё раз
+Индекс 2: -1
+[1, 4, 2, 7, 9, 5]</code></pre></div></div></details></div>
+
+  <div class="task"><h3>15. Центр масс и периметр <span class="lvl h">практика 8</span></h3>
+  <p>Пять одинаковых точечных масс в точках (кортежи). Найти центр масс и периметр многоугольника, который обходит точки по порядку и замыкается.</p>
+  <details class="reveal"><summary>Подсказка</summary><div>Центр масс одинаковых масс это просто среднее x и среднее y. Для замыкания соседом последней точки берут <code>points[(i + 1) % n]</code>, то есть первую.</div></details>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code><span class="k">import</span> math
+points = [(<span class="n">0</span>, <span class="n">0</span>), (<span class="n">4</span>, <span class="n">0</span>), (<span class="n">5</span>, <span class="n">3</span>), (<span class="n">2</span>, <span class="n">5</span>), (-<span class="n">1</span>, <span class="n">3</span>)]
+n = <span class="b">len</span>(points)
+cx = <span class="b">sum</span>(x <span class="k">for</span> x, y <span class="k">in</span> points) / n
+cy = <span class="b">sum</span>(y <span class="k">for</span> x, y <span class="k">in</span> points) / n
+perimeter = <span class="n">0</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(n):
+    x1, y1 = points[i]
+    x2, y2 = points[(i + <span class="n">1</span>) % n]       <span class="c"># после последней снова первая</span>
+    perimeter += math.sqrt((x2 - x1) ** <span class="n">2</span> + (y2 - y1) ** <span class="n">2</span>)
+<span class="b">print</span>(<span class="s">f&quot;</span><span class="s">центр масс: (</span>{cx:<span class="s">.2f</span>}<span class="s">, </span>{cy:<span class="s">.2f</span>}<span class="s">), периметр: </span>{perimeter:<span class="s">.3f</span>}<span class="s">&quot;</span>)</code></pre><pre class="out"><code>центр масс: (2.00, 2.20), периметр: 17.536</code></pre></div></div></details></div>
+
+  <div class="task"><h3>16. Результаты экзамена в кортежах <span class="lvl h">практика 8</span></h3>
+  <p>Список пар (код, баллы). (а) Найти баллы студента по коду, если нет, написать «missing». (б) Топ-3 по убыванию. (в) Матрица: сколько студентов в каждой оценке по шкале из задачи 3, если максимум 100.</p>
+  <details class="reveal"><summary>Решение</summary><div>
+<div class="code"><pre><code>results = [(<span class="s">&quot;BATMAN&quot;</span>, <span class="n">14</span>), (<span class="s">&quot;SDFERG&quot;</span>, <span class="n">23</span>), (<span class="s">&quot;4DF5RH&quot;</span>, <span class="n">64</span>),
+           (<span class="s">&quot;LOU7RG6&quot;</span>, <span class="n">80</span>), (<span class="s">&quot;SDRPH9&quot;</span>, <span class="n">67</span>), (<span class="s">&quot;SWR9IP&quot;</span>, <span class="n">34</span>), (<span class="s">&quot;KX81TQ&quot;</span>, <span class="n">91</span>)]
+
+<span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span>(<span class="n">2</span>):                      <span class="c"># (а) два запроса для примера</span>
+    code = <span class="b">input</span>(<span class="s">&quot;Код: &quot;</span>)
+    <span class="k">for</span> c, score <span class="k">in</span> results:
+        <span class="k">if</span> c == code:
+            <span class="b">print</span>(code, <span class="s">&quot;-&gt;&quot;</span>, score)
+            <span class="k">break</span>
+    <span class="k">else</span>:                               <span class="c"># for-else: break не было</span>
+        <span class="b">print</span>(code, <span class="s">&quot;missing&quot;</span>)
+
+top = <span class="b">sorted</span>(results, key=<span class="k">lambda</span> r: r[<span class="n">1</span>], reverse=<span class="k">True</span>)[:<span class="n">3</span>]   <span class="c"># (б)</span>
+<span class="b">print</span>(<span class="s">&quot;топ-3:&quot;</span>, [c <span class="k">for</span> c, _ <span class="k">in</span> top])
+
+counts = [<span class="n">0</span>] * <span class="n">5</span>                        <span class="c"># (в) индексы 0..4 = оценки 1..5</span>
+<span class="k">for</span> _, score <span class="k">in</span> results:
+    <span class="k">if</span> score &lt; <span class="n">40</span>: g = <span class="n">1</span>
+    <span class="k">elif</span> score &lt; <span class="n">55</span>: g = <span class="n">2</span>
+    <span class="k">elif</span> score &lt; <span class="n">70</span>: g = <span class="n">3</span>
+    <span class="k">elif</span> score &lt; <span class="n">85</span>: g = <span class="n">4</span>
+    <span class="k">else</span>: g = <span class="n">5</span>
+    counts[g - <span class="n">1</span>] += <span class="n">1</span>
+<span class="k">for</span> g <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">6</span>):
+    <span class="b">print</span>(g, <span class="s">&quot;#&quot;</span> * counts[g - <span class="n">1</span>])</code></pre><pre class="out"><code>Код: SDRPH9
+SDRPH9 -&gt; 67
+Код: NOBODY
+NOBODY missing
+топ-3: [&#x27;KX81TQ&#x27;, &#x27;LOU7RG6&#x27;, &#x27;SDRPH9&#x27;]
+1 ###
+2 
+3 ##
+4 #
+5 #</code></pre></div></div></details></div>
+</section>
+
+<!-- links -->
+<section class="sec" id="links">
+  <div class="sec-h"><span class="sec-no">↗</span><h2>Ресурсы и видео</h2></div>
+  <p>Все ссылки проверены 30 октября 2026, все открываются. Если времени мало: <b>pythontutor</b> для понимания, <b>CodingBat</b> для набивки руки, одно видео на фоне.</p>
+  <h4>Потрогать руками</h4>
+  <div class="links">
+    <a href="https://pythontutor.com/" target="_blank" rel="noopener"><b>Python Tutor</b><span>Вставляешь код, он по шагам рисует переменные и списки. Лучшее средство от «почему a тоже изменился».</span></a>
+    <a href="https://codingbat.com/python" target="_blank" rel="noopener"><b>CodingBat Python</b><span>Сотни маленьких задач на строки, списки и логику с мгновенной проверкой. Идеально перед мидтермом.</span></a>
+    <a href="https://www.practicepython.org/" target="_blank" rel="noopener"><b>Practice Python</b><span>40 задач для начинающих с решениями.</span></a>
+    <a href="https://exercism.org/tracks/python" target="_blank" rel="noopener"><b>Exercism: Python</b><span>146 задач, бесплатно, можно получить разбор от ментора.</span></a>
+  </div>
+  <h4>Почитать (англ.)</h4>
+  <div class="links">
+    <a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener"><b>Официальный Python Tutorial</b><span>Сухо, но точно. Главы 3–7 и 8 (ошибки) ровно про мидтерм.</span></a>
+    <a href="https://www.w3schools.com/python/" target="_blank" rel="noopener"><b>W3Schools Python</b><span>Короткие странички по каждой теме с кнопкой «Try it yourself».</span></a>
+    <a href="https://www.programiz.com/python-programming" target="_blank" rel="noopener"><b>Programiz</b><span>Понятные уроки и онлайн-компилятор прямо в браузере.</span></a>
+    <a href="https://www.py4e.com/" target="_blank" rel="noopener"><b>Python for Everybody</b><span>Бесплатный курс Чака Северанса: книга, видео, автопроверка.</span></a>
+    <a href="https://automatetheboringstuff.com/" target="_blank" rel="noopener"><b>Automate the Boring Stuff</b><span>Бесплатная книга, главы 1–9 это вся база на живых примерах.</span></a>
+    <a href="https://cs50.harvard.edu/python/" target="_blank" rel="noopener"><b>CS50P (Harvard)</b><span>Лекции, конспекты и задачи гарвардского курса по Python, бесплатно.</span></a>
+  </div>
+  <h4>По-русски</h4>
+  <div class="links">
+    <a href="https://stepik.org/course/58852/promo" target="_blank" rel="noopener"><b>«Поколение Python» (Stepik)</b><span>Бесплатный курс для начинающих, 470 задач с автопроверкой. Самый популярный.</span></a>
+    <a href="https://stepik.org/course/67/promo" target="_blank" rel="noopener"><b>«Программирование на Python» (Stepik)</b><span>Бесплатный вводный курс, 44 интерактивных задачи.</span></a>
+    <a href="https://younglinux.info/python" target="_blank" rel="noopener"><b>younglinux: Python</b><span>Простые уроки с задачами, написано для школьников, то есть максимально понятно.</span></a>
+    <a href="https://pythontutor.ru/" target="_blank" rel="noopener"><b>pythontutor.ru</b><span>Русские уроки с задачами. Из Венгрии бери ссылку на версию вне России.</span></a>
+  </div>
+  <h4>Видео</h4>
+  <div class="links">
+    <a class="yt" href="https://www.youtube.com/playlist?list=PL-osiE80TeTskrapNbzXhwoFUiLCjGgY7" target="_blank" rel="noopener"><b>Corey Schafer: Beginner Tutorials</b><span>Плейлист, каждое видео одна тема по 10–20 минут. Смотри ровно то, что не понял.</span></a>
+    <a class="yt" href="https://www.youtube.com/watch?v=_uQrJ0TkZlc" target="_blank" rel="noopener"><b>Mosh: Python for Beginners</b><span>Спокойно и понятно, около 6 часов. Хорош на 1,5x.</span></a>
+    <a class="yt" href="https://www.youtube.com/watch?v=XKHEtdqhLK8" target="_blank" rel="noopener"><b>Bro Code: Python Full Course</b><span>Быстрый темп, много коротких примеров.</span></a>
+    <a class="yt" href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank" rel="noopener"><b>freeCodeCamp: Learn Python</b><span>Классический курс для начинающих от freeCodeCamp.</span></a>
+    <a class="yt" href="https://www.youtube.com/watch?v=nLRL_NcnK-4" target="_blank" rel="noopener"><b>CS50P: полный курс</b><span>Лекции Гарварда целиком. Подробно, если время есть.</span></a>
+    <a class="yt" href="https://www.youtube.com/watch?v=8DvywoWv6fI" target="_blank" rel="noopener"><b>Python for Everybody (видео)</b><span>Университетский курс Северанса одним видео.</span></a>
+  </div>
+</section>
+
+<!-- cheat -->
+<section class="sec" id="cheat">
+  <div class="sec-h"><span class="sec-no">★</span><h2>Шпаргалка на одну страницу</h2></div>
+  <div class="cheat">
+    <div class="card"><h4>Типы и ввод</h4><ul>
+      <li><code>int float str bool None</code>, <code>type(x)</code></li>
+      <li><code>int(input())</code>, <code>map(int, input().split())</code></li>
+      <li><code>/</code> float · <code>//</code> нацело · <code>%</code> остаток · <code>**</code> степень</li>
+      <li><code>f"{x:.2f}"</code>, <code>print(a, b, sep="", end="")</code></li>
+      <li><code>2**3**2</code> = 512, <code>-2**2</code> = -4, <code>not → and → or</code></li>
+      <li><code>math.sqrt pi radians ceil floor isclose</code></li>
+      <li><code>randint(a,b)</code> с b · <code>randrange</code> без · <code>choice sample shuffle</code></li>
+    </ul></div>
+    <div class="card"><h4>Условия и циклы</h4><ul>
+      <li><code>if / elif / else</code> + двоеточие + отступ</li>
+      <li><code>==</code> сравнить, <code>=</code> присвоить, <code>and or not in</code></li>
+      <li><code>range(a, b, step)</code> без b</li>
+      <li><code>break</code> выйти, <code>continue</code> следующий круг</li>
+      <li><code>enumerate(a)</code>, <code>zip(a, b)</code></li>
+      <li><code>x if усл else y</code>, <code>match / case _:</code></li>
+      <li><code>else</code> у цикла: только если не было <code>break</code></li>
+    </ul></div>
+    <div class="card"><h4>Строки</h4><ul>
+      <li><code>s[i]</code>, <code>s[a:b]</code>, <code>s[::-1]</code>, <code>len(s)</code></li>
+      <li><code>strip lower upper replace split join find count</code></li>
+      <li><code>isdigit isalpha startswith</code>, <code>ord / chr</code></li>
+      <li>неизменяемы: <code>s = s.upper()</code></li>
+    </ul></div>
+    <div class="card"><h4>Списки</h4><ul>
+      <li><code>append insert pop remove extend index</code></li>
+      <li><code>a.sort()</code> → None, <code>sorted(a)</code> → новый</li>
+      <li><code>b = a.copy()</code>, не <code>b = a</code></li>
+      <li><code>[f(x) for x in a if cond]</code></li>
+      <li><code>sum min max len</code>, <code>first, *rest = a</code></li>
+      <li>матрица: <code>[[0]*M for _ in range(N)]</code>, не <code>[[0]*M]*N</code></li>
+    </ul></div>
+    <div class="card"><h4>dict / set / tuple</h4><ul>
+      <li><code>d[k] = v</code>, <code>d.get(k, 0)</code>, <code>k in d</code></li>
+      <li><code>d.items() keys() values()</code>, <code>del d[k]</code></li>
+      <li>счётчик: <code>d[w] = d.get(w, 0) + 1</code></li>
+      <li><code>set()</code> пустое, <code>| &amp; -</code></li>
+      <li><code>(5,)</code> кортеж из одного</li>
+    </ul></div>
+    <div class="card"><h4>Функции, ошибки, файлы (бонус)</h4><ul>
+      <li><code>def f(a, b=1): return ...</code>, без return → None</li>
+      <li>не <code>def f(x, lst=[])</code>, а <code>lst=None</code></li>
+      <li><code>try / except E as e / else / finally</code>, <code>raise ValueError("...")</code></li>
+      <li><code>with open(p, "r"/"w"/"a") as f:</code>, <code>for line in f: line.strip()</code></li>
+    </ul></div>
+  </div>
+</section>
+
+<footer>Ingenium · подготовка к мидтерму 1 по Programming in the Python Language (BME, BMEGEMIBSKPYTH), октябрь 2026. Задачи это вариации примеров из практик 1–8. Весь вывод в примерах получен реальным запуском кода на Python 3.13. Нашёл ошибку, пиши в комментарии к материалу.</footer>
+</main>
+
+<script>
+(function(){
+  var KEY="ingenium-py-midterm-quiz", st={};
+  try{st=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+  var qs=[].slice.call(document.querySelectorAll("#quiz .q")), total=qs.length;
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+  function paint(){
+    var good=0;
+    qs.forEach(function(q,i){
+      var v=st[i]; q.classList.toggle("good",v===1); q.classList.toggle("bad",v===0);
+      if(v===1||v===0)q.classList.add("shown"); if(v===1)good++;
+    });
+    document.getElementById("sc").textContent=good+" / "+total+" угадано";
+    document.getElementById("scbar").style.width=(good/total*100)+"%";
+  }
+  qs.forEach(function(q,i){
+    q.querySelector(".show").addEventListener("click",function(){q.classList.add("shown")});
+    q.querySelectorAll(".judge button").forEach(function(b){
+      b.addEventListener("click",function(){st[i]=+b.dataset.v;save();paint()});
+    });
+  });
+  document.getElementById("reset").addEventListener("click",function(){
+    st={};save();qs.forEach(function(q){q.classList.remove("shown","good","bad")});paint();
+  });
+  paint();
+  var bar=document.getElementById("progress");
+  addEventListener("scroll",function(){
+    var h=document.documentElement; bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";
+  },{passive:true});
+})();
+</script>
+</body>
+</html>
