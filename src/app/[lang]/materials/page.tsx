@@ -4,6 +4,7 @@ import { getDictionary, getLocale } from "@/dictionaries";
 import { getMaterials } from "@/lib/materials";
 import { cardLabels, plural } from "@/lib/format";
 import { MaterialGrid } from "@/components/material-grid";
+import { toCard } from "@/lib/content";
 import { alternates } from "@/lib/site";
 import { Reveal } from "@/components/reveal";
 
@@ -37,7 +38,7 @@ export default async function MaterialsPage() {
         {/* The grid reads ?section= and ?subject= from the URL, which is only known at request time. */}
         <Suspense>
           <MaterialGrid
-            materials={materials}
+            materials={materials.map(toCard)}
             locale={locale}
             labels={cardLabels(materials, dict, locale)}
             typeNames={dict.types}

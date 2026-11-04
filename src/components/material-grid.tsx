@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { LayoutGrid, X } from "lucide-react";
-import type { LocalizedMaterial, MaterialType } from "@/lib/content";
+import type { CardMaterial, MaterialType } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
 import { getSection, SECTIONS, subjectOrder } from "@/lib/taxonomy";
 import { useProfile } from "@/lib/profile";
@@ -25,7 +25,7 @@ export function MaterialGrid({
   allSectionsText,
   emptyText,
 }: {
-  materials: LocalizedMaterial[];
+  materials: CardMaterial[];
   locale: Locale;
   labels: Record<string, CardLabels>;
   typeNames: Record<Filter, string>;
@@ -39,7 +39,7 @@ export function MaterialGrid({
   const [type, setType] = useState<Filter>("all");
   const profile = useProfile();
   // The profile switch narrows everything to sections meant for that field.
-  const inProfile = (m: LocalizedMaterial) =>
+  const inProfile = (m: CardMaterial) =>
     profile === "general" || getSection(m.section).profiles.includes(profile);
   const pool = materials.filter(inProfile);
   const subject = params.get("subject");

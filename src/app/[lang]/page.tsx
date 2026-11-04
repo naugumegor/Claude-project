@@ -8,7 +8,7 @@ import { HeroSearch } from "@/components/search";
 import { MaterialCard } from "@/components/material-card";
 import { Reveal } from "@/components/reveal";
 import { typeMeta } from "@/components/type-meta";
-import type { MaterialType } from "@/lib/content";
+import { toCard, type MaterialType } from "@/lib/content";
 import { SECTIONS, subjectOrder } from "@/lib/taxonomy";
 import { sectionMeta } from "@/components/section-icon";
 import { excerpt, getNews, getPublishedUserDocs } from "@/lib/community";
@@ -115,7 +115,7 @@ export default async function HomePage() {
           {recent.map((m, i) => (
             <MaterialCard
               key={m.slug}
-              material={m}
+              material={toCard(m)}
               locale={locale}
               labels={labels[m.slug]}
               index={i}

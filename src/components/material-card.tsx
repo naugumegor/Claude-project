@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
-import type { LocalizedMaterial } from "@/lib/content";
+import type { CardMaterial } from "@/lib/content";
 import type { Locale } from "@/lib/i18n";
 import { isOptimizable } from "@/lib/format";
 import { typeMeta } from "./type-meta";
@@ -21,14 +21,14 @@ export function MaterialCard({
   labels,
   index = 0,
 }: {
-  material: LocalizedMaterial;
+  material: CardMaterial;
   locale: Locale;
   labels: CardLabels;
   index?: number;
 }) {
   const meta = typeMeta[material.type];
   const Icon = meta.icon;
-  const cover = material.images?.[0];
+  const cover = material.cover;
 
   return (
     <motion.article
