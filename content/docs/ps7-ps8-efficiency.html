@@ -259,6 +259,11 @@ footer{margin-top:60px;padding:18px 20px;border-radius:var(--r);background:var(-
 .rv-on .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion: reduce){.rv-on .rv{opacity:1;transform:none;transition:none}.brand i,.kicker::before,.lab-h .ttl::before,.hero h1 .sub,.flow path.dash{animation:none}}
 @media print{.topbar,.scrollbar,.lab,.flow-ctrl,.q-actions,.test-top{display:none!important}body::after{display:none}.rv-on .rv{opacity:1;transform:none}details.sol>.in{display:block}}
+/* Speed: the browser skips layout and paint of sections that are off screen (thousands of
+   formula elements), so scrolling stays smooth on phones. "auto" remembers each real height. */
+.sec{content-visibility:auto;contain-intrinsic-size:auto 2400px}
+html.cv-all .sec{content-visibility:visible}
+@media print{.sec{content-visibility:visible}}
 </style>
 </head>
 <body>
@@ -775,6 +780,23 @@ render();
   $('#tmReset').addEventListener('click', function(){ clearInterval(iv); run = false; left = 45*60; $('#tmBtn').textContent = 'Старт'; show(); });
   show();
 })();
+})();
+</script>
+<script>
+/* Jumps from the contents: sections the browser has not laid out yet only have a guessed height,
+   so a smooth scroll would land in the wrong place. Before the first jump, lay everything out once;
+   the real heights are then remembered and every later jump is exact. */
+(function(){
+  var root = document.documentElement, done = false;
+  document.addEventListener('click', function(e){
+    if (done) return;
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a || a.getAttribute('href').length < 2) return;
+    done = true;
+    root.classList.add('cv-all');
+    void root.offsetHeight;
+    setTimeout(function(){ root.classList.remove('cv-all'); }, 3000);
+  }, true);
 })();
 </script>
 </body>

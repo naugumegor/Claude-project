@@ -9,6 +9,7 @@ import { getMaterial, getMaterials, getSlugs } from "@/lib/materials";
 import { cardLabels, formatDate, isOptimizable } from "@/lib/format";
 import { Markdown } from "@/components/markdown";
 import { MaterialCard } from "@/components/material-card";
+import { toCard } from "@/lib/content";
 import { DocumentViewer } from "@/components/document-viewer";
 import { StudyToolbar } from "@/components/study/study-toolbar";
 import { ReadingProgress } from "@/components/study/reading-progress";
@@ -275,7 +276,7 @@ export default async function MaterialPage({ params }: PageProps<"/[lang]/materi
             {related.map((m, i) => (
               <MaterialCard
                 key={m.slug}
-                material={m}
+                material={toCard(m)}
                 locale={locale}
                 labels={relatedLabels[m.slug]}
                 index={i}

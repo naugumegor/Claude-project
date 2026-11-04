@@ -53,6 +53,30 @@ export type LocalizedMaterial = Omit<Material, "text" | "subject"> &
     translated: boolean;
   };
 
+/**
+ * Only what a card (and the grid's filters) show. Cards are client components, so everything
+ * passed to them is serialized into the page: handing them whole materials shipped every note's
+ * full Markdown body to the browser (about 800 KB on /materials).
+ */
+export type CardMaterial = Pick<
+  LocalizedMaterial,
+  "slug" | "type" | "title" | "excerpt" | "tags" | "createdAt" | "subject" | "section"
+> & { cover?: MaterialImage };
+
+export function toCard(m: LocalizedMaterial): CardMaterial {
+  return {
+    slug: m.slug,
+    type: m.type,
+    title: m.title,
+    excerpt: m.excerpt,
+    tags: m.tags,
+    createdAt: m.createdAt,
+    subject: m.subject,
+    section: m.section,
+    cover: m.images?.[0],
+  };
+}
+
 export function localize(material: Material, locale: Locale): LocalizedMaterial {
   const { text, subject, ...rest } = material;
   const own = text[locale];

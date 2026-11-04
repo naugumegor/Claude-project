@@ -12,6 +12,7 @@ import { getMaterials } from "@/lib/materials";
 import { cardLabels, formatDate } from "@/lib/format";
 import { getAdmin, getUser } from "@/lib/session";
 import { MaterialCard } from "@/components/material-card";
+import { toCard } from "@/lib/content";
 import { Reveal } from "@/components/reveal";
 import { ProfileForms } from "@/components/account/profile-forms";
 import { GithubMark } from "@/components/account/auth-form";
@@ -172,7 +173,7 @@ async function Account({
                 ) : (
                   <div className="grid gap-5 sm:grid-cols-2">
                     {saved.map((m, i) => (
-                      <MaterialCard key={m.slug} material={m} locale={locale} labels={labels[m.slug]} index={i} />
+                      <MaterialCard key={m.slug} material={toCard(m)} locale={locale} labels={labels[m.slug]} index={i} />
                     ))}
                   </div>
                 ),
