@@ -36,7 +36,7 @@ export const SECTIONS: Section[] = [
     slug: "math",
     profiles: ["engineering", "business"],
     name: { ru: "Математика", en: "Mathematics" },
-    subjects: ["math", "calculus", "linear-algebra", "differential-equations", "probability"],
+    subjects: ["math-a1-bme", "math", "calculus", "linear-algebra", "differential-equations", "probability"],
   },
   {
     slug: "mechanics",
