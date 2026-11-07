@@ -111,5 +111,34 @@
         "body": ""
       }
     }
+  },
+  {
+    "slug": "math-a1-midterm",
+    "subject": "math-a1-bme",
+    "date": "2026-11-07",
+    "tags": [
+      "матан",
+      "BME",
+      "мидтерм",
+      "Лопиталь",
+      "Тейлор",
+      "экстремумы"
+    ],
+    "file": {
+      "path": "math-a1-midterm.html",
+      "name": "Матан A1: мидтерм"
+    },
+    "text": {
+      "ru": {
+        "title": "Матан A1: подготовка к мидтерму",
+        "excerpt": "Mathematics A1 (BME), мидтерм в формате прошлой Midterm 2: определение производной и Тейлор, Лопиталь, монотонность, выпуклость, глобальный экстремум на отрезке, неявные функции и касательные, оптимизация, оценка ошибки Тейлора и интегралы на всякий случай. Всё на пальцах, задачи с листков практик с решениями, разбор прошлой мидки, тест на 12 вопросов, пробник в двух вариантах с таймером, проверенные ресурсы.",
+        "body": ""
+      },
+      "en": {
+        "title": "Mathematics A1: midterm prep",
+        "excerpt": "Mathematics A1 (BME), a midterm in the format of last year's Midterm 2: definition of the derivative and Taylor polynomials, L'Hospital's rule, monotonicity, convexity, global extrema on an interval, implicit differentiation and tangents, optimization, Taylor error bounds, plus integrals just in case. Plain explanations, worked practice-sheet problems, the past midterm solved, a 12-question quiz, a two-variant timed mock and checked resources. The page itself is in Russian.",
+        "body": ""
+      }
+    }
   }
 ]

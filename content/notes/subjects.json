@@ -1,4 +1,5 @@
 [
+  { "slug": "math-a1-bme", "nameRu": "Математика A1 (BME)", "nameEn": "Mathematics A1 (BME)" },
   { "slug": "calculus", "nameRu": "Математический анализ", "nameEn": "Calculus" },
   { "slug": "linear-algebra", "nameRu": "Линейная алгебра", "nameEn": "Linear algebra" },
   { "slug": "differential-equations", "nameRu": "Дифференциальные уравнения", "nameEn": "Differential equations" },
