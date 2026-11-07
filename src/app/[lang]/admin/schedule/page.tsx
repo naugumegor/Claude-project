@@ -1,13 +1,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { asc } from "drizzle-orm";
 import { ArrowLeft } from "lucide-react";
 import { getDictionary, getLocale, type Dictionary } from "@/dictionaries";
 import type { Locale } from "@/lib/i18n";
-import { db } from "@/db";
-import { timetable } from "@/db/schema";
-import { getSettings } from "@/lib/dashboard";
+import { getClasses, getSettings } from "@/lib/dashboard";
 import { getAdmin, getUser } from "@/lib/session";
 import { AdminSkeleton, LoginCard } from "@/components/admin/login-card";
 import { ScheduleEditor } from "@/components/dashboard/schedule-editor";
@@ -31,10 +28,8 @@ export default async function SchedulePage() {
 async function Editor({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const [admin, user] = await Promise.all([getAdmin(), getUser()]);
   if (!admin) return <LoginCard dict={dict.admin} next={`/${locale}/admin/schedule`} denied={Boolean(user)} />;
-  const [classes, settings] = await Promise.all([
-    db.select().from(timetable).orderBy(asc(timetable.weekday), asc(timetable.starts)),
-    getSettings(),
-  ]);
+  if (!user) return null;
+  const [classes, settings] = await Promise.all([getClasses(user.id), getSettings(user.id)]);
   const labels = dict.dashboard;
 
   return (

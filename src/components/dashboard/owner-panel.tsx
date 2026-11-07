@@ -4,11 +4,11 @@ import { getAdmin, getUser } from "@/lib/session";
 import { loadDashboard } from "@/lib/dashboard";
 import { OwnerDashboard } from "./owner-dashboard";
 
-/** The owner's dashboard on the home page. Renders nothing for anyone else. Put it inside <Suspense>. */
+/** The signed-in admin's own dashboard on the home page; nothing for anyone else. Put it inside <Suspense>. */
 export async function OwnerPanel({ labels, locale }: { labels: Dictionary["dashboard"]; locale: Locale }) {
   const [admin, user] = await Promise.all([getAdmin(), getUser()]);
-  if (!admin) return null;
-  const data = await loadDashboard();
+  if (!admin || !user) return null;
+  const data = await loadDashboard(user.id);
   const name = (user?.name || admin).split(" ")[0];
   return <OwnerDashboard data={data} labels={labels} locale={locale} name={name} />;
 }

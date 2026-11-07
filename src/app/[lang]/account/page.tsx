@@ -10,7 +10,7 @@ import { db } from "@/db";
 import { favorites, pastes, shortLinks, userDocuments, users } from "@/db/schema";
 import { getMaterials } from "@/lib/materials";
 import { cardLabels, formatDate } from "@/lib/format";
-import { getAdmin, getUser } from "@/lib/session";
+import { getAdmin, getUser, isOwner } from "@/lib/session";
 import { MaterialCard } from "@/components/material-card";
 import { toCard } from "@/lib/content";
 import { Reveal } from "@/components/reveal";
@@ -55,7 +55,7 @@ async function Account({
 
   // A year and a week of heat map, plus a day of slack for readers ahead of UTC.
   const since = addDays(new Date().toISOString().slice(0, 10), -372);
-  const [[user], favRows, admin, docRows, studyDays, studyTotals] = await Promise.all([
+  const [[user], favRows, admin, owner, docRows, studyDays, studyTotals] = await Promise.all([
     db.select().from(users).where(eq(users.id, session.id)).limit(1),
     db
       .select({ materialId: favorites.materialId })
@@ -63,18 +63,20 @@ async function Account({
       .where(eq(favorites.userId, session.id))
       .orderBy(desc(favorites.createdAt)),
     getAdmin(),
+    isOwner(),
     db.select().from(userDocuments).where(eq(userDocuments.userId, session.id)).orderBy(desc(userDocuments.createdAt)),
     getStudyDays(session.id, since),
     getStudyTotals(session.id),
   ]);
 
-  // Links and pastes: the reader's own, or everyone's for the admin (to clean up abuse).
+  // Links and pastes: the reader's own, or everyone's for the owner (to clean up abuse). Other
+  // admins see only their own, so the owner's private pastes stay private.
   const [linkRows, pasteRows] = await Promise.all([
     db
       .select({ link: shortLinks, author: users.name })
       .from(shortLinks)
       .innerJoin(users, eq(shortLinks.userId, users.id))
-      .where(admin ? undefined : eq(shortLinks.userId, session.id))
+      .where(owner ? undefined : eq(shortLinks.userId, session.id))
       .orderBy(desc(shortLinks.createdAt))
       .limit(200),
     db
@@ -90,7 +92,7 @@ async function Account({
       })
       .from(pastes)
       .innerJoin(users, eq(pastes.userId, users.id))
-      .where(admin ? undefined : eq(pastes.userId, session.id))
+      .where(owner ? undefined : eq(pastes.userId, session.id))
       .orderBy(desc(pastes.createdAt))
       .limit(200),
   ]);
@@ -232,7 +234,7 @@ async function Account({
                   labels={dict.share}
                   clicks={dict.plurals.clicks}
                   locale={locale}
-                  everyone={Boolean(admin)}
+                  everyone={owner}
                 />
               ),
             },

@@ -1,14 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getAdmin } from "@/lib/session";
+import { getUser, isOwner } from "@/lib/session";
 import { siteUrl } from "@/lib/site";
 import { botToken, botUsername, ownerLinkToken, tg, tgRaw, webhookSecret } from "@/lib/telegram";
 import { commands } from "@/lib/telegram-texts";
 
-// GET /api/telegram/setup — the admin opens this once after setting TELEGRAM_BOT_TOKEN.
+// GET /api/telegram/setup — the owner (only him, not other admins) opens this once after setting TELEGRAM_BOT_TOKEN.
 // It points the bot's webhook at this site, registers the command menu, and then sends the
 // admin to Telegram with a one-time link that makes their chat the owner's inbox.
 export async function GET(request: NextRequest) {
-  if (!(await getAdmin())) {
+  if (!(await isOwner())) {
+    if (await getUser()) return text("Only the site owner can link the Telegram bot.", 403);
     return NextResponse.redirect(new URL(`/api/auth/login?next=/api/telegram/setup`, request.url));
   }
   if (!process.env.TELEGRAM_BOT_TOKEN) return text("TELEGRAM_BOT_TOKEN is not set in Vercel.", 500);

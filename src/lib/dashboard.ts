@@ -1,11 +1,11 @@
 import "server-only";
 import { cacheLife } from "next/cache";
-import { asc, eq, gt, isNull, or } from "drizzle-orm";
+import { and, asc, eq, gt, isNull, or } from "drizzle-orm";
 import { db } from "@/db";
 import { deadlines, ownerSettings, timetable } from "@/db/schema";
 import type { DashboardData, DashboardSettings, Rates, Weather } from "@/lib/dashboard-shared";
 
-// The owner's personal dashboard: weather (Open-Meteo, no key needed), exchange rates (the
+// An admin's personal dashboard (each admin has his own, keyed by user id): weather (Open-Meteo, no key needed), exchange rates (the
 // Central Bank of Russia's daily rates via cbr-xml-daily.ru) and the owner's own deadlines and
 // timetable from the database. Outside data is cached on the server, so a page view doesn't hit
 // the APIs; when an API is down the widget just says "no data" instead of breaking the page.
@@ -19,16 +19,18 @@ export const DEFAULT_SETTINGS: DashboardSettings = {
   semesterStart: "2026-09-07",
 };
 
-export async function getSettings(): Promise<DashboardSettings> {
-  const [row] = await db.select().from(ownerSettings).where(eq(ownerSettings.key, "dashboard")).limit(1);
+const settingsKey = (userId: number) => `dashboard:${userId}`;
+
+export async function getSettings(userId: number): Promise<DashboardSettings> {
+  const [row] = await db.select().from(ownerSettings).where(eq(ownerSettings.key, settingsKey(userId))).limit(1);
   return { ...DEFAULT_SETTINGS, ...((row?.value as Partial<DashboardSettings>) ?? {}) };
 }
 
-export async function saveSettings(patch: Partial<DashboardSettings>) {
-  const value = { ...(await getSettings()), ...patch };
+export async function saveSettings(userId: number, patch: Partial<DashboardSettings>) {
+  const value = { ...(await getSettings(userId)), ...patch };
   await db
     .insert(ownerSettings)
-    .values({ key: "dashboard", value })
+    .values({ key: settingsKey(userId), value })
     .onConflictDoUpdate({ target: ownerSettings.key, set: { value, updatedAt: new Date() } });
   return value;
 }
@@ -118,16 +120,25 @@ export async function geocode(name: string, locale: string) {
   return { city: String(hit.name), lat: Number(hit.latitude), lon: Number(hit.longitude), timezone: String(hit.timezone) };
 }
 
-export async function loadDashboard(): Promise<DashboardData> {
-  const settings = await getSettings();
+/** This admin's timetable, Monday first. */
+export function getClasses(userId: number) {
+  return db
+    .select()
+    .from(timetable)
+    .where(eq(timetable.userId, userId))
+    .orderBy(asc(timetable.weekday), asc(timetable.starts));
+}
+
+export async function loadDashboard(userId: number): Promise<DashboardData> {
+  const settings = await getSettings(userId);
   const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
   const [deadlineRows, classes, weather, rates] = await Promise.all([
     db
       .select()
       .from(deadlines)
-      .where(or(isNull(deadlines.doneAt), gt(deadlines.doneAt, weekAgo)))
+      .where(and(eq(deadlines.userId, userId), or(isNull(deadlines.doneAt), gt(deadlines.doneAt, weekAgo))))
       .orderBy(asc(deadlines.dueAt)),
-    db.select().from(timetable).orderBy(asc(timetable.weekday), asc(timetable.starts)),
+    getClasses(userId),
     fetchWeather(settings.lat, settings.lon),
     fetchRates(),
   ]);
