@@ -23,6 +23,14 @@ const ADMIN_GITHUB_IDS = new Set([
 export function isAdminGithubId(gid: string | null | undefined) {
   return !!gid && (ADMIN_GITHUB_IDS.has(gid) || (devBypass && gid === "dev"));
 }
+/**
+ * Whether this GitHub account id is the site owner himself (not just any admin). Admins share the
+ * materials and moderation; the owner's personal things (everyone's links and pastes, the Telegram
+ * inbox) stay his alone. Personal data such as the dashboard is keyed by user id, not by this.
+ */
+export function isOwnerGithubId(gid: string | null | undefined) {
+  return !!gid && (gid === ADMIN_GITHUB_ID || (devBypass && gid === "dev"));
+}
 const COOKIE = "ingenium_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
@@ -120,6 +128,12 @@ export async function getAdmin(): Promise<string | null> {
   const login = String(payload?.login ?? "").toLowerCase();
   const gid = String(payload?.gid ?? "");
   return isAdminGithubId(gid) ? login || ADMIN_LOGIN : null;
+}
+
+/** Whether the site owner (not merely an admin) is signed in. */
+export async function isOwner(): Promise<boolean> {
+  const payload = await readSession();
+  return isOwnerGithubId(String(payload?.gid ?? ""));
 }
 
 /** Use at the top of every Server Action that changes materials. */

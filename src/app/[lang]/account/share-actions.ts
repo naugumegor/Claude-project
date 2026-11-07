@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { and, count, eq, gt, isNotNull, lt } from "drizzle-orm";
 import { db } from "@/db";
 import { pastes, shortLinks } from "@/db/schema";
-import { getAdmin, requireUser } from "@/lib/session";
+import { getAdmin, isOwner, requireUser } from "@/lib/session";
 import {
   LINK_LIMITS,
   PASTE_EXPIRY,
@@ -17,7 +17,7 @@ import {
 } from "@/lib/share";
 
 // Short links and pastes. Any signed-in reader can make them, within hourly and total limits;
-// only the owner (or the admin) can delete one.
+// only its author (or the site owner) can delete one.
 
 type Result<T = null> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -71,10 +71,10 @@ export async function createShortLink(input: { url: string; code?: string }): Pr
 
 export async function deleteShortLink(id: number): Promise<Result> {
   const user = await requireUser();
-  const admin = await getAdmin();
+  const owner = await isOwner();
   const [row] = await db
     .delete(shortLinks)
-    .where(admin ? eq(shortLinks.id, id) : and(eq(shortLinks.id, id), eq(shortLinks.userId, user.id)))
+    .where(owner ? eq(shortLinks.id, id) : and(eq(shortLinks.id, id), eq(shortLinks.userId, user.id)))
     .returning();
   return row ? { ok: true, data: null } : { ok: false, error: "failed" };
 }
@@ -119,10 +119,10 @@ export async function createPaste(input: {
 
 export async function deletePaste(id: string): Promise<Result> {
   const user = await requireUser();
-  const admin = await getAdmin();
+  const owner = await isOwner();
   const [row] = await db
     .delete(pastes)
-    .where(admin ? eq(pastes.id, id) : and(eq(pastes.id, id), eq(pastes.userId, user.id)))
+    .where(owner ? eq(pastes.id, id) : and(eq(pastes.id, id), eq(pastes.userId, user.id)))
     .returning();
   return row ? { ok: true, data: null } : { ok: false, error: "failed" };
 }

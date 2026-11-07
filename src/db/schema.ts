@@ -215,29 +215,31 @@ export const passwordResets = pgTable(
 
 // ---------- The owner's personal dashboard (home page, visible only to the admin) ----------
 
-/** The owner's deadlines: homework, exams, anything with a due date. */
+/** An admin's own deadlines: homework, exams, anything with a due date. Each admin sees only his. */
 export const deadlines = pgTable(
   "deadlines",
   {
     id: serial("id").primaryKey(),
+    userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     note: text("note").notNull().default(""),
     dueAt: timestamp("due_at", { withTimezone: true }).notNull(),
     doneAt: timestamp("done_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("deadlines_due_idx").on(t.dueAt)],
+  (t) => [index("deadlines_due_idx").on(t.dueAt), index("deadlines_user_idx").on(t.userId)],
 );
 
 export const classKind = pgEnum("class_kind", ["lecture", "practice", "lab", "other"]);
 /** "Числитель / знаменатель": classes that happen every week, or only on odd or even weeks. */
 export const weekParity = pgEnum("week_parity", ["every", "odd", "even"]);
 
-/** The owner's weekly class timetable. Times are local wall-clock "HH:MM" in the owner's time zone. */
+/** An admin's own weekly class timetable. Times are local wall-clock "HH:MM" in his time zone. */
 export const timetable = pgTable(
   "timetable",
   {
     id: serial("id").primaryKey(),
+    userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }),
     /** ISO weekday: 1 = Monday … 7 = Sunday. */
     weekday: integer("weekday").notNull(),
     starts: text("starts").notNull(),
@@ -248,10 +250,10 @@ export const timetable = pgTable(
     kind: classKind("kind").notNull().default("lecture"),
     parity: weekParity("parity").notNull().default("every"),
   },
-  (t) => [index("timetable_day_idx").on(t.weekday, t.starts)],
+  (t) => [index("timetable_day_idx").on(t.weekday, t.starts), index("timetable_user_idx").on(t.userId)],
 );
 
-/** Small key → JSON settings of the owner (weather city, semester start, …). */
+/** Small key → JSON settings: site-wide ones, and each admin's dashboard under "dashboard:<user id>". */
 export const ownerSettings = pgTable("owner_settings", {
   key: text("key").primaryKey(),
   value: jsonb("value").notNull(),
